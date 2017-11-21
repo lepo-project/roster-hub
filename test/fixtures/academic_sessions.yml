@@ -1,0 +1,38 @@
+# == Schema Information
+#
+# Table name: academic_sessions
+#
+#  id         :integer          not null, primary key
+#  sourcedId  :string
+#  status     :string
+#  metadata   :text
+#  title      :string
+#  startDate  :date
+#  endDate    :date
+#  type       :string
+#  schoolYear :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sourcedId: MyString
+  status: MyString
+  metadata: MyText
+  title: MyString
+  startDate: 2017-11-01
+  endDate: 2017-11-01
+  type: 
+  schoolYear: 1
+
+two:
+  sourcedId: MyString
+  status: MyString
+  metadata: MyText
+  title: MyString
+  startDate: 2017-11-01
+  endDate: 2017-11-01
+  type: 
+  schoolYear: 1

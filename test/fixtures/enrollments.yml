@@ -1,0 +1,38 @@
+# == Schema Information
+#
+# Table name: enrollments
+#
+#  id              :integer          not null, primary key
+#  sourcedId       :string
+#  status          :string
+#  metadata        :text
+#  classSourcedId  :string
+#  schoolSourcedId :string
+#  userSourcedId   :string
+#  role            :string
+#  primary         :boolean
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sourcedId: MyString
+  status: MyString
+  metadata: MyText
+  classSourcedId: MyString
+  schoolSourcedId: MyString
+  userSourcedId: MyString
+  role: MyString
+  primary: false
+
+two:
+  sourcedId: MyString
+  status: MyString
+  metadata: MyText
+  classSourcedId: MyString
+  schoolSourcedId: MyString
+  userSourcedId: MyString
+  role: MyString
+  primary: false

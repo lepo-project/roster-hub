@@ -1,0 +1,44 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id            :integer          not null, primary key
+#  sourcedId     :string
+#  status        :string
+#  metadata      :text
+#  enabledUser   :boolean
+#  orgSourcedIds :string
+#  role          :string
+#  username      :string
+#  givenName     :string
+#  familyName    :string
+#  email         :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sourcedId: MyString
+  status: MyString
+  metadata: MyText
+  enabledUser: false
+  orgSourcedIds: MyString
+  role: MyString
+  username: MyString
+  givenName: MyString
+  familyName: MyString
+  email: MyString
+
+two:
+  sourcedId: MyString
+  status: MyString
+  metadata: MyText
+  enabledUser: false
+  orgSourcedIds: MyString
+  role: MyString
+  username: MyString
+  givenName: MyString
+  familyName: MyString
+  email: MyString
