@@ -1,5 +1,5 @@
 module V1p1
-  class AcademicSessionsController < ApplicationController
+  class AcademicSessionsController < V1p1::ApplicationController
         
     def index
       indexbase(AcademicSession)

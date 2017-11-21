@@ -1,5 +1,5 @@
 module V1p1
-  class OrgsController < ApplicationController
+  class OrgsController < V1p1::ApplicationController
         
     def index
       indexbase(Org)

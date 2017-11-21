@@ -1,5 +1,5 @@
 module V1p1
-  class RclassesController < ApplicationController
+  class RclassesController < V1p1::ApplicationController
         
     def index
       indexbase(Rclass)

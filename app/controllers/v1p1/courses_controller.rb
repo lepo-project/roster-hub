@@ -1,5 +1,5 @@
 module V1p1
-  class CoursesController < ApplicationController
+  class CoursesController < V1p1::ApplicationController
         
     def index
       indexbase(Course)

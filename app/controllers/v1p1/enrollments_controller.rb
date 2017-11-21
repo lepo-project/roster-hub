@@ -1,5 +1,5 @@
 module V1p1
-  class EnrollmentsController < ApplicationController
+  class EnrollmentsController < V1p1::ApplicationController
         
     def index
       indexbase(Enrollment)

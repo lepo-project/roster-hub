@@ -1,3 +1,4 @@
+module V1p1
 class ApplicationController < ActionController::API
   before_action :doorkeeper_authorize! 
   ORDER_VALUES = 'desc', 'asc'
@@ -68,4 +69,5 @@ class ApplicationController < ActionController::API
     return { :ope => p, :key => values[0], :value => values[1] } if values.size > 1
     }
   end
+end
 end

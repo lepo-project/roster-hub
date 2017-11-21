@@ -1,5 +1,5 @@
 module V1p1
-  class UsersController < ApplicationController
+  class UsersController < V1p1::ApplicationController
         
     def index
       indexbase(User)
