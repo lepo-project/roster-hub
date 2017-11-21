@@ -1,15 +1,25 @@
-# OneRoster1.1 CSV import and API
+# OneRoster1.1 CSV import and API  
+*Under development*
 
 # Setting
 [config/initializers/constants.rb]
 CSV_FILE_PATH=':rails_root/public/csv'
 
+# Install
+$ bundle install  
+$ rails db:migrate  
+
+# Start the server.
+$ rails s
+
 # CSV Import
 
 1. copy the csv fiels in the CSV_FILE_PATH  
 
-2. execute importing csv files to the database.  
-$ CSVImportJob.perform_now
+2. execute importing csv files to the database.
+(execute now)  
+$ rails console  
+> CsvImportJob.perform_now
 
 # Get data with API
 
@@ -18,7 +28,6 @@ $ CSVImportJob.perform_now
 1.1 Register the client with uid and secret.  
 'uid' and 'secret' are important.  
 
-> app = OAuthApplication.new  
 > app = Doorkeeper::Application.new :name=>'applicationname',:redirect_uri=>'http://xxxxx/', :uid=>'[uid]',:secret=>'[secret]'  
 > app.save  
 
