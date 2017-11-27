@@ -28,7 +28,20 @@ $ rails s
 $ rails console  
 > CsvImportJob.perform_now
 ```
+(using cron jobs)  
 
+1. write schedule in [config/schedule.rb].  
+(example) "everday at 4:33 am"
+```
+every 1.day, :at => '4:33 am' do
+  runner 'CsvImportJob.perform_now'
+end
+```
+2. set cron job.
+```
+$ bundle exec whenever -i
+$ crontab -l
+```
 # Get data with API
 
 1. Register your app with uid and secret.  

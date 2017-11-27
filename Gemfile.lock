@@ -44,6 +44,7 @@ GEM
     arel (8.0.0)
     builder (3.2.3)
     byebug (9.1.0)
+    chronic (0.10.2)
     concurrent-ruby (1.0.5)
     crass (1.0.2)
     doorkeeper (4.2.6)
@@ -116,6 +117,8 @@ GEM
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
+    whenever (0.10.0)
+      chronic (>= 0.6.3)
 
 PLATFORMS
   ruby
@@ -130,6 +133,7 @@ DEPENDENCIES
   rails (~> 5.1.4)
   sqlite3
   tzinfo-data
+  whenever
 
 BUNDLED WITH
    1.16.0.pre.3
