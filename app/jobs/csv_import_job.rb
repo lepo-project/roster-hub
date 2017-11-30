@@ -3,12 +3,11 @@ require 'zip'
 
 class CsvImportJob < ApplicationJob
   queue_as :default
+  @@logger = ActiveSupport::Logger.new(Rails.root.join("public/csv/CsvImport.log"))
 
   def perform(*args)
-    # abstract zip file to csv files
+    @@logger.info('-----start:' + Time.zone.now.to_s + '-----')
     return unless abstract_zip
-    # First, import manifest.csv
-    # TODO: record the results in a log file.
     return unless File.exist?(get_filepath('manifest'))
     csv_data = CSV.read(get_filepath('manifest'), headers: false)
     manifest_hash = Hash[*csv_data.flatten]
@@ -16,13 +15,48 @@ class CsvImportJob < ApplicationJob
     return if csv_files.nil? or csv_files.length < 1 
     ActiveRecord::Base.transaction do
     csv_files.each{|cf|
-      send('csv_to_db_' + cf)
+      cl = class_from_name(cf)
+      csv_to_db(cf, cl) unless cl.nil?
     }
     end
     csv_to_backup
+    @@logger.info('-----csv imported:' + Time.zone.now.to_s + '-----')
   end
   
   private
+  def class_from_name(str)
+    case str
+    when 'academicSessions'
+      return AcademicSession
+    when 'classes'
+      return Rclass
+    when 'courses'
+      return Course
+    when 'enrollments'
+      return Enrollment
+    when 'orgs'
+      return Org
+    when 'users'
+      return User
+    when 'categories'
+      return nil
+    when 'classResources'
+      return nil
+    when 'courseResources'
+      return nil
+    when 'demographics'
+      return nil
+    when 'lineItems'
+      return nil
+    when 'resources'
+      return nil
+    when 'results'
+      return nil
+    else
+      return nil
+    end
+  end
+
   def abstract_zip
     return true unless ZIP_MODE # continue importing process if ZIP_MODE=false
     return false if extract_to_csv.nil? # stop processing if zip file not exists
@@ -61,58 +95,14 @@ class CsvImportJob < ApplicationJob
     }
   end
 
-  def csv_to_db_academicSessions
-    AcademicSession.delete_all
-    CSV.foreach(get_filepath('academicSessions'), headers: true, encoding: 'Shift_JIS:UTF-8') do |row|
-      AcademicSession.create!(row.to_hash)
+  def csv_to_db(fn, cl)
+    cl.delete_all
+    CSV.foreach(get_filepath(fn), headers: true, encoding: 'UTF-8') do |row|
+      cl.create!(row.to_hash)
     end
+    @@logger.info fn + " => " + cl.all.size.to_s
   end
-  
-  def csv_to_db_categories
-  end
-  def csv_to_db_classes
-    Rclass.delete_all
-    CSV.foreach(get_filepath('classes'), headers: true, encoding: 'Shift_JIS:UTF-8') do |row|
-      Rclass.create!(row.to_hash)
-    end
-  end
-  def csv_to_db_classResrouces
-  end
-  def csv_to_db_courses
-    Course.delete_all
-    CSV.foreach(get_filepath('courses'), headers: true, encoding: 'Shift_JIS:UTF-8') do |row|
-      Course.create!(row.to_hash)
-    end
-  end
-  def csv_to_db_courseResources
-  end
-  def csv_to_db_demographics
-  end
-  def csv_to_db_enrollments
-    Enrollment.delete_all
-    CSV.foreach(get_filepath('enrollments'), headers: true, encoding: 'Shift_JIS:UTF-8') do |row|
-      Enrollment.create!(row.to_hash)
-    end
-  end
-  def csv_to_db_lineItems
-  end
-  def csv_to_db_orgs
-    Org.delete_all
-    CSV.foreach(get_filepath('orgs'), headers: true, encoding: 'Shift_JIS:UTF-8') do |row|
-      Org.create!(row.to_hash)
-    end
-  end
-  def csv_to_db_resources
-  end
-  def csv_to_db_results
-  end
-  def csv_to_db_users
-    User.delete_all
-    CSV.foreach(get_filepath('users'), headers: true, encoding: 'Shift_JIS:UTF-8') do |row|
-      User.create!(row.to_hash)
-    end
-  end
-  
+
   def get_filepath(type)
     Rails.root.join(CSV_FILE_PATH, type + '.csv').to_s
   end
