@@ -5,8 +5,14 @@
 ```
 [config/initializers/constants.rb]  
     CSV_FILE_PATH=':rails_root/public/csv'
+    CSV_FILE_PATH = 'public/csv'
+    CSV_ZIP_FILE = 'csv.zip'
+    BACKUP_DIR = 'backup'
+    ROSTER_FILES = ['academicSessions','categories','classes','classResources','courses','courseResources','demographics','enrollments','lineItems','orgs','resources','results','users']
+    ZIP_MODE = true
+    LIMIT = 100
+    OFFSET = 0
 ```
-
 # Install
 ```
 $ bundle install  
@@ -20,7 +26,8 @@ $ rails s
 
 # CSV Import
 
-1. copy the csv fiels in the CSV_FILE_PATH  
+1. copy the zip file or csv files in the CSV_FILE_PATH  
+  A sample csv.zip file exists.
 
 2. execute importing csv files to the database.
 (execute now)  
@@ -41,7 +48,9 @@ end
 ```
 $ bundle exec whenever -i
 $ crontab -l
-```
+```  
+(*) bin/rails requires execute permissions.
+
 # Get data with API
 
 1. Register your app with uid and secret.  

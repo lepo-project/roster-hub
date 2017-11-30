@@ -1,10 +1,15 @@
 require 'csv'
+require 'zip'
+
 class CsvImportJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
+    # abstract zip file to csv files
+    return unless abstract_zip
     # First, import manifest.csv
     # TODO: record the results in a log file.
+    return unless File.exist?(get_filepath('manifest'))
     csv_data = CSV.read(get_filepath('manifest'), headers: false)
     manifest_hash = Hash[*csv_data.flatten]
     csv_files = validate_manifest(manifest_hash)
@@ -14,9 +19,48 @@ class CsvImportJob < ApplicationJob
       send('csv_to_db_' + cf)
     }
     end
+    csv_to_backup
   end
   
   private
+  def abstract_zip
+    return true unless ZIP_MODE # continue importing process if ZIP_MODE=false
+    return false if extract_to_csv.nil? # stop processing if zip file not exists
+    backup_zipfile
+    true
+  end
+  
+  def csv_to_backup
+    FileUtils.cd(Rails.root.join(CSV_FILE_PATH))
+    check_file = 'manifest.csv'
+    return unless File.exist?(check_file)
+    backuppath = File.join('backup' , File.stat(check_file).mtime.strftime('%Y%m%d%H%M%S').to_s)
+    FileUtils.mkdir_p(backuppath) unless FileTest.exist?(backuppath)
+    Dir.glob('*.csv'){|f|
+      FileUtils.mv(f, File.join(backuppath,f))
+    }
+  end
+  
+  def extract_to_csv
+    FileUtils.cd(Rails.root.join(CSV_FILE_PATH))
+    return nil unless File.exist?(CSV_ZIP_FILE)
+    Zip::File.open(CSV_ZIP_FILE) do |zip|
+      zip.each do |entry|
+        zip.extract(entry, entry.name){ true }
+      end
+    end
+  end
+
+  def backup_zipfile
+    FileUtils.cd(Rails.root.join(CSV_FILE_PATH))
+    return nil unless File.exist?(CSV_ZIP_FILE)
+    backup_file_name = File.stat(CSV_ZIP_FILE).mtime.strftime('%Y%m%d%H%M%S').to_s + '.zip'
+    FileUtils.mkdir_p(BACKUP_DIR) unless FileTest.exist?(BACKUP_DIR)
+    Dir.glob(CSV_ZIP_FILE){|f|
+      FileUtils.mv(f, File.join(BACKUP_DIR,backup_file_name))
+    }
+  end
+
   def csv_to_db_academicSessions
     AcademicSession.delete_all
     CSV.foreach(get_filepath('academicSessions'), headers: true, encoding: 'Shift_JIS:UTF-8') do |row|
