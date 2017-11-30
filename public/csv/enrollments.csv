@@ -1,8 +1,0 @@
-sourcedId,classSourcedId,schoolSourcedId,userSourcedId,role,primary
-es201701-oita-u,cl201701-oita-u,or01-oita-u,us001-oita-u,teacher,true
-es201702-oita-u,cl201701-oita-u,or01-oita-u,us002-oita-u,student,true
-es201703-oita-u,cl201701-oita-u,or01-oita-u,us003-oita-u,student,true
-es201704-oita-u,cl201701-oita-u,or01-oita-u,us004-oita-u,student,true
-es201705-oita-u,cl201701-oita-u,or01-oita-u,us001-oita-u,teacher,true
-es201706-oita-u,cl201702-oita-u,or01-oita-u,us002-oita-u,student,true
-es201707-oita-u,cl201702-oita-u,or01-oita-u,us003-oita-u,student,true
