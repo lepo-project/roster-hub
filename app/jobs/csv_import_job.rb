@@ -3,14 +3,10 @@ require 'zip'
 
 class CsvImportJob < ApplicationJob
   queue_as :default
-  @logger = ActiveSupport::Logger.new(Rails.root.join(CSV_IMPORT_LOG))
-
-  def self.logging(mess)
-    @logger.info(mess)
-  end
 
   def perform(*)
-    self.class.logging('-----start:' + Time.zone.now.to_s + '-----')
+    @logger = ActiveSupport::Logger.new(Rails.root.join(CSV_IMPORT_LOG))
+    @logger.info('-----start:' + Time.zone.now.to_s + '-----')
     return unless abstract_zip
     return unless File.exist?(get_filepath('manifest'))
     csv_data = CSV.read(get_filepath('manifest'), headers: false)
@@ -24,7 +20,7 @@ class CsvImportJob < ApplicationJob
       end
     end
     csv_to_backup
-    self.class.logging('-----csv imported:' + Time.zone.now.to_s + '-----')
+    @logger.info('-----csv imported:' + Time.zone.now.to_s + '-----')
   end
 
   private
@@ -87,7 +83,7 @@ class CsvImportJob < ApplicationJob
     CSV.foreach(get_filepath(fn), headers: true, encoding: 'UTF-8') do |row|
       cl.create!(row.to_hash)
     end
-    @@logger.info fn + ' => ' + cl.all.size.to_s
+    @logger.info fn + ' => ' + cl.all.size.to_s
   end
 
   def get_filepath(type)
