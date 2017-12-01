@@ -5,3 +5,4 @@ ROSTER_FILES = ['academicSessions','categories','classes','classResources','cour
 ZIP_MODE = true
 LIMIT = 100
 OFFSET = 0
+CSV_IMPORT_LOG = 'public/csv/CsvImport.log'

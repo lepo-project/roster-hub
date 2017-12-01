@@ -1,0 +1,24 @@
+LineLength:
+  Max: 150
+
+MethodLength:
+  CountComments: true  # count full line comments?
+  Max: 50
+  
+Metrics/AbcSize:
+  Max: 100
+
+Metrics/CyclomaticComplexity:
+  Max: 20
+
+Metrics/PerceivedComplexity:
+  Max: 20
+
+Style/ConditionalAssignment:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+
+
