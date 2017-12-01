@@ -19,7 +19,7 @@ module V1p1
     def indexbase_with_condition(model_class, datas)
       # sourcedId
       sourced_id = params[:sourcedId]
-      datas = datas.where(sourced_id: sourcedId) unless sourced_id.nil?
+      datas = datas.where(sourcedId: sourced_id) unless sourced_id.nil?
       # filter
       filter_param = params[:filter]
       unless filter_param.nil?
