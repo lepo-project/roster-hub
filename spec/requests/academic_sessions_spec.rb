@@ -7,23 +7,24 @@ RSpec.describe "AcademicSessions", type: :request do
       @academic_sessions = FactoryBot.create_list(:random_academic_session, 4)
       @app = Doorkeeper::Application.create!(name: "MyApp", redirect_uri: "https://app.com") 
       @token = Doorkeeper::AccessToken.create! application_id: @app.id
+      @url = '/ims/oneroster/v1p1/academicSessions'
     end
     it 'token less' do
-      get '/ims/oneroster/v1p1/academicSessions'
+      get @url
       expect(response).to have_http_status(401)
     end
     it 'invalid token' do
-      get '/ims/oneroster/v1p1/academicSessions?access_token=123456'
+      get @url + '?access_token=123456'
       expect(response).to have_http_status(401)
     end
     it 'valid token' do
-      get '/ims/oneroster/v1p1/academicSessions?access_token=' + @token.token
+      get @url + '?access_token=' + @token.token
       @json = JSON.parse(response.body)
       #puts @json.to_s
       expect(response).to have_http_status(200)
     end
     it 'get with sourcedId' do
-      get '/ims/oneroster/v1p1/academicSessions/' + @academic_session.sourcedId + '?access_token=' + @token.token
+      get @url + '/' + @academic_session.sourcedId + '?access_token=' + @token.token
       @json = JSON.parse(response.body)
       #puts @json.to_s
       expect(response).to have_http_status(200)
