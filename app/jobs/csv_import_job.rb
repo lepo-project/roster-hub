@@ -3,57 +3,42 @@ require 'zip'
 
 class CsvImportJob < ApplicationJob
   queue_as :default
-  @@logger = ActiveSupport::Logger.new(Rails.root.join("public/csv/CsvImport.log"))
+  @logger = ActiveSupport::Logger.new(Rails.root.join(CSV_IMPORT_LOG))
 
-  def perform(*args)
-    @@logger.info('-----start:' + Time.zone.now.to_s + '-----')
+  def self.logging(mess)
+    @logger.info(mess)
+  end
+
+  def perform(*)
+    self.class.logging('-----start:' + Time.zone.now.to_s + '-----')
     return unless abstract_zip
     return unless File.exist?(get_filepath('manifest'))
     csv_data = CSV.read(get_filepath('manifest'), headers: false)
     manifest_hash = Hash[*csv_data.flatten]
     csv_files = validate_manifest(manifest_hash)
-    return if csv_files.nil? or csv_files.length < 1 
+    return if csv_files.nil? || csv_files.empty?
     ActiveRecord::Base.transaction do
-    csv_files.each{|cf|
-      cl = class_from_name(cf)
-      csv_to_db(cf, cl) unless cl.nil?
-    }
+      csv_files.each do |cf|
+        cl = class_from_name(cf)
+        csv_to_db(cf, cl) unless cl.nil?
+      end
     end
     csv_to_backup
-    @@logger.info('-----csv imported:' + Time.zone.now.to_s + '-----')
+    self.class.logging('-----csv imported:' + Time.zone.now.to_s + '-----')
   end
-  
+
   private
+
   def class_from_name(str)
     case str
     when 'academicSessions'
-      return AcademicSession
+      AcademicSession
     when 'classes'
-      return Rclass
+      Rclass
     when 'courses'
-      return Course
+      Course
     when 'enrollments'
-      return Enrollment
-    when 'orgs'
-      return Org
-    when 'users'
-      return User
-    when 'categories'
-      return nil
-    when 'classResources'
-      return nil
-    when 'courseResources'
-      return nil
-    when 'demographics'
-      return nil
-    when 'lineItems'
-      return nil
-    when 'resources'
-      return nil
-    when 'results'
-      return nil
-    else
-      return nil
+      Enrollment
     end
   end
 
@@ -63,24 +48,25 @@ class CsvImportJob < ApplicationJob
     backup_zipfile
     true
   end
-  
+
   def csv_to_backup
     FileUtils.cd(Rails.root.join(CSV_FILE_PATH))
     check_file = 'manifest.csv'
     return unless File.exist?(check_file)
-    backuppath = File.join('backup' , File.stat(check_file).mtime.strftime('%Y%m%d%H%M%S').to_s)
+    timestamp = File.stat(check_file).mtime.strftime('%Y%m%d%H%M%S')
+    backuppath = File.join('backup', timestamp)
     FileUtils.mkdir_p(backuppath) unless FileTest.exist?(backuppath)
-    Dir.glob('*.csv'){|f|
-      FileUtils.mv(f, File.join(backuppath,f))
-    }
+    Dir.glob('*.csv') do |f|
+      FileUtils.mv(f, File.join(backuppath, f))
+    end
   end
-  
+
   def extract_to_csv
     FileUtils.cd(Rails.root.join(CSV_FILE_PATH))
     return nil unless File.exist?(CSV_ZIP_FILE)
     Zip::File.open(CSV_ZIP_FILE) do |zip|
       zip.each do |entry|
-        zip.extract(entry, entry.name){ true }
+        zip.extract(entry, entry.name) { true }
       end
     end
   end
@@ -88,11 +74,12 @@ class CsvImportJob < ApplicationJob
   def backup_zipfile
     FileUtils.cd(Rails.root.join(CSV_FILE_PATH))
     return nil unless File.exist?(CSV_ZIP_FILE)
-    backup_file_name = File.stat(CSV_ZIP_FILE).mtime.strftime('%Y%m%d%H%M%S').to_s + '.zip'
+    timestamp = File.stat(CSV_ZIP_FILE).mtime.strftime('%Y%m%d%H%M%S')
+    backup_file_name = timestamp + '.zip'
     FileUtils.mkdir_p(BACKUP_DIR) unless FileTest.exist?(BACKUP_DIR)
-    Dir.glob(CSV_ZIP_FILE){|f|
-      FileUtils.mv(f, File.join(BACKUP_DIR,backup_file_name))
-    }
+    Dir.glob(CSV_ZIP_FILE) do |f|
+      FileUtils.mv(f, File.join(BACKUP_DIR, backup_file_name))
+    end
   end
 
   def csv_to_db(fn, cl)
@@ -100,13 +87,13 @@ class CsvImportJob < ApplicationJob
     CSV.foreach(get_filepath(fn), headers: true, encoding: 'UTF-8') do |row|
       cl.create!(row.to_hash)
     end
-    @@logger.info fn + " => " + cl.all.size.to_s
+    @@logger.info fn + ' => ' + cl.all.size.to_s
   end
 
   def get_filepath(type)
     Rails.root.join(CSV_FILE_PATH, type + '.csv').to_s
   end
-  
+
   # bulk only
   def validate_manifest(manifest_hash)
     manifest_version = manifest_hash['manifest.version']
@@ -114,9 +101,9 @@ class CsvImportJob < ApplicationJob
     return nil unless '1'.eql?(manifest_version)
     return nil unless '1.1'.eql?(oneroster_version)
     read_files = []
-    ROSTER_FILES.each{|fcl|
+    ROSTER_FILES.each do |fcl|
       read_files.push(fcl) if 'bulk'.eql?(manifest_hash['file.' + fcl])
-    }
+    end
     read_files
   end
 end
