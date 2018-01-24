@@ -15,9 +15,15 @@ FactoryBot.define do
         enabledUser true
         orgSourcedIds   'or01-oita-u'
         role        'student'
-        username    { Faker::Internet.user_name(8..10) }
+        #username    { Faker::Internet.user_name(8..10) }
         givenName   { Faker::Name.first_name }
         familyName  { Faker::Name.last_name}
-        email       { Faker::Internet.safe_email }
+        #email       { Faker::Internet.safe_email }
+        sequence :email do |n|
+            "t1700#{n}@oita-u.ac.jp"
+        end
+        sequence :username do |n|
+            "t1700#{n}"
+        end
     end
 end

@@ -22,7 +22,7 @@ RSpec.describe "AcademicSessions", type: :request do
       expect(response).to have_http_status(200)
     end
     it 'get with sourcedId' do
-      get @url + '/' + @academic_session.sourcedId + '?access_token=' + @token.token
+      get @url + '/' + @academic_sessions[rand(@academic_sessions.length)].sourcedId + '?access_token=' + @token.token
       @json = JSON.parse(response.body)
       #puts @json.to_s
       expect(response).to have_http_status(200)

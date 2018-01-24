@@ -13,11 +13,11 @@ FactoryBot.define do
     factory :random_rclass, class: Rclass do
         sourcedId   { Faker::Code.unique.asin }
         title       { Faker::App.name }
-        courseSourcedId 'co201701-oita-u'
+        courseSourcedId {FactoryBot.create(:random_course).sourcedId}
         classCode  { Faker::Code.unique.asin }
         classType   'scheduled'
         schoolSourcedId    'or01-oita-u'
-        termSourcedIds 'as201703-oita-u'
+        termSourcedIds {FactoryBot.create(:random_academic_session).sourcedId}
         periods 9
     end
 end

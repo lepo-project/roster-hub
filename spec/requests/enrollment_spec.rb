@@ -22,7 +22,7 @@ RSpec.describe "Enrollments", type: :request do
       expect(response).to have_http_status(200)
     end
     it 'get with sourcedId' do
-      get @url + '/' + @enrollments[0].sourcedId + '?access_token=' + @token.token
+      get @url + '/' + @enrollments[rand(@enrollments.length)].sourcedId + '?access_token=' + @token.token
       @json = JSON.parse(response.body)
       #puts @json.to_s
       expect(response).to have_http_status(200)

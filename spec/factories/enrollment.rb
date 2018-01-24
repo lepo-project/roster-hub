@@ -10,9 +10,9 @@ FactoryBot.define do
 
     factory :random_enrollment, class: Enrollment do
         sourcedId   { Faker::Code.unique.asin }
-        classSourcedId 'cl201701-oita-u'
+        classSourcedId {FactoryBot.create(:random_rclass).sourcedId}
         schoolSourcedIds   'or01-oita-u'
-        userSourceId    'us002-oita-u'
+        userSourceId    {FactoryBot.create(:random_user).sourcedId}
         role        'student'
         primary     true
     end

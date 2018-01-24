@@ -22,7 +22,7 @@ RSpec.describe "Users", type: :request do
       expect(response).to have_http_status(200)
     end
     it 'get with sourcedId' do
-      get @url + '/' + @users[0].sourcedId + '?access_token=' + @token.token
+      get @url + '/' + @users[rand(@users.length)].sourcedId + '?access_token=' + @token.token
       @json = JSON.parse(response.body)
       #puts @json.to_s
       expect(response).to have_http_status(200)
