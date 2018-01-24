@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe "AcademicSessions", type: :request do
-  describe "GET /academic_sessions" do
+RSpec.describe "Users", type: :request do
+  describe "GET /users" do
     before do
-      @academic_session = FactoryBot.create(:academic_session)
-      @academic_sessions = FactoryBot.create_list(:random_academic_session, 4)
-      @url = '/ims/oneroster/v1p1/academicSessions'
+      @user = FactoryBot.create(:user)
+      @users = FactoryBot.create_list(:random_user, 10)
+      @url = '/ims/oneroster/v1p1/users'
     end
     it 'token less' do
       get @url
@@ -22,7 +22,7 @@ RSpec.describe "AcademicSessions", type: :request do
       expect(response).to have_http_status(200)
     end
     it 'get with sourcedId' do
-      get @url + '/' + @academic_session.sourcedId + '?access_token=' + @token.token
+      get @url + '/' + @users[0].sourcedId + '?access_token=' + @token.token
       @json = JSON.parse(response.body)
       #puts @json.to_s
       expect(response).to have_http_status(200)

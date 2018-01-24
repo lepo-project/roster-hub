@@ -13,10 +13,12 @@
 # it.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
-#require 'factory_bot_rails'
 
 RSpec.configure do |config|
-  #config.include FactoryBotRails::Syntax::Methods
+  config.before(:all) {
+      @app = Doorkeeper::Application.create!(name: "MyApp", redirect_uri: "https://app.com") 
+      @token = Doorkeeper::AccessToken.create! application_id: @app.id
+  }
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.

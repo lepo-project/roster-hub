@@ -19,6 +19,11 @@ $ bundle install
 $ rails db:migrate  
 ```
 
+# Test
+```
+$ rails spec
+```
+
 # Start the server.
 ```
 $ rails s
@@ -71,7 +76,7 @@ $ curl -i http[s]://[servername][:port]/ims/oneroster/v1p1/[endpoint]?[parameter
 ```
 
 
-# Endpoint
+## Endpoint
 | Service Call | Endpoint | HTTP Verb | Action | Impl. |
 | --- | --- | --- | --- | --- |
 | getAllAcademicSessions | /academicSessions | GET | Return collection of all academic sessions. | OK | 
@@ -116,18 +121,20 @@ $ curl -i http[s]://[servername][:port]/ims/oneroster/v1p1/[endpoint]?[parameter
  | getStudentsForClass | /classes/{class_id}/students | GET | Return the collection of students that are taking this class. |  | 
  | getTeachersForClass | /classes/{class_id}/teachers | GET | Return the collection of teachers that are teaching this class. |  | 
  
-# Pagination
+## Pagination
  + limit : the number of result to return : The default value for limit is 100.
  + offset : the index of the first record to return.(zero indexed) : The default value for offset is 0.  
 
  (ex.)http[s]://[domain]/ims/oneroster/v1p1/students?limit=10&offset=10
-# Sorting
+## Sorting
  + sort=[data_field]
  + orderBy=[asc|desc]  
 
  (ex.)http[s]://[domain]/ims/oneroster/v1p1/students?sort=familyName&orderBy=asc
-# Filtering
+## Filtering
  + filter=[data_field][predicate][value] or [data_field][predicate][value][logical][data_field][predicate][value]  
 
  Filter queries MUST be URL encoded.  
  (ex.) http[s]://[domain]/ims/oneroster/v1p1/filter=familyName%3D%27jones%27
+
+ 

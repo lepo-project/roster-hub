@@ -46,4 +46,8 @@ Rails.application.configure do
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
   ENV["RAILS_RELATIVE_URL_ROOT"] = "/ims/roster"
   Rails.application.config.relative_url_root = "/ims/roster"
+  
+  # for Faker
+  I18n.locale = :ja
+  Faker::Config.locale = :ja  
 end
