@@ -9,6 +9,8 @@
 + Results
 
 # Some limitations
++ This program supports only bulk data.
+
 + Academic Session
   * metadata: not supported.
   * parent: not supported.
