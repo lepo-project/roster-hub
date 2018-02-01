@@ -1,6 +1,59 @@
 # OneRoster1.1 CSV import and API  
 *Under development*
 
+# Out of the application range
++ Demographic Data
++ Line Items
++ Line Item Categoris
++ Resources
++ Results
+
+# Some limitations
++ Academic Session
+  * metadata: not supported.
+  * parent: not supported.
+  * cildren: not supported.
++ Class
+   * We use this object as 'Rclass'.
+   * metadata: not supported.
+   * location: not supported.
+   * grades: not supported.
+   * subjects: not supported.
+   * terms: only one term.
+   * subjectCodes: not supoorted.
+   * periods: not supported.
+   *resources: not supported.
++ Course
+   * metadata: not supported.
+   * schoolYear: not supported.
+   * courseCode: not supported.
+   * grades: not supported.
+   * subjects: not supported.
+   * subjectCodes: not supported.
+   * resources: not supported.
++ Enrollment
+   * status: not supported.
+   * metadata: not supported.
+   * beginDate: not supported.
+   * endDate: not supported.
++ Org
+   * status: not supported.
+   * metadata: not supported.
+   * identifier: not supported.
+   * parent: not supported.
+   * children: not supported.
++ User
+   * status: not supported.
+   * metadata: not supported.
+   * userIds: not supported.
+   * middleName: not supported.
+   * identifier: not supported.
+   * sms: not supported.
+   * phone: not supported.
+   * agents: not supported.
+   * grades: not supported.
+   * password: not supported.
+
 # Setting
 ```
 [config/initializers/constants.rb]  
