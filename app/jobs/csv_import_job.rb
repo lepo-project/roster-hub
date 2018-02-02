@@ -21,6 +21,7 @@ class CsvImportJob < ApplicationJob
     end
     csv_to_backup
     @logger.info('-----csv imported:' + Time.zone.now.to_s + '-----')
+    check_consistency
   end
 
   private
@@ -49,8 +50,9 @@ class CsvImportJob < ApplicationJob
     FileUtils.cd(Rails.root.join(CSV_FILE_PATH))
     check_file = 'manifest.csv'
     return unless File.exist?(check_file)
-    timestamp = File.stat(check_file).mtime.strftime('%Y%m%d%H%M%S')
-    backuppath = File.join('backup', timestamp)
+    #timestamp = File.stat(check_file).mtime.strftime('%Y%m%d%H%M%S')
+    #backuppath = File.join('backup', timestamp)
+    backuppath = BACKUP_DIR
     FileUtils.mkdir_p(backuppath) unless FileTest.exist?(backuppath)
     Dir.glob('*.csv') do |f|
       FileUtils.mv(f, File.join(backuppath, f))
@@ -101,5 +103,56 @@ class CsvImportJob < ApplicationJob
       read_files.push(fcl) if 'bulk'.eql?(manifest_hash['file.' + fcl])
     end
     read_files
+  end
+
+  # consistency check
+  def check_consistency
+    @logger.info('-----Check start:' + Time.zone.now.to_s + '-----')
+    # check_course
+    consistency_of_course
+    # check enrollment
+    consistency_of_enrollment
+    # check class
+    consistency_of_class
+    @logger.info('-----Check end:' + Time.zone.now.to_s + '-----')
+  end
+ 
+  def consistency_of_course
+    Course.find_each do |course|
+      org = Org.find_by(sourcedId: course.orgSourcedId)
+      logger_err('Course',course.sourcedId,['orgSourcedId']) if org.nil?
+    end
+  end
+  
+  def consistency_of_enrollment
+    Enrollment.find_each do |enrollment|
+      err = []
+      org = Org.find_by(sourcedId: enrollment.schoolSourcedId)
+      err.push('orgSourcedId') if org.nil?
+      rclass = Rclass.find_by(sourcedId: enrollment.classSourcedId)
+      err.push('classSourcedId') if rclass.nil?
+      user = Org.find_by(sourcedId: enrollment.userSourcedId)
+      err.push('userSourcedId') if user.nil?
+      logger_err('Enrollment', enrollment.sourcedId, err) if err.present?
+    end
+  end
+  
+  def consistency_of_class
+    Rclass.find_each do |rclass|
+      err = []
+      course = Course.find_by(sourcedId: rclass.courseSourcedId)
+      err.push('courseSourceId') if course.nil?
+      as = AcademicSession.find_by(sourcedId: rclass.termSourcedIds)
+      err.push('termSourcedId') if as.nil?
+      org = Org.find_by(sourcedId: rclass.schoolSourcedId)
+      err.push('orgSourcedId') if org.nil?
+      logger_err('Class', rclass.sourcedId, err) if err.present?
+    end
+  end
+  
+  def logger_err(objname, id, errstr_array)
+    return if errstr_array.empty?
+    errstr = errstr_array.join(', ')
+    @logger.info 'ERROR:' + objname + ' sourcedId=' + id + ' has invalid ' + errstr
   end
 end
