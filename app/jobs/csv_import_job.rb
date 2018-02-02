@@ -1,7 +1,7 @@
 require 'csv'
 require 'zip'
 
-class CsvImportJob < ApplicationJob
+class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   queue_as :default
 
   def perform(*)
@@ -50,8 +50,8 @@ class CsvImportJob < ApplicationJob
     FileUtils.cd(Rails.root.join(CSV_FILE_PATH))
     check_file = 'manifest.csv'
     return unless File.exist?(check_file)
-    #timestamp = File.stat(check_file).mtime.strftime('%Y%m%d%H%M%S')
-    #backuppath = File.join('backup', timestamp)
+    # timestamp = File.stat(check_file).mtime.strftime('%Y%m%d%H%M%S')
+    # backuppath = File.join('backup', timestamp)
     backuppath = BACKUP_DIR
     FileUtils.mkdir_p(backuppath) unless FileTest.exist?(backuppath)
     Dir.glob('*.csv') do |f|
@@ -116,14 +116,14 @@ class CsvImportJob < ApplicationJob
     consistency_of_class
     @logger.info('-----Check end:' + Time.zone.now.to_s + '-----')
   end
- 
+
   def consistency_of_course
     Course.find_each do |course|
       org = Org.find_by(sourcedId: course.orgSourcedId)
-      logger_err('Course',course.sourcedId,['orgSourcedId']) if org.nil?
+      logger_err('Course', course.sourcedId, ['orgSourcedId']) if org.nil?
     end
   end
-  
+
   def consistency_of_enrollment
     Enrollment.find_each do |enrollment|
       err = []
@@ -136,7 +136,7 @@ class CsvImportJob < ApplicationJob
       logger_err('Enrollment', enrollment.sourcedId, err) if err.present?
     end
   end
-  
+
   def consistency_of_class
     Rclass.find_each do |rclass|
       err = []
@@ -149,7 +149,7 @@ class CsvImportJob < ApplicationJob
       logger_err('Class', rclass.sourcedId, err) if err.present?
     end
   end
-  
+
   def logger_err(objname, id, errstr_array)
     return if errstr_array.empty?
     errstr = errstr_array.join(', ')
