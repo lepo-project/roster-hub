@@ -36,6 +36,10 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
       Course
     when 'enrollments'
       Enrollment
+    when 'users'
+      User
+    when 'orgs'
+      Org
     end
   end
 
