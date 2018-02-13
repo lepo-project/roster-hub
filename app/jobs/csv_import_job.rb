@@ -87,7 +87,9 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   def csv_to_db(fn, cl)
     cl.delete_all
     CSV.foreach(get_filepath(fn), headers: true, encoding: 'UTF-8') do |row|
-      cl.create!(row.to_hash)
+      hash = row.to_hash
+      hash.select! { |k, _| cl.column_names.include? k }
+      cl.create!(hash)
     end
     @logger.info fn + ' => ' + cl.all.size.to_s
   end
