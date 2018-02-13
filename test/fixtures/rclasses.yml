@@ -2,19 +2,19 @@
 #
 # Table name: rclasses
 #
-#  id              :integer          not null, primary key
-#  sourcedId       :string
-#  status          :string
-#  metadata        :text
-#  title           :string
-#  courseSourcedId :string
-#  classCode       :string
-#  classType       :string
-#  schoolSourcedId :string
-#  termSourcedIds  :string
-#  periods         :string
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id               :integer          not null, primary key
+#  sourcedId        :string
+#  status           :string
+#  dateLastModified :datetime
+#  title            :string
+#  courseSourcedId  :string
+#  classCode        :string
+#  classType        :string
+#  schoolSourcedId  :string
+#  termSourcedIds   :string
+#  periods          :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

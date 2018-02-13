@@ -3,7 +3,7 @@ class CreateRclasses < ActiveRecord::Migration[5.1]
     create_table :rclasses do |t|
       t.string :sourcedId
       t.string :status
-      t.text :metadata
+      t.datetime :dateLastModified
       t.string :title
       t.string :courseSourcedId
       t.string :classCode

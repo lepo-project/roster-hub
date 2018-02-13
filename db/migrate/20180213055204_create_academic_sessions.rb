@@ -3,11 +3,11 @@ class CreateAcademicSessions < ActiveRecord::Migration[5.1]
     create_table :academic_sessions do |t|
       t.string :sourcedId
       t.string :status
-      t.text :metadata
+      t.datetime :dateLastModified
       t.string :title
+      t.string :type
       t.date :startDate
       t.date :endDate
-      t.string :type
       t.integer :schoolYear
 
       t.timestamps

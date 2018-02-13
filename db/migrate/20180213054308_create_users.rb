@@ -3,7 +3,7 @@ class CreateUsers < ActiveRecord::Migration[5.1]
     create_table :users do |t|
       t.string :sourcedId
       t.string :status
-      t.text :metadata
+      t.datetime :dateLastModified
       t.boolean :enabledUser
       t.string :orgSourcedIds
       t.string :role

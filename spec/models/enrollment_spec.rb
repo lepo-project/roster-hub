@@ -1,21 +1,22 @@
 # == Schema Information
 #
-# Table name: rclasses
+# Table name: enrollments
 #
 #  id               :integer          not null, primary key
 #  sourcedId        :string
 #  status           :string
 #  dateLastModified :datetime
-#  title            :string
-#  courseSourcedId  :string
-#  classCode        :string
-#  classType        :string
+#  classSourcedId   :string
 #  schoolSourcedId  :string
-#  termSourcedIds   :string
-#  periods          :string
+#  userSourcedId    :string
+#  role             :string
+#  primary          :boolean
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
 
-class Rclass < ApplicationRecord
+require 'rails_helper'
+
+RSpec.describe Enrollment, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
 end

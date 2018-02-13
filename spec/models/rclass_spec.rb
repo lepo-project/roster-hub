@@ -17,5 +17,8 @@
 #  updated_at       :datetime         not null
 #
 
-class Rclass < ApplicationRecord
+require 'rails_helper'
+
+RSpec.describe Rclass, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
 end

@@ -10,16 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171115010945) do
+ActiveRecord::Schema.define(version: 20180213055516) do
 
   create_table "academic_sessions", force: :cascade do |t|
     t.string "sourcedId"
     t.string "status"
-    t.text "metadata"
+    t.datetime "dateLastModified"
     t.string "title"
+    t.string "type"
     t.date "startDate"
     t.date "endDate"
-    t.string "type"
     t.integer "schoolYear"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20171115010945) do
   create_table "courses", force: :cascade do |t|
     t.string "sourcedId"
     t.string "status"
-    t.text "metadata"
+    t.datetime "dateLastModified"
     t.string "title"
     t.string "courseCode"
     t.string "orgSourcedId"
@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 20171115010945) do
   create_table "enrollments", force: :cascade do |t|
     t.string "sourcedId"
     t.string "status"
-    t.text "metadata"
+    t.datetime "dateLastModified"
     t.string "classSourcedId"
     t.string "schoolSourcedId"
     t.string "userSourcedId"
@@ -100,7 +100,7 @@ ActiveRecord::Schema.define(version: 20171115010945) do
   create_table "rclasses", force: :cascade do |t|
     t.string "sourcedId"
     t.string "status"
-    t.text "metadata"
+    t.datetime "dateLastModified"
     t.string "title"
     t.string "courseSourcedId"
     t.string "classCode"
@@ -115,7 +115,7 @@ ActiveRecord::Schema.define(version: 20171115010945) do
   create_table "users", force: :cascade do |t|
     t.string "sourcedId"
     t.string "status"
-    t.text "metadata"
+    t.datetime "dateLastModified"
     t.boolean "enabledUser"
     t.string "orgSourcedIds"
     t.string "role"

@@ -3,7 +3,7 @@ class CreateEnrollments < ActiveRecord::Migration[5.1]
     create_table :enrollments do |t|
       t.string :sourcedId
       t.string :status
-      t.text :metadata
+      t.datetime :dateLastModified
       t.string :classSourcedId
       t.string :schoolSourcedId
       t.string :userSourcedId
