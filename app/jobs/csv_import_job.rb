@@ -137,7 +137,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
       err.push('orgSourcedId') if org.nil?
       rclass = Rclass.find_by(sourcedId: enrollment.classSourcedId)
       err.push('classSourcedId') if rclass.nil?
-      user = Org.find_by(sourcedId: enrollment.userSourcedId)
+      user = User.find_by(sourcedId: enrollment.userSourcedId)
       err.push('userSourcedId') if user.nil?
       logger_err('Enrollment', enrollment.sourcedId, err) if err.present?
     end
