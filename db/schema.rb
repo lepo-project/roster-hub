@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180213055516) do
+ActiveRecord::Schema.define(version: 20180215064138) do
 
   create_table "academic_sessions", force: :cascade do |t|
     t.string "sourcedId"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20180213055516) do
     t.string "type"
     t.date "startDate"
     t.date "endDate"
+    t.string "parentSourcedId"
     t.integer "schoolYear"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -29,9 +30,13 @@ ActiveRecord::Schema.define(version: 20180213055516) do
     t.string "sourcedId"
     t.string "status"
     t.datetime "dateLastModified"
+    t.string "schoolYearSourcedId"
     t.string "title"
     t.string "courseCode"
+    t.string "grades"
     t.string "orgSourcedId"
+    t.string "subjects"
+    t.string "subjectCodes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -45,6 +50,8 @@ ActiveRecord::Schema.define(version: 20180213055516) do
     t.string "userSourcedId"
     t.string "role"
     t.boolean "primary"
+    t.date "beginDate"
+    t.date "endDate"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -90,9 +97,11 @@ ActiveRecord::Schema.define(version: 20180213055516) do
   create_table "orgs", force: :cascade do |t|
     t.string "sourcedId"
     t.string "status"
-    t.text "metadata"
+    t.datetime "dateLastModified"
     t.string "name"
     t.string "type"
+    t.string "identifier"
+    t.string "parentSourcedId"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -102,11 +111,15 @@ ActiveRecord::Schema.define(version: 20180213055516) do
     t.string "status"
     t.datetime "dateLastModified"
     t.string "title"
+    t.string "grades"
     t.string "courseSourcedId"
     t.string "classCode"
     t.string "classType"
+    t.string "location"
     t.string "schoolSourcedId"
     t.string "termSourcedIds"
+    t.string "subjects"
+    t.string "subjectCodes"
     t.string "periods"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -120,9 +133,17 @@ ActiveRecord::Schema.define(version: 20180213055516) do
     t.string "orgSourcedIds"
     t.string "role"
     t.string "username"
+    t.string "userIds"
     t.string "givenName"
     t.string "familyName"
+    t.string "middleName"
+    t.string "identifier"
     t.string "email"
+    t.string "sms"
+    t.string "phone"
+    t.string "agentSourcedIds"
+    t.string "grades"
+    t.string "password"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

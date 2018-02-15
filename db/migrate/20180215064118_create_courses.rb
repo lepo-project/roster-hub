@@ -4,9 +4,13 @@ class CreateCourses < ActiveRecord::Migration[5.1]
       t.string :sourcedId
       t.string :status
       t.datetime :dateLastModified
+      t.string :schoolYearSourcedId
       t.string :title
       t.string :courseCode
+      t.string :grades
       t.string :orgSourcedId
+      t.string :subjects
+      t.string :subjectCodes
 
       t.timestamps
     end

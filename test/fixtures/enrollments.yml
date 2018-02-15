@@ -11,6 +11,8 @@
 #  userSourcedId    :string
 #  role             :string
 #  primary          :boolean
+#  beginDate        :date
+#  endDate          :date
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #

@@ -12,7 +12,9 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     csv_data = CSV.read(get_filepath('manifest'), headers: false)
     manifest_hash = Hash[*csv_data.flatten]
     csv_files = validate_manifest(manifest_hash)
+    @logger.info("STOP:Invalid manifest") if csv_files.nil? || csv_files.empty?
     return if csv_files.nil? || csv_files.empty?
+    @logger.info("-A5-")
     ActiveRecord::Base.transaction do
       csv_files.each do |cf|
         cl = class_from_name(cf)
@@ -102,8 +104,8 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   def validate_manifest(manifest_hash)
     manifest_version = manifest_hash['manifest.version']
     oneroster_version = manifest_hash['oneroster.version']
-    return nil unless '1'.eql?(manifest_version)
-    return nil unless '1.1'.eql?(oneroster_version)
+    return nil unless VERSION_OF_MANIFEST.eql?(manifest_version)
+    return nil unless VERSION_OF_ONEROSTER.eql?(oneroster_version)
     read_files = []
     ROSTER_FILES.each do |fcl|
       read_files.push(fcl) if 'bulk'.eql?(manifest_hash['file.' + fcl])

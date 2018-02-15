@@ -5,11 +5,15 @@ class CreateRclasses < ActiveRecord::Migration[5.1]
       t.string :status
       t.datetime :dateLastModified
       t.string :title
+      t.string :grades
       t.string :courseSourcedId
       t.string :classCode
       t.string :classType
+      t.string :location
       t.string :schoolSourcedId
       t.string :termSourcedIds
+      t.string :subjects
+      t.string :subjectCodes
       t.string :periods
 
       t.timestamps

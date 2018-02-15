@@ -9,6 +9,8 @@ class CreateEnrollments < ActiveRecord::Migration[5.1]
       t.string :userSourcedId
       t.string :role
       t.boolean :primary
+      t.date :beginDate
+      t.date :endDate
 
       t.timestamps
     end

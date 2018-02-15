@@ -2,14 +2,16 @@
 #
 # Table name: orgs
 #
-#  id         :integer          not null, primary key
-#  sourcedId  :string
-#  status     :string
-#  metadata   :text
-#  name       :string
-#  type       :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id               :integer          not null, primary key
+#  sourcedId        :string
+#  status           :string
+#  dateLastModified :datetime
+#  name             :string
+#  type             :string
+#  identifier       :string
+#  parentSourcedId  :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 
 require 'test_helper'

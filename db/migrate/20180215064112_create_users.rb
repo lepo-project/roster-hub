@@ -8,9 +8,17 @@ class CreateUsers < ActiveRecord::Migration[5.1]
       t.string :orgSourcedIds
       t.string :role
       t.string :username
+      t.string :userIds
       t.string :givenName
       t.string :familyName
+      t.string :middleName
+      t.string :identifier
       t.string :email
+      t.string :sms
+      t.string :phone
+      t.string :agentSourcedIds
+      t.string :grades
+      t.string :password
 
       t.timestamps
     end

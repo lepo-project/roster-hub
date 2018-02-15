@@ -10,6 +10,7 @@
 #  type             :string
 #  startDate        :date
 #  endDate          :date
+#  parentSourcedId  :string
 #  schoolYear       :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
