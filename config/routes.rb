@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   use_doorkeeper
   root 'orgs#index'
+  get 'api-docs', to: 'api_docs#index'
   scope 'ims' do
     scope 'oneroster' do
       namespace 'v1p1' do

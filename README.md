@@ -193,4 +193,5 @@ $ curl -i http[s]://[servername][:port]/ims/oneroster/v1p1/[endpoint]?[parameter
  Filter queries MUST be URL encoded.  
  (ex.) http[s]://[domain]/ims/oneroster/v1p1/filter=familyName%3D%27jones%27
 
- 
+## OpenAPI 
+```http[s]://[servername][:port]/api-docs

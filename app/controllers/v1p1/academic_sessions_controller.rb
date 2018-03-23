@@ -1,5 +1,6 @@
 module V1p1
   class AcademicSessionsController < V1p1::ApplicationController
+    include Swagger::V1p1::AcademicSessionsApi
     def index
       indexbase(AcademicSession)
     end

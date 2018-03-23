@@ -1,5 +1,7 @@
 module V1p1
   class UsersController < V1p1::ApplicationController
+    include Swagger::V1p1::UsersApi
+ 
     def index
       indexbase(User)
     end

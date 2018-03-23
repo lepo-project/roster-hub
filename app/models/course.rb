@@ -18,4 +18,5 @@
 #
 
 class Course < ApplicationRecord
+  include Swagger::V1p1::CourseSchema
 end
