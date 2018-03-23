@@ -15,5 +15,6 @@
 #
 
 class Org < ApplicationRecord
+  include Swagger::V1p1::OrgSchema
   self.inheritance_column = :_type_disabled
 end

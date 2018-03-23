@@ -26,4 +26,5 @@
 #
 
 class User < ApplicationRecord
+  include Swagger::V1p1::UserSchema
 end

@@ -1,5 +1,6 @@
 module V1p1
   class CoursesController < V1p1::ApplicationController
+    include Swagger::V1p1::CoursesApi
     def index
       indexbase(Course)
     end

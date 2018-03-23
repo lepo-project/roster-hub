@@ -22,4 +22,5 @@
 #
 
 class Rclass < ApplicationRecord
+  include Swagger::V1p1::ClassSchema
 end

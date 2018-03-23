@@ -18,4 +18,5 @@
 #
 
 class Enrollment < ApplicationRecord
+  include Swagger::V1p1::EnrollmentSchema
 end
