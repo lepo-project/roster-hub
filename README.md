@@ -194,4 +194,6 @@ $ curl -i http[s]://[servername][:port]/ims/oneroster/v1p1/[endpoint]?[parameter
  (ex.) http[s]://[domain]/ims/oneroster/v1p1/filter=familyName%3D%27jones%27
 
 ## OpenAPI 
-```http[s]://[servername][:port]/api-docs
+```
+http[s]://[servername][:port]/api-docs
+```
