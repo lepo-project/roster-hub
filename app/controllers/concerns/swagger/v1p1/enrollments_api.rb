@@ -8,7 +8,6 @@ module Swagger::V1p1::EnrollmentsApi
         key :description, 'Return collection of all enrollments.'
         key :operation, :indexbase_with_condition
 
-        parameter :accesstoken
         parameter :limit
         parameter :offset
         parameter :sorting
@@ -29,7 +28,6 @@ module Swagger::V1p1::EnrollmentsApi
         key :description, 'Return Specific Enrollment by sourcedId.'
         key :operation, :indexbase_with_condition
 
-        parameter :accesstoken
         parameter :sourcedId
 
         response 200 do

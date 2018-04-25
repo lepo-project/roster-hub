@@ -1,13 +1,6 @@
 module Swagger::V1p1::Parameters
   def self.extended(base)
-    base.parameter :accesstoken do
-      key :name, :access_token
-      key :in, :query
-      key :description, 'access token for oAuth'
-      key :type, :string
-      key :required, true
-    end
-    
+   
     base.parameter :limit do
       key :name, :limit
       key :in, :query

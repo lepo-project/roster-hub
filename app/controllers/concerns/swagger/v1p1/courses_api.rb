@@ -8,7 +8,6 @@ module Swagger::V1p1::CoursesApi
         key :description, 'Return collection of courses.'
         key :operation, :indexbase_with_condition
 
-        parameter :accesstoken
         parameter :limit
         parameter :offset
         parameter :sorting
@@ -29,7 +28,6 @@ module Swagger::V1p1::CoursesApi
         key :description, 'Return Specific Course by sourcedId.'
         key :operation, :indexbase_with_condition
 
-        parameter :accesstoken
         parameter :sourcedId
 
         response 200 do

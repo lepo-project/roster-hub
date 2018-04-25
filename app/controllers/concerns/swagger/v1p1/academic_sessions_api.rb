@@ -8,7 +8,6 @@ module Swagger::V1p1::AcademicSessionsApi
         key :description, 'Return collection of all academic sessions.'
         key :operation, :indexbase_with_condition
 
-        parameter :accesstoken
         parameter :limit
         parameter :offset
         parameter :sorting
@@ -29,7 +28,6 @@ module Swagger::V1p1::AcademicSessionsApi
         key :description, 'Return Specific Academic Session by sourcedId.'
         key :operation, :indexbase_with_condition
 
-        parameter :accesstoken
         parameter :sourcedId
 
         response 200 do
