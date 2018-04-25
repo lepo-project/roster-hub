@@ -128,7 +128,7 @@ $  curl -i http[s]://[servername][:port]/oauth/token -F grant_type="client_crede
 
 3. Call API with access token.  
 ```
-$ curl -i http[s]://[servername][:port]/ims/oneroster/v1p1/[endpoint]?[parameters&]access_token=[accesstoken]
+$ curl -H "Authorization: Bearer [accesstoken]" http[s]://[servername][:port]/ims/oneroster/v1p1/[endpoint]?[parameters]
 ```
 
 
