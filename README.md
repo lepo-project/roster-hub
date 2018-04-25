@@ -68,7 +68,11 @@
     LIMIT = 100
     OFFSET = 0
     CSV_IMPORT_LOG = 'public/csv/CsvImport.log'
+    PERMIT_ADDRESSES = []
 ```
+PERMIT_ADDRESSES: Forward matching.
+*e.g.* ['127.0.0.1', '192.168.']
+
 # Install
 ```
 $ bundle install  
@@ -128,7 +132,7 @@ $  curl -i http[s]://[servername][:port]/oauth/token -F grant_type="client_crede
 
 3. Call API with access token.  
 ```
-$ curl -H "Authorization: Bearer [accesstoken]" http[s]://[servername][:port]/ims/oneroster/v1p1/[endpoint]?[parameters]
+$ curl -H "Authorization: Bearer [accesstoken]" -i http[s]://[servername][:port]/ims/oneroster/v1p1/[endpoint]?[parameters]
 ```
 
 

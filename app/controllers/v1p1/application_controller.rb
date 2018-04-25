@@ -1,9 +1,14 @@
 module V1p1
   class ApplicationController < ActionController::API
     before_action :doorkeeper_authorize!
+    before_action :restrict_remote_ip
     ORDER_VALUES = %w[desc asc].freeze
 
     protected
+
+    def restrict_remote_ip
+      render text: 'Service Unavailable', status: 503 unless permit_ip_address?(request.remote_ip)
+    end
 
     def orderby_validvalue(param)
       orderby = param.nil? ? 'desc' : param.downcase
@@ -70,6 +75,16 @@ module V1p1
         values = str.split(p)
         return { ope: p, key: values[0], value: values[1] } if values.size > 1
       end
+    end
+
+    def permit_ip_address?(ip)
+      return true unless defined? PERMIT_ADDRESSES
+      return true if PERMIT_ADDRESSES.empty?
+      return true if PERMIT_ADDRESSES.include?(request.remote_ip)
+      PERMIT_ADDRESSES.each do |pa|
+        return true if ip.start_with?(pa) # begins-with match
+      end
+      false
     end
   end
 end
