@@ -7,7 +7,7 @@ module V1p1
     protected
 
     def restrict_remote_ip
-      render text: 'Service Unavailable', status: 503 unless permit_ip_address?(request.remote_ip)
+      render text: 'Forbidden', status: 403 unless permit_ip_address?(request.remote_ip)
     end
 
     def orderby_validvalue(param)
@@ -78,10 +78,15 @@ module V1p1
     end
 
     def permit_ip_address?(ip)
-      return true unless defined? PERMIT_ADDRESSES
-      return true if PERMIT_ADDRESSES.empty?
-      return true if PERMIT_ADDRESSES.include?(request.remote_ip)
-      PERMIT_ADDRESSES.each do |pa|
+      return false unless doorkeeper_token
+      permit_address = doorkeeper_token.application.permit_ips
+      return true if permit_address.nil?
+      permit_address = doorkeeper_token.application.permit_ips.split(',')
+      return true unless defined? permit_address
+      return true if permit_address.empty?
+      return true if permit_address.include?(request.remote_ip)
+      permit_address.each do |pa|
+        pa = pa.delete(' ')
         return true if ip.start_with?(pa) # begins-with match
       end
       false

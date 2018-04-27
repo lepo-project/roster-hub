@@ -83,6 +83,17 @@ Doorkeeper.configure do
     access_token_methods :from_bearer_authorization
 end
 ```
+
+- To disable Basic authorization for access tokens,
+you will need to configure doorkeeper's access_token_methods.
+
+~~:from_access_token_param, :from_bearer_param~~
+```
+[config/initializers/doorkeeper.rb]
+Doorkeeper.configure do
+    access_token_methods :from_bearer_authorization
+end
+```
 # Install
 ```
 $ bundle install  
@@ -134,6 +145,12 @@ $ crontab -l
 > app = Doorkeeper::Application.new :name=>'applicationname',:redirect_uri=>'http://xxxxx/', :uid=>'[uid]',:secret=>'[secret]'  
 > app.save  
 ```
+To allow only specific ip address, add permit_ips.
+```
+> app = Doorkeeper::Application.new :name=>'applicationname',:redirect_uri=>'http://xxxxx/', :uid=>'[uid]',:secret=>'[secret]', :permit_ips=>'ip1,ip2,...'  
+```
+- permit_ips : Forward matching.
+
 2. Request access token with uid and secret.  
 ```
 $  curl -i http[s]://[servername][:port]/oauth/token -F grant_type="client_credentials" -F client_id="[uid]" -F client_secret="[secret]"  

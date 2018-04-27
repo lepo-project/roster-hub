@@ -1,3 +1,4 @@
+APIDOC = 'doc/apidoc.json'
 BACKUP_DIR = 'backup'
 CSV_FILE_PATH = 'public/csv'
 CSV_IMPORT_LOG = 'public/csv/CsvImport.log'
