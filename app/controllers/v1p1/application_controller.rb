@@ -1,9 +1,14 @@
 module V1p1
   class ApplicationController < ActionController::API
     before_action :doorkeeper_authorize!
+    before_action :restrict_remote_ip
     ORDER_VALUES = %w[desc asc].freeze
 
     protected
+
+    def restrict_remote_ip
+      render text: 'Forbidden', status: 403 unless permit_ip_address?(request.remote_ip)
+    end
 
     def orderby_validvalue(param)
       orderby = param.nil? ? 'desc' : param.downcase
@@ -70,6 +75,21 @@ module V1p1
         values = str.split(p)
         return { ope: p, key: values[0], value: values[1] } if values.size > 1
       end
+    end
+
+    def permit_ip_address?(ip)
+      return false unless doorkeeper_token
+      permit_address = doorkeeper_token.application.permit_ips
+      return true if permit_address.nil?
+      permit_address = doorkeeper_token.application.permit_ips.split(',')
+      return true unless defined? permit_address
+      return true if permit_address.empty?
+      return true if permit_address.include?(request.remote_ip)
+      permit_address.each do |pa|
+        pa = pa.delete(' ')
+        return true if ip.start_with?(pa) # begins-with match
+      end
+      false
     end
   end
 end
