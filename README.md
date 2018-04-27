@@ -68,6 +68,20 @@
     LIMIT = 100
     OFFSET = 0
     CSV_IMPORT_LOG = 'public/csv/CsvImport.log'
+    PERMIT_ADDRESSES = []
+```
+- PERMIT_ADDRESSES: Forward matching.
+*e.g.* ['127.0.0.1', '192.168.']
+
+- To disable Basic authorization for access tokens,
+you will need to configure doorkeeper's access_token_methods.
+
+~~:from_access_token_param, :from_bearer_param~~
+```
+[config/initializers/doorkeeper.rb]
+Doorkeeper.configure do
+    access_token_methods :from_bearer_authorization
+end
 ```
 
 - To disable Basic authorization for access tokens,
