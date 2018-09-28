@@ -56,9 +56,9 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     FileUtils.cd(Rails.root.join(CSV_FILE_PATH))
     check_file = 'manifest.csv'
     return unless File.exist?(check_file)
-    # timestamp = File.stat(check_file).mtime.strftime('%Y%m%d%H%M%S')
-    # backuppath = File.join('backup', timestamp)
-    backuppath = BACKUP_DIR
+    timestamp = File.stat(check_file).mtime.strftime('%Y%m%d%H%M%S')
+    backuppath = File.join('backup', timestamp)
+    #backuppath = BACKUP_DIR
     FileUtils.mkdir_p(backuppath) unless FileTest.exist?(backuppath)
     Dir.glob('*.csv') do |f|
       FileUtils.mv(f, File.join(backuppath, f))

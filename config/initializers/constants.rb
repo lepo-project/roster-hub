@@ -1,11 +1,11 @@
 APIDOC = 'doc/apidoc.json'
 BACKUP_DIR = 'backup'
-CSV_FILE_PATH = 'public/csv'
-CSV_IMPORT_LOG = 'public/csv/CsvImport.log'
+CSV_FILE_PATH = 'storage/csv'
+CSV_IMPORT_LOG = 'storage/csv/CsvImport.log'
 CSV_ZIP_FILE = 'csv.zip'
 LIMIT = 100
 VERSION_OF_MANIFEST='1.0'
 VERSION_OF_ONEROSTER='1.1'
 OFFSET = 0
 ROSTER_FILES = ['academicSessions','categories','classes','classResources','courses','courseResources','demographics','enrollments','lineItems','orgs','resources','results','users']
-ZIP_MODE = true
+ZIP_MODE = false
