@@ -9,3 +9,4 @@ VERSION_OF_ONEROSTER='1.1'
 OFFSET = 0
 ROSTER_FILES = ['academicSessions','categories','classes','classResources','courses','courseResources','demographics','enrollments','lineItems','orgs','resources','results','users']
 ZIP_MODE = false
+INCLUDE_CLASSES = %w[]

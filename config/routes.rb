@@ -8,6 +8,7 @@ Rails.application.routes.draw do
         root 'orgs#index'
         get 'academicSessions(/:sourcedId)', to: 'academic_sessions#index'
         get 'terms(/:sourcedId)', to: 'academic_sessions#term'
+        get 'terms/:termSourcedId/classes', to: 'rclasses#term'
         get 'courses(/:sourcedId)', to: 'courses#index'
         get 'enrollments(/:sourcedId)', to: 'enrollments#index'
         get 'orgs(/:sourcedId)', to: 'orgs#index'
