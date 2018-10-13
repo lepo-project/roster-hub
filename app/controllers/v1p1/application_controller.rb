@@ -18,7 +18,7 @@ module V1p1
     def indexbase(model_class)
       datas = model_class.all
       datas = indexbase_with_condition(model_class, datas)
-      render json: datas
+      render json: datas, except: %i[id created_at updated_at]
     end
 
     def indexbase_with_condition(model_class, datas)

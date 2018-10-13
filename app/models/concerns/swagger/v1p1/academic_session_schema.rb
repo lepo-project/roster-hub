@@ -5,10 +5,6 @@ module Swagger::V1p1::AcademicSessionSchema
   included do
     swagger_schema :AcademicSession do
     key :required, [:sourcedId, :title, :type, :startDate, :endDate, :schoolYear]
-      property :id do
-        key :description, 'Internal identifier'
-        key :type, :integer
-      end
       property :sourcedId do
         key :description, 'Source Identifier'
         key :type, :string
@@ -44,14 +40,6 @@ module Swagger::V1p1::AcademicSessionSchema
         key :description, "'YYYY' The school year for the academic session. This year should include the school year end."
         key :type, :string
         key :format, 'YYYY'
-      end
-      property :created_at do
-        key :description, 'System internal value'
-        key :type, :string
-      end
-      property :updated_at do
-        key :description, 'System internal value'
-        key :type, :string
       end
     end
   end

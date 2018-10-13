@@ -5,11 +5,11 @@ module V1p1
       indexbase(Course)
     end
 
-    def school
-      datas = Course.all
-      datas = datas.where(type: 'school')
-      datas = indexbase_with_condition(Course, datas)
-      render json: datas
-    end
+    # def school
+    #   datas = Course.all
+    #   datas = datas.where(type: 'school')
+    #   datas = indexbase_with_condition(Course, datas)
+    #   render json: datas, except: %i[id created_at updated_at]
+    # end
   end
 end

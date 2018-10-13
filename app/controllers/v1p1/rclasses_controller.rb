@@ -5,7 +5,7 @@ module V1p1
       datas = Rclass.all
       datas = datas.where(sourcedId: INCLUDE_CLASSES) unless INCLUDE_CLASSES.empty?
       datas = indexbase_with_condition(Rclass, datas)
-      render json: datas
+      render json: datas, except: %i[id created_at updated_at]
     end
 
     def term
@@ -13,7 +13,7 @@ module V1p1
       datas = datas.where(sourcedId: INCLUDE_CLASSES) unless INCLUDE_CLASSES.empty?
       datas = datas.where(termSourcedIds: params[:termSourcedId])
       datas = indexbase_with_condition(Rclass, datas)
-      render json: datas
+      render json: datas, except: %i[id created_at updated_at]
     end
   end
 end

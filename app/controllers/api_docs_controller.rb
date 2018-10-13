@@ -1,6 +1,6 @@
 class ApiDocsController < ApplicationController
     include Swagger::Blocks
-    
+
     swagger_root do
         key :swagger, '2.0'
         info do
@@ -29,7 +29,7 @@ class ApiDocsController < ApplicationController
         key :produces, ['application/json']
         extend Swagger::V1p1::Parameters
     end
-    
+
     SWAGGERED_CLASSES = [
       V1p1::AcademicSessionsController,
       V1p1::CoursesController,
@@ -45,7 +45,7 @@ class ApiDocsController < ApplicationController
       User,
       self,
     ].freeze
-    
+
     def index
         render json: Swagger::Blocks.build_root_json(SWAGGERED_CLASSES)
     end

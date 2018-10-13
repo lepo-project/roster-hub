@@ -5,10 +5,6 @@ module Swagger::V1p1::EnrollmentSchema
   included do
     swagger_schema :Enrollment do
       key :required, [:sourcedId, :classSourcedId, :schoolSourcedId, :userSourcedId, :role, :primary]
-      property :id do
-        key :description, 'Internal identifier'
-        key :type, :integer
-      end
       property :sourcedId do
         key :description, 'Source Identifier'
         key :type, :string
@@ -45,14 +41,6 @@ module Swagger::V1p1::EnrollmentSchema
       end
       property :endDate do
         key :description, 'not used'
-      end
-      property :created_at do
-        key :description, 'System internal value'
-        key :type, :string
-      end
-      property :updated_at do
-        key :description, 'System internal value'
-        key :type, :string
       end
     end
   end

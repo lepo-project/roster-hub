@@ -5,10 +5,6 @@ module Swagger::V1p1::CourseSchema
   included do
     swagger_schema :Course do
       key :required, [:sourcedId, :title, :courseCode, :orgSourcedId]
-      property :id do
-        key :description, 'Internal identifier'
-        key :type, :integer
-      end
       property :sourcedId do
         key :description, 'Source Identifier'
         key :type, :string
@@ -42,14 +38,6 @@ module Swagger::V1p1::CourseSchema
       end
       property :subjectCodes do
         key :description, 'not used'
-      end
-      property :created_at do
-        key :description, 'System internal value'
-        key :type, :string
-      end
-      property :updated_at do
-        key :description, 'System internal value'
-        key :type, :string
       end
     end
   end
