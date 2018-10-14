@@ -6,10 +6,10 @@ module V1p1
     end
 
     def term
-      datas = AcademicSession.all
-      datas = datas.where(type: 'term')
-      datas = indexbase_with_condition(Org, datas)
-      render_json('AcademicSession', datas)
+      relations = AcademicSession.all
+      relations = relations.where(type: 'term')
+      relations = indexbase_with_condition(Org, relations)
+      render_json('AcademicSession', relations)
     end
   end
 end
