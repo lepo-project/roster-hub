@@ -9,7 +9,7 @@ module V1p1
       datas = AcademicSession.all
       datas = datas.where(type: 'term')
       datas = indexbase_with_condition(Org, datas)
-      render json: datas, except: %i[id created_at updated_at]
+      render_json('AcademicSession', datas)
     end
   end
 end

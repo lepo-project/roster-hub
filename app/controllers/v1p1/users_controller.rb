@@ -10,14 +10,14 @@ module V1p1
       datas = User.all
       datas = datas.where(role: 'student')
       datas = indexbase_with_condition(Org, datas)
-      render json: datas, except: %i[id created_at updated_at]
+      render_json('User', datas)
     end
 
     def teachers
       datas = User.all
       datas = datas.where(role: 'teacher')
       datas = indexbase_with_condition(Org, datas)
-      render json: datas, except: %i[id created_at updated_at]
+      render_json('User', datas)
     end
   end
 end

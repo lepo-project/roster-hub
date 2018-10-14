@@ -10,7 +10,7 @@ module V1p1
       datas = Org.all
       datas = datas.where(type: 'school')
       datas = indexbase_with_condition(Org, datas)
-      render json: datas, except: %i[id created_at updated_at]
+      render_json('Org', datas)
     end
   end
 end

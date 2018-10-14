@@ -18,7 +18,7 @@ module V1p1
     def indexbase(model_class)
       datas = model_class.all
       datas = indexbase_with_condition(model_class, datas)
-      render json: datas, except: %i[id created_at updated_at]
+      render_json(model_class.name, datas)
     end
 
     def indexbase_with_condition(model_class, datas)
@@ -50,6 +50,13 @@ module V1p1
       # orderby
       orderby = orderby_validvalue(params[:orderby])
       datas.order(sort + ' ' + orderby).limit(limit).offset(offset)
+    end
+
+    def render_json(model_name, datas)
+      title = model_name[0].downcase + model_name[1, model_name.length - 1]
+      title = title.pluralize if params[:sourcedId].nil?
+      datas = datas[0] if params[:sourcedId].present?
+      render json: {title => datas}, except: %i[id created_at updated_at]
     end
 
     private
