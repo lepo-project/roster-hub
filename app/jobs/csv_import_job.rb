@@ -90,10 +90,24 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     cl.delete_all
     CSV.foreach(get_filepath(fn), headers: true, encoding: 'UTF-8') do |row|
       hash = row.to_hash
+      split_fullname(hash) if (cl == User) && FULLNAME_IN_FAMILYNAME
       hash.select! { |k, _| cl.column_names.include? k }
       cl.create!(hash)
     end
     @logger.info fn + ' => ' + cl.all.size.to_s
+  end
+
+  def split_fullname(hash)
+    fullname = hash['familyName']
+    space_index = fullname.index(/[[:blank:]]/)
+    if space_index.nil?
+      hash['familyName'] = fullname
+      hash['givenName'] = ''
+    else
+      hash['familyName'] = fullname[0..(space_index - 1)]
+      # Delete spaces before and after the given name
+      hash['givenName'] = fullname[(space_index + 1)..(fullname.length - 1)].gsub(/(^[[:space:]]+)|([[:space:]]+$)/, '')
+    end
   end
 
   def get_filepath(type)
