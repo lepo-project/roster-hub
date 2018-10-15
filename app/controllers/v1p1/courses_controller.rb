@@ -5,11 +5,10 @@ module V1p1
       indexbase(Course)
     end
 
-    # def school
-    #   relations = Course.all
-    #   relations = relations.where(type: 'school')
-    #   relations = indexbase_with_condition(Course, relations)
-    #   render_json('Course', relations)
-    # end
+    def school
+      relations = Org.find_by(sourcedId: params[:orgSourcedId]).courses
+      relations = indexbase_with_condition(Course, relations)
+      render_json('Course', relations)
+    end
   end
 end

@@ -6,9 +6,8 @@ module V1p1
     end
 
     def term
-      relations = AcademicSession.all
-      relations = relations.where(type: 'term')
-      relations = indexbase_with_condition(Org, relations)
+      relations = AcademicSession.where(type: 'term')
+      relations = indexbase_with_condition(AcademicSession, relations)
       render_json('AcademicSession', relations)
     end
   end

@@ -7,16 +7,26 @@ module V1p1
     end
 
     def students
-      relations = User.all
-      relations = relations.where(role: 'student')
-      relations = indexbase_with_condition(Org, relations)
+      relations = User.where(role: 'student')
+      relations = indexbase_with_condition(User, relations)
+      render_json('User', relations)
+    end
+
+    def students_in_class
+      relations = Rclass.find_by(sourcedId: params[:classSourcedId]).students
+      relations = indexbase_with_condition(User, relations)
       render_json('User', relations)
     end
 
     def teachers
-      relations = User.all
-      relations = relations.where(role: 'teacher')
-      relations = indexbase_with_condition(Org, relations)
+      relations = User.where(role: 'teacher')
+      relations = indexbase_with_condition(User, relations)
+      render_json('User', relations)
+    end
+
+    def teachers_in_class
+      relations = Rclass.find_by(sourcedId: params[:classSourcedId]).teachers
+      relations = indexbase_with_condition(User, relations)
       render_json('User', relations)
     end
   end

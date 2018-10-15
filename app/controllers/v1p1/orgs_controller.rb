@@ -7,8 +7,7 @@ module V1p1
     end
 
     def schools
-      relations = Org.all
-      relations = relations.where(type: 'school')
+      relations = Org.where(type: 'school')
       relations = indexbase_with_condition(Org, relations)
       render_json('Org', relations)
     end

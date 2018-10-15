@@ -12,13 +12,14 @@ Rails.application.routes.draw do
         get 'courses(/:sourcedId)', to: 'courses#index'
         get 'enrollments(/:sourcedId)', to: 'enrollments#index'
         get 'orgs(/:sourcedId)', to: 'orgs#index'
-        # get 'schools/:orgSourcedId/courses', to: 'courses#school'
-        # get 'schools/:orgSourcedId/classes/:rclassSourcedId/enrollments', to: 'enrollments#school'
+        get 'schools/:orgSourcedId/courses', to: 'courses#school'
         get 'schools(/:sourcedId)', to: 'orgs#schools'
         get 'classes(/:sourcedId)', to: 'rclasses#index'
         get 'users(/:sourcedId)', to: 'users#index'
         get 'students(/:sourcedId)', to: 'users#students'
         get 'teachers(/:sourcedId)', to: 'users#teachers'
+        get 'classes/:classSourcedId/students', to: 'users#students_in_class'
+        get 'classes/:classSourcedId/teachers', to: 'users#teachers_in_class'
       end
     end
   end
