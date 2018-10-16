@@ -99,7 +99,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
 
   def split_fullname(hash)
     fullname = hash['familyName']
-    space_index = fullname.index(/[[:blank:]]/)
+    space_index = fullname.index(/[[:space:]]/)
     if space_index.nil?
       hash['familyName'] = fullname
       hash['givenName'] = ''
