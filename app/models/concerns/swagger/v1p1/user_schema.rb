@@ -5,10 +5,6 @@ module Swagger::V1p1::UserSchema
   included do
     swagger_schema :User do
       key :required, [:sourcedId, :enabledUser, :orgSourcedIds, :role, :username, :givenName, :familyName, :email]
-      property :id do
-        key :description, 'Internal identifier'
-        key :type, :integer
-      end
       property :sourcedId do
         key :description, 'Source Identifier'
         key :type, :string
@@ -71,14 +67,6 @@ module Swagger::V1p1::UserSchema
       end
       property :password do
         key :description, 'not used'
-      end
-      property :created_at do
-        key :description, 'System internal value'
-        key :type, :string
-      end
-      property :updated_at do
-        key :description, 'System internal value'
-        key :type, :string
       end
     end
   end

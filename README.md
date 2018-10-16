@@ -84,16 +84,6 @@ Doorkeeper.configure do
 end
 ```
 
-- To disable Basic authorization for access tokens,
-you will need to configure doorkeeper's access_token_methods.
-
-~~:from_access_token_param, :from_bearer_param~~
-```
-[config/initializers/doorkeeper.rb]
-Doorkeeper.configure do
-    access_token_methods :from_bearer_authorization
-end
-```
 # Install
 ```
 $ bundle install  
@@ -126,7 +116,7 @@ $ rails console
 1. write schedule in [config/schedule.rb].  
 (example) "everday at 4:33 am"
 ```
-every 1.day, :at => '4:33 am' do
+every 1.day, at: ['4:33 am'] do
   runner 'CsvImportJob.perform_now'
 end
 ```
@@ -142,12 +132,12 @@ $ crontab -l
 1. Register your app with uid and secret.  
 'uid' and 'secret' are important.  
 ```
-> app = Doorkeeper::Application.new :name=>'applicationname',:redirect_uri=>'http://xxxxx/', :uid=>'[uid]',:secret=>'[secret]'  
+> app = Doorkeeper::Application.new name: 'applicationname',redirect_uri: 'http://xxxxx/', uid: '[uid]',secret: '[secret]'
 > app.save  
 ```
 To allow only specific ip address, add permit_ips.
 ```
-> app = Doorkeeper::Application.new :name=>'applicationname',:redirect_uri=>'http://xxxxx/', :uid=>'[uid]',:secret=>'[secret]', :permit_ips=>'ip1,ip2,...'  
+> app = Doorkeeper::Application.new name: 'applicationname',redirect_uri: 'http://xxxxx/', uid: '[uid]',secret: '[secret]', permit_ips: 'ip1,ip2,...'
 ```
 - permit_ips : Forward matching.
 
@@ -166,48 +156,48 @@ $ curl -H "Authorization: Bearer [accesstoken]" -i http[s]://[servername][:port]
 ## Endpoint
 | Service Call | Endpoint | HTTP Verb | Action | Impl. |
 | --- | --- | --- | --- | --- |
-| getAllAcademicSessions | /academicSessions | GET | Return collection of all academic sessions. | OK | 
- | getAcademicSession | /academicSessions/{id} | GET | Return specific Academic Session. | OK | 
- | getAllClasses | /classes | GET | Return collection of classes. | OK | 
- | getClass | /classes/{id} | GET | Return specific class. | OK | 
- | getAllCourses | /courses | GET | Return collection of courses. | OK | 
- | getCourse | /courses/{id} | GET | Return specific course. | OK | 
- | getAllGradingPeriods | /gradingPeriods | GET | Return collection of grading periods. A Grading Period is an instance of an AcademicSession. |  | 
- | getGradingPeriod | /gradingPeriods/{id} | GET | Return specific Grading Period. A Grading Period is an instance of an AcademicSession. |  | 
- | getAllDemographics | /demographics | GET | Return collection of demographics. |  | 
- | getDemographics | /demographics/{id} | GET | Return specific demographics. |  | 
- | getAllEnrollments | /enrollments | GET | Return collection of all enrollments. | OK | 
- | getEnrollment | /enrollments/{id} | GET | Return specific enrollment. | OK | 
- | getAllOrgs | /orgs | GET | Return collection of Orgs. | OK | 
- | getOrg | /orgs/{id} | GET | Return Specific Org. | OK | 
- | getAllSchools | /schools | GET | Return collection of schools. A School is an instance of an Org. | OK | 
- | getSchool | /schools/{id} | GET | Return specific school. A School is an instance of an Org. | OK | 
- | getAllStudents | /students | GET | Return collection of students. A Student is an instance of a User. | OK | 
- | getStudent | /students/{id} | GET | Return specific student. A Student is an instance of a User. | OK | 
- | getAllTeachers | /teachers | GET | Return collection of teachers. A Teacher is an instance of a User. | OK. | 
- | getTeacher | /teachers/{id} | GET | Return specific teacher. | OK | 
- | getAllTerms | /terms | GET | Return collection of terms. A Term is an instance of an AcademicSession. | OK | 
- | getTerm | /terms/{id} | GET | Return specific term. | OK | 
- | getAllUsers | /users | GET | Return collection of users | OK | 
- | getUser | /users/{id} | GET | Return specific user | OK | 
- | getCoursesForSchool | /schools/{id}/courses | GET | Return the collection of courses taught by this school. | OK | 
- | getEnrollmentsForClassInSchool | /schools/{school_id}/classes/{class_id}/enrollments | GET | Return the collection of all enrollments into this class. |  | 
- | getStudentsForClassInSchool | /schools/{school_id}/classes/{class_id}/students | GET | Return the collection of students taking this class in this school. |  | 
- | getTeachersForClassInSchool | /schools/{school_id}/classes/{class_id}/teachers | GET | Return the collection of teachers taking this class in this school. |  | 
- | getEnrollmentsForSchool | /schools/{school_id}/enrollments | GET | Return the collection of all enrollments for this school. |  | 
- | getStudentsForSchool | /schools/{school_id}/students | GET | Return the collection of students attending this school. |  | 
- | getTeachersForSchool | /schools/{school_id}/teachers | GET | Return the collection of teachers teaching at this school. |  | 
- | getTermsForSchool | /schools/{school_id}/terms | GET | Return the collection of terms that are used by this school. |  | 
- | getClassesForTerm | /terms/{term_id}/classes | GET | Return the collection of classes that are taught in this term. |  | 
- | getGradingPeriodsForTerm | /terms/{term_id}/gradingPeriods | GET | Return the collection of Grading Periods that are part of this term. |  | 
- | getClassesForCourse | /courses/{course_id}/classes | GET | Return the collection of classes that are teaching this course. |  | 
- | getClassesForStudent | /students/{student_id}/classes | GET | Return the collection of classes that this student is taking. |  | 
- | getClassesForTeacher | /teachers/{teacher_id}/classes | GET | Return the collection of classes that this teacher is teaching. |  | 
- | getClassesForSchool | /schools/{school_id}/classes | GET | Return the collection of classes taught by this school. |  | 
- | getClassesForUser | /users/{user_id}/classes | GET | Return the collection of classes attended by this user. |  | 
- | getStudentsForClass | /classes/{class_id}/students | GET | Return the collection of students that are taking this class. |  | 
- | getTeachersForClass | /classes/{class_id}/teachers | GET | Return the collection of teachers that are teaching this class. |  | 
- 
+| getAllAcademicSessions | /academicSessions | GET | Return collection of all academic sessions. | OK |
+ | getAcademicSession | /academicSessions/{id} | GET | Return specific Academic Session. | OK |
+ | getAllClasses | /classes | GET | Return collection of classes. | OK |
+ | getClass | /classes/{id} | GET | Return specific class. | OK |
+ | getAllCourses | /courses | GET | Return collection of courses. | OK |
+ | getCourse | /courses/{id} | GET | Return specific course. | OK |
+ | getAllGradingPeriods | /gradingPeriods | GET | Return collection of grading periods. A Grading Period is an instance of an AcademicSession. |  |
+ | getGradingPeriod | /gradingPeriods/{id} | GET | Return specific Grading Period. A Grading Period is an instance of an AcademicSession. |  |
+ | getAllDemographics | /demographics | GET | Return collection of demographics. |  |
+ | getDemographics | /demographics/{id} | GET | Return specific demographics. |  |
+ | getAllEnrollments | /enrollments | GET | Return collection of all enrollments. | OK |
+ | getEnrollment | /enrollments/{id} | GET | Return specific enrollment. | OK |
+ | getAllOrgs | /orgs | GET | Return collection of Orgs. | OK |
+ | getOrg | /orgs/{id} | GET | Return Specific Org. | OK |
+ | getAllSchools | /schools | GET | Return collection of schools. A School is an instance of an Org. | OK |
+ | getSchool | /schools/{id} | GET | Return specific school. A School is an instance of an Org. | OK |
+ | getAllStudents | /students | GET | Return collection of students. A Student is an instance of a User. | OK |
+ | getStudent | /students/{id} | GET | Return specific student. A Student is an instance of a User. | OK |
+ | getAllTeachers | /teachers | GET | Return collection of teachers. A Teacher is an instance of a User. | OK. |
+ | getTeacher | /teachers/{id} | GET | Return specific teacher. | OK |
+ | getAllTerms | /terms | GET | Return collection of terms. A Term is an instance of an AcademicSession. | OK |
+ | getTerm | /terms/{id} | GET | Return specific term. | OK |
+ | getAllUsers | /users | GET | Return collection of users | OK |
+ | getUser | /users/{id} | GET | Return specific user | OK |
+ | getCoursesForSchool | /schools/{id}/courses | GET | Return the collection of courses taught by this school. | OK |
+ | getEnrollmentsForClassInSchool | /schools/{school_id}/classes/{class_id}/enrollments | GET | Return the collection of all enrollments into this class. |  |
+ | getStudentsForClassInSchool | /schools/{school_id}/classes/{class_id}/students | GET | Return the collection of students taking this class in this school. |  |
+ | getTeachersForClassInSchool | /schools/{school_id}/classes/{class_id}/teachers | GET | Return the collection of teachers taking this class in this school. |  |
+ | getEnrollmentsForSchool | /schools/{school_id}/enrollments | GET | Return the collection of all enrollments for this school. |  |
+ | getStudentsForSchool | /schools/{school_id}/students | GET | Return the collection of students attending this school. |  |
+ | getTeachersForSchool | /schools/{school_id}/teachers | GET | Return the collection of teachers teaching at this school. |  |
+ | getTermsForSchool | /schools/{school_id}/terms | GET | Return the collection of terms that are used by this school. |  |
+ | getClassesForTerm | /terms/{term_id}/classes | GET | Return the collection of classes that are taught in this term. |  |
+ | getGradingPeriodsForTerm | /terms/{term_id}/gradingPeriods | GET | Return the collection of Grading Periods that are part of this term. |  |
+ | getClassesForCourse | /courses/{course_id}/classes | GET | Return the collection of classes that are teaching this course. |  |
+ | getClassesForStudent | /students/{student_id}/classes | GET | Return the collection of classes that this student is taking. |  |
+ | getClassesForTeacher | /teachers/{teacher_id}/classes | GET | Return the collection of classes that this teacher is teaching. |  |
+ | getClassesForSchool | /schools/{school_id}/classes | GET | Return the collection of classes taught by this school. |  |
+ | getClassesForUser | /users/{user_id}/classes | GET | Return the collection of classes attended by this user. |  |
+ | getStudentsForClass | /classes/{class_id}/students | GET | Return the collection of students that are taking this class. |  |
+ | getTeachersForClass | /classes/{class_id}/teachers | GET | Return the collection of teachers that are teaching this class. |  |
+
 ## Pagination
  + limit : the number of result to return : The default value for limit is 100.
  + offset : the index of the first record to return.(zero indexed) : The default value for offset is 0.  
@@ -224,7 +214,7 @@ $ curl -H "Authorization: Bearer [accesstoken]" -i http[s]://[servername][:port]
  Filter queries MUST be URL encoded.  
  (ex.) http[s]://[domain]/ims/oneroster/v1p1/filter=familyName%3D%27jones%27
 
-## OpenAPI 
+## OpenAPI
 ```
 http[s]://[servername][:port]/api-docs
 ```

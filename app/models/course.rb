@@ -19,4 +19,6 @@
 
 class Course < ApplicationRecord
   include Swagger::V1p1::CourseSchema
+  belongs_to :org, primary_key: :sourcedId, foreign_key: :orgSourcedId
+  has_many :rclasses, primary_key: :sourcedId, foreign_key: :courseSourcedId
 end

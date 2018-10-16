@@ -5,10 +5,6 @@ module Swagger::V1p1::ClassSchema
   included do
     swagger_schema :Rclass do
       key :required, [:sourcedId, :title, :courseSourcedId, :classCode, :classType, :schoolSourcedId, :termSourcedIds, :periods]
-      property :id do
-        key :description, 'Internal identifier'
-        key :type, :integer
-      end
       property :status do
         key :description, 'not used'
       end
@@ -54,14 +50,6 @@ module Swagger::V1p1::ClassSchema
       end
       property :periods do
         key :description, 'The time slots in the day that the class will be given.'
-        key :type, :string
-      end
-      property :created_at do
-        key :description, 'System internal value'
-        key :type, :string
-      end
-      property :updated_at do
-        key :description, 'System internal value'
         key :type, :string
       end
     end

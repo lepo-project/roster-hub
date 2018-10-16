@@ -30,7 +30,7 @@ gem 'annotate'
 gem 'doorkeeper'
 gem 'doorkeeper-i18n'
 gem 'rubyzip'
-gem 'whenever', :require=>false
+gem 'whenever', require: false
 
 gem 'swagger-blocks'
 

@@ -6,10 +6,9 @@ module V1p1
     end
 
     def school
-      datas = Course.all
-      datas = datas.where(type: 'school')
-      datas = indexbase_with_condition(Course, datas)
-      render json: datas
+      relations = Org.find_by(sourcedId: params[:orgSourcedId]).courses
+      relations = indexbase_with_condition(Course, relations)
+      render_json('Course', relations)
     end
   end
 end

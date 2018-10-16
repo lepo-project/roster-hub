@@ -27,4 +27,6 @@
 
 class User < ApplicationRecord
   include Swagger::V1p1::UserSchema
+  has_many :enrollments, primary_key: :sourcedId, foreign_key: :userSourcedId
+  has_many :rclasses, through: :enrollments
 end
