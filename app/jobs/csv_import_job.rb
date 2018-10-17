@@ -6,7 +6,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
 
   def perform(*)
     @logger = ActiveSupport::Logger.new(Rails.root.join(CSV_IMPORT_LOG))
-    @logger.info('-----start:' + Time.zone.now.to_s + '-----')
+    @logger.info('-----CSV import start:' + Time.zone.now.to_s + '-----')
     return unless abstract_zip
     return unless File.exist?(get_filepath('manifest'))
     csv_data = CSV.read(get_filepath('manifest'), headers: false)
@@ -22,7 +22,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
       end
     end
     csv_to_backup
-    @logger.info('-----csv imported:' + Time.zone.now.to_s + '-----')
+    @logger.info('-----CSV import end:' + Time.zone.now.to_s + '-----')
     check_consistency
   end
 
@@ -88,12 +88,15 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
 
   def csv_to_db(fn, cl)
     cl.delete_all
+    fullname_flag = ((cl == User) && FULLNAME_IN_FAMILYNAME)
+    instances = []
     CSV.foreach(get_filepath(fn), headers: true, encoding: 'UTF-8') do |row|
       hash = row.to_hash
-      split_fullname(hash) if (cl == User) && FULLNAME_IN_FAMILYNAME
+      split_fullname(hash) if fullname_flag
       hash.select! { |k, _| cl.column_names.include? k }
-      cl.create!(hash)
+      instances.push cl.new(hash)
     end
+    cl.import instances
     @logger.info fn + ' => ' + cl.all.size.to_s
   end
 
