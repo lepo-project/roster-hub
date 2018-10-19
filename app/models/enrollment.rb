@@ -19,4 +19,6 @@
 
 class Enrollment < ApplicationRecord
   include Swagger::V1p1::EnrollmentSchema
+  belongs_to :rclass, primary_key: :sourcedId, foreign_key: :classSourcedId
+  belongs_to :user, primary_key: :sourcedId, foreign_key: :userSourcedId
 end

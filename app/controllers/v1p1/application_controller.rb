@@ -16,15 +16,15 @@ module V1p1
     end
 
     def indexbase(model_class)
-      datas = model_class.all
-      datas = indexbase_with_condition(model_class, datas)
-      render json: datas
+      relations = model_class.all
+      relations = indexbase_with_condition(model_class, relations)
+      render_json(model_class.name, relations)
     end
 
-    def indexbase_with_condition(model_class, datas)
+    def indexbase_with_condition(model_class, relations)
       # sourcedId
       sourced_id = params[:sourcedId]
-      datas = datas.where(sourcedId: sourced_id) unless sourced_id.nil?
+      relations = relations.where(sourcedId: sourced_id) unless sourced_id.nil?
       # filter
       filter_param = params[:filter]
       unless filter_param.nil?
@@ -38,8 +38,8 @@ module V1p1
         logical = 'OR' if filtervalues.size > 1
         where1 = predict_formula(filtervalues.first)
         where2 = predict_formula(filtervalues.last) unless logical.nil?
-        datas = datas.where(where1[:criteria], where1[:value]) if logical.nil?
-        datas = datas.where(where1[:criteria] + ' ' + logical + ' ' + where2[:criteria], where1[:value], where2[:value]) unless logical.nil?
+        relations = relations.where(where1[:criteria], where1[:value]) if logical.nil?
+        relations = relations.where(where1[:criteria] + ' ' + logical + ' ' + where2[:criteria], where1[:value], where2[:value]) unless logical.nil?
       end
       # limit & offset
       limit = params[:limit].nil? ? LIMIT : params[:limit]
@@ -49,7 +49,14 @@ module V1p1
       sort = model_class.columns_hash[sort].nil? ? 'sourcedId' : sort
       # orderby
       orderby = orderby_validvalue(params[:orderby])
-      datas.order(sort + ' ' + orderby).limit(limit).offset(offset)
+      relations.order(sort + ' ' + orderby).limit(limit).offset(offset)
+    end
+
+    def render_json(model_name, relations)
+      title = model_name[0].downcase + model_name[1, model_name.length - 1]
+      title = title.pluralize if params[:sourcedId].nil?
+      relations = relations[0] if params[:sourcedId].present?
+      render json: {title => relations}, except: %i[id created_at updated_at]
     end
 
     private

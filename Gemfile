@@ -25,12 +25,12 @@ gem 'puma', '~> 3.7'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
+gem 'activerecord-import'
 gem 'annotate'
-
 gem 'doorkeeper'
 gem 'doorkeeper-i18n'
 gem 'rubyzip'
-gem 'whenever', :require=>false
+gem 'whenever', require: false
 
 gem 'swagger-blocks'
 
