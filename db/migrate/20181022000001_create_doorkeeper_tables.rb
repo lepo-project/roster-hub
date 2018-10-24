@@ -1,4 +1,4 @@
-class CreateDoorkeeperTables < ActiveRecord::Migration[4.2]
+class CreateDoorkeeperTables < ActiveRecord::Migration[5.1]
   def change
     create_table :oauth_applications do |t|
       t.string  :name,         null: false
@@ -6,6 +6,9 @@ class CreateDoorkeeperTables < ActiveRecord::Migration[4.2]
       t.string  :secret,       null: false
       t.text    :redirect_uri, null: false
       t.string  :scopes,       null: false, default: ''
+      t.boolean :confidential, null: false, default: true
+      t.string  :permit_ips
+
       t.timestamps             null: false
     end
 

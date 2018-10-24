@@ -173,7 +173,7 @@ DEPENDENCIES
   activerecord-import
   annotate
   byebug
-  doorkeeper
+  doorkeeper (~> 5.0.1)
   doorkeeper-i18n
   factory_bot_rails (~> 4.8)
   faker

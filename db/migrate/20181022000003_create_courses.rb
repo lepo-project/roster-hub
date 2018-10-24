@@ -14,5 +14,6 @@ class CreateCourses < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
+    add_index :courses, :sourcedId, unique: true
   end
 end

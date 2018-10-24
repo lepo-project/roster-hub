@@ -13,5 +13,6 @@ class CreateAcademicSessions < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
+    add_index :academic_sessions, :sourcedId, unique: true
   end
 end

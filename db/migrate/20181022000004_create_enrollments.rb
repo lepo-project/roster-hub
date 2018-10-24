@@ -14,5 +14,8 @@ class CreateEnrollments < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
+    add_index :enrollments, :sourcedId, unique: true
+    add_index :enrollments, :classSourcedId
+    add_index :enrollments, :userSourcedId
   end
 end

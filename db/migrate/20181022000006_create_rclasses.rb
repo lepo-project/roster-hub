@@ -18,5 +18,8 @@ class CreateRclasses < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
+    add_index :rclasses, :sourcedId, unique: true
+    add_index :rclasses, :courseSourcedId
+    add_index :rclasses, :termSourcedIds
   end
 end
