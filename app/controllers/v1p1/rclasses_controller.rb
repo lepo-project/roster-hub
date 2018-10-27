@@ -4,6 +4,7 @@ module V1p1
     def index
       relations = Rclass.all
       relations = relations.where(sourcedId: INCLUDE_CLASSES) if INCLUDE_CLASSES.present?
+      relations = relations.where.not(sourcedId: EXCLUDE_CLASSES) if EXCLUDE_CLASSES.present?
       relations = indexbase_with_condition(Rclass, relations)
       render_json('Class', relations)
     end
@@ -11,6 +12,7 @@ module V1p1
     def term
       relations = Rclass.where(termSourcedIds: params[:termSourcedId])
       relations = relations.where(sourcedId: INCLUDE_CLASSES) if INCLUDE_CLASSES.present?
+      relations = relations.where.not(sourcedId: EXCLUDE_CLASSES) if EXCLUDE_CLASSES.present?
       relations = indexbase_with_condition(Rclass, relations)
       render_json('Class', relations)
     end
