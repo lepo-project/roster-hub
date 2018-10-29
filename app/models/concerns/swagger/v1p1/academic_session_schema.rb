@@ -41,6 +41,10 @@ module Swagger::V1p1::AcademicSessionSchema
         key :type, :string
         key :format, 'YYYY'
       end
+      property :application_id do
+        key :description, 'OAuth application id for the record'
+        key :type, :integer
+      end
     end
   end
 end

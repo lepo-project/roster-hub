@@ -23,10 +23,15 @@
 #  password         :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  application_id   :integer          default(0)
 #
 
 class User < ApplicationRecord
   include Swagger::V1p1::UserSchema
   has_many :enrollments, primary_key: :sourcedId, foreign_key: :userSourcedId
   has_many :rclasses, through: :enrollments
+  # Validations for OneRoster bulk data
+  before_create :generate_sourcedId
+  validates :enabledUser, :orgSourcedIds, :username, :givenName, :familyName, presence: true
+  validates :role, inclusion: { in: %w[administrator aide guardian parent proctor relative student teacher]}
 end

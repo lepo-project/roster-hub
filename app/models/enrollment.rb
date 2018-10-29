@@ -15,10 +15,15 @@
 #  endDate          :date
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  application_id   :integer          default(0)
 #
 
 class Enrollment < ApplicationRecord
   include Swagger::V1p1::EnrollmentSchema
   belongs_to :rclass, primary_key: :sourcedId, foreign_key: :classSourcedId
   belongs_to :user, primary_key: :sourcedId, foreign_key: :userSourcedId
+  # Validations for OneRoster bulk data
+  before_create :generate_sourcedId
+  validates :classSourcedId, :schoolSourcedId, :userSourcedId, presence: true
+  validates :role, inclusion: { in: %w[administrator aide guardian parent proctor relative student teacher]}
 end

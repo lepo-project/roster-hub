@@ -39,6 +39,10 @@ module Swagger::V1p1::CourseSchema
       property :subjectCodes do
         key :description, 'not used'
       end
+      property :application_id do
+        key :description, 'OAuth application id for the record'
+        key :type, :integer
+      end
     end
   end
 end

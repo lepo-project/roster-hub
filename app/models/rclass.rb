@@ -19,6 +19,7 @@
 #  periods          :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  application_id   :integer          default(0)
 #
 
 class Rclass < ApplicationRecord
@@ -28,4 +29,8 @@ class Rclass < ApplicationRecord
   has_many :enrollments, primary_key: :sourcedId, foreign_key: :classSourcedId
   has_many :students, -> { where('enrollments.role = ?', 'student') }, through: :enrollments, source: :user
   has_many :teachers, -> { where('enrollments.role = ?', 'teacher') }, through: :enrollments, source: :user
+  # Validations for OneRoster bulk data
+  before_create :generate_sourcedId
+  validates :title, :courseSourcedId, :schoolSourcedId, :termSourcedIds, presence: true
+  validates :classType, inclusion: { in: %w[homeroom scheduled]}
 end

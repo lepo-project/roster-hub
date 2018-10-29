@@ -52,6 +52,10 @@ module Swagger::V1p1::ClassSchema
         key :description, 'The time slots in the day that the class will be given.'
         key :type, :string
       end
+      property :application_id do
+        key :description, 'OAuth application id for the record'
+        key :type, :integer
+      end
     end
   end
 end
