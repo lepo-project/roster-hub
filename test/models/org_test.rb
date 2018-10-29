@@ -10,9 +10,9 @@
 #  type             :string
 #  identifier       :string
 #  parentSourcedId  :string
+#  application_id   :integer          default(0), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  application_id   :integer          default(0)
 #
 
 require 'test_helper'

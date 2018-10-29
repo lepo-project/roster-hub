@@ -11,11 +11,13 @@ class CreateEnrollments < ActiveRecord::Migration[5.1]
       t.boolean :primary
       t.date :beginDate
       t.date :endDate
+      t.integer :application_id, default: 0, null: false
 
       t.timestamps
     end
     add_index :enrollments, :sourcedId, unique: true
     add_index :enrollments, :classSourcedId
     add_index :enrollments, :userSourcedId
+    add_index :enrollments, :application_id
   end
 end

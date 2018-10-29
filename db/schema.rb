@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181028060430) do
+ActiveRecord::Schema.define(version: 20181029000007) do
 
   create_table "academic_sessions", force: :cascade do |t|
     t.string "sourcedId"
@@ -22,9 +22,9 @@ ActiveRecord::Schema.define(version: 20181028060430) do
     t.date "endDate"
     t.string "parentSourcedId"
     t.integer "schoolYear"
+    t.integer "application_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "application_id", default: 0
     t.index ["application_id"], name: "index_academic_sessions_on_application_id"
     t.index ["sourcedId"], name: "index_academic_sessions_on_sourcedId", unique: true
   end
@@ -40,9 +40,9 @@ ActiveRecord::Schema.define(version: 20181028060430) do
     t.string "orgSourcedId"
     t.string "subjects"
     t.string "subjectCodes"
+    t.integer "application_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "application_id", default: 0
     t.index ["application_id"], name: "index_courses_on_application_id"
     t.index ["sourcedId"], name: "index_courses_on_sourcedId", unique: true
   end
@@ -58,9 +58,9 @@ ActiveRecord::Schema.define(version: 20181028060430) do
     t.boolean "primary"
     t.date "beginDate"
     t.date "endDate"
+    t.integer "application_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "application_id", default: 0
     t.index ["application_id"], name: "index_enrollments_on_application_id"
     t.index ["classSourcedId"], name: "index_enrollments_on_classSourcedId"
     t.index ["sourcedId"], name: "index_enrollments_on_sourcedId", unique: true
@@ -117,9 +117,9 @@ ActiveRecord::Schema.define(version: 20181028060430) do
     t.string "type"
     t.string "identifier"
     t.string "parentSourcedId"
+    t.integer "application_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "application_id", default: 0
     t.index ["application_id"], name: "index_orgs_on_application_id"
     t.index ["sourcedId"], name: "index_orgs_on_sourcedId", unique: true
   end
@@ -139,9 +139,9 @@ ActiveRecord::Schema.define(version: 20181028060430) do
     t.string "subjects"
     t.string "subjectCodes"
     t.string "periods"
+    t.integer "application_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "application_id", default: 0
     t.index ["application_id"], name: "index_rclasses_on_application_id"
     t.index ["courseSourcedId"], name: "index_rclasses_on_courseSourcedId"
     t.index ["sourcedId"], name: "index_rclasses_on_sourcedId", unique: true
@@ -167,9 +167,9 @@ ActiveRecord::Schema.define(version: 20181028060430) do
     t.string "agentSourcedIds"
     t.string "grades"
     t.string "password"
+    t.integer "application_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "application_id", default: 0
     t.index ["application_id"], name: "index_users_on_application_id"
     t.index ["sourcedId"], name: "index_users_on_sourcedId", unique: true
   end
