@@ -120,7 +120,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     space_index = fullname.index(/[[:space:]]/)
     if space_index.nil?
       hash['familyName'] = fullname
-      hash['givenName'] = ''
+      hash['givenName'] = fullname
     else
       hash['familyName'] = fullname[0..(space_index - 1)]
       # Delete spaces before and after the given name
