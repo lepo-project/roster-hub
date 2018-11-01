@@ -114,5 +114,50 @@ module Swagger::V1p1::UsersApi
         end
       end
     end
+
+    swagger_path '/classes/{classSourcedId}/students' do
+      operation :get do
+        key :description, 'Return the collection of students that are taking this class.'
+        key :operation, :indexbase_with_condition
+
+        parameter :classSourcedId
+        parameter :accesstoken
+        parameter :limit
+        parameter :offset
+        parameter :sorting
+        parameter :orderBy
+        parameter :filter
+
+        response 200 do
+          key :description, 'Return the collection of students that are taking this class.'
+          schema type: :array do
+            key :'$ref', :User
+          end
+        end
+      end
+    end
+
+    swagger_path '/classes/{classSourcedId}/teachers' do
+      operation :get do
+        key :description, 'Return the collection of teachers that are teaching this class.'
+        key :operation, :indexbase_with_condition
+
+        parameter :classSourcedId
+        parameter :accesstoken
+        parameter :limit
+        parameter :offset
+        parameter :sorting
+        parameter :orderBy
+        parameter :filter
+
+        response 200 do
+          key :description, 'Return the collection of teachers that are teaching this class.'
+          schema type: :array do
+            key :'$ref', :User
+          end
+        end
+      end
+    end
+
   end
 end

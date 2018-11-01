@@ -21,6 +21,16 @@ module Swagger::V1p1::EnrollmentsApi
           end
         end
       end
+      operation :post do
+        key :description, 'Create a new Enrollment record.'
+
+        response 200 do
+          key :description, 'Create a new Enrollment record.'
+          schema do
+            key :'$ref', :Enrollment
+          end
+        end
+      end
     end
 
     swagger_path '/enrollments/{sourcedId}' do
@@ -35,6 +45,27 @@ module Swagger::V1p1::EnrollmentsApi
           schema do
             key :'$ref', :Enrollment
           end
+        end
+      end
+      operation :put do
+        key :description, 'Replace a Enrollment that already exists.'
+
+        parameter :sourcedId
+
+        response 200 do
+          key :description, 'Replace a Enrollment that already exists.'
+          schema do
+            key :'$ref', :Enrollment
+          end
+        end
+      end
+      operation :delete do
+        key :description, 'Delete a Enrollment that already exists.'
+
+        parameter :sourcedId
+
+        response 200 do
+          key :description, 'Delete a Enrollment that already exists.'
         end
       end
     end

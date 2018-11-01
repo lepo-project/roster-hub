@@ -3,7 +3,7 @@ module V1p1
     include Swagger::V1p1::CoursesApi
 
     def school
-      relations = Org.find_by(sourcedId: params[:orgSourcedId]).courses
+      relations = Course.where(orgSourcedId: params[:schoolSourcedId])
       relations = indexbase_with_condition(relations)
       render_json('Course', relations)
     end

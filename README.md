@@ -185,6 +185,11 @@ $ curl -H "Authorization: Bearer [accesstoken]" -H "Content-Type:application/jso
 | getUser | /users/{id} | GET | Return specific user |
 | getCoursesForSchool | /schools/{id}/courses | GET | Return the collection of courses taught by this school. |
 | getClassesForTerm | /terms/{term_id}/classes | GET | Return the collection of classes that are taught in this term. |
+| getClassesForCourse | /courses/{course_id}/classes | GET | Return the collection of classes that are teaching this course. |
+| getClassesForStudent | /students/{student_id}/classes | GET | Return the collection of classes that this student is taking. |
+| getClassesForTeacher | /teachers/{teacher_id}/classes | GET | Return the collection of classes that this teacher is teaching. |
+| getClassesForSchool | /schools/{school_id}/classes | GET | Return the collection of classes taught by this school. |
+| getClassesForUser | /users/{user_id}/classes | GET | Return the collection of classes attended by this user. |
 | getStudentsForClass | /classes/{class_id}/students | GET | Return the collection of students that are taking this class. |
 | getTeachersForClass | /classes/{class_id}/teachers | GET | Return the collection of teachers that are teaching this class. |
 
@@ -203,24 +208,19 @@ $ curl -H "Authorization: Bearer [accesstoken]" -H "Content-Type:application/jso
 | getTeachersForSchool | /schools/{school_id}/teachers | GET | Return the collection of teachers teaching at this school. |
 | getTermsForSchool | /schools/{school_id}/terms | GET | Return the collection of terms that are used by this school. |
 | getGradingPeriodsForTerm | /terms/{term_id}/gradingPeriods | GET | Return the collection of Grading Periods that are part of this term. |
-| getClassesForCourse | /courses/{course_id}/classes | GET | Return the collection of classes that are teaching this course. |
-| getClassesForStudent | /students/{student_id}/classes | GET | Return the collection of classes that this student is taking. |
-| getClassesForTeacher | /teachers/{teacher_id}/classes | GET | Return the collection of classes that this teacher is teaching. |
-| getClassesForSchool | /schools/{school_id}/classes | GET | Return the collection of classes taught by this school. |
-| getClassesForUser | /users/{user_id}/classes | GET | Return the collection of classes attended by this user. |
 
 ## Endpoints: Original
- | Service Call | Endpoint | HTTP Verb | Action |
- | --- | --- | --- | --- |
- | postClass | /classes/ | POST | To create a new Class record. |
- | putClass | /classes/{id} | PUT | To replace one that already exists. |
- | deleteClass | /classes/{id} | DELETE | To delete one that already exists. |
- | postCourse | /courses/ | POST | To create a new Course record. |
- | putCourse | /courses/{id} | PUT | To replace one that already exists. |
- | deleteCourse | /courses/{id} | DELETE | To delete one that already exists. |
- | postEnrollment | /enrollments/ | POST | To create a new Enrollment record. |
- | putEnrollment | /enrollments/{id} | PUT | To replace one that already exists. |
- | deleteEnrollment | /enrollments/{id} | DELETE | To delete one that already exists. |
+| Service Call | Endpoint | HTTP Verb | Action |
+| --- | --- | --- | --- |
+| postClass | /classes/ | POST | Create a new Class record. |
+| putClass | /classes/{id} | PUT | Replace a Class that already exists. |
+| deleteClass | /classes/{id} | DELETE | Delete a Class that already exists. |
+| postCourse | /courses/ | POST | Create a new Course record. |
+| putCourse | /courses/{id} | PUT | Replace a Course that already exists. |
+| deleteCourse | /courses/{id} | DELETE | Delete a Course that already exists. |
+| postEnrollment | /enrollments/ | POST | Create a new Enrollment record. |
+| putEnrollment | /enrollments/{id} | PUT | Replace a Enrollment that already exists. |
+| deleteEnrollment | /enrollments/{id} | DELETE | Delete a Enrollment that already exists. |
 
 ## Pagination
  + limit : the number of result to return : The default value for limit is 100.
