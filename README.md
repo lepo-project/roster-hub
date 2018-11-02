@@ -164,26 +164,30 @@ $ curl -H "Authorization: Bearer [accesstoken]" -H "Content-Type:application/jso
 | Service Call | Endpoint | HTTP Verb | Action |
 | --- | --- | --- | --- |
 | getAllAcademicSessions | /academicSessions | GET | Return collection of all academic sessions. |
-| getAcademicSession | /academicSessions/{id} | GET | Return specific Academic Session. |
+| getAcademicSession | /academicSessions/{id} | GET | Return specific academic session. |
 | getAllClasses | /classes | GET | Return collection of classes. |
 | getClass | /classes/{id} | GET | Return specific class. |
 | getAllCourses | /courses | GET | Return collection of courses. |
 | getCourse | /courses/{id} | GET | Return specific course. |
 | getAllEnrollments | /enrollments | GET | Return collection of all enrollments. |
 | getEnrollment | /enrollments/{id} | GET | Return specific enrollment. |
-| getAllOrgs | /orgs | GET | Return collection of Orgs. |
-| getOrg | /orgs/{id} | GET | Return Specific Org. |
-| getAllSchools | /schools | GET | Return collection of schools. A School is an instance of an Org. |
-| getSchool | /schools/{id} | GET | Return specific school. A School is an instance of an Org. |
-| getAllStudents | /students | GET | Return collection of students. A Student is an instance of a User. |
-| getStudent | /students/{id} | GET | Return specific student. A Student is an instance of a User. |
-| getAllTeachers | /teachers | GET | Return collection of teachers. A Teacher is an instance of a User. |
+| getAllOrgs | /orgs | GET | Return collection of orgs. |
+| getOrg | /orgs/{id} | GET | Return specific org. |
+| getAllSchools | /schools | GET | Return collection of schools. A school is an instance of an org. |
+| getSchool | /schools/{id} | GET | Return specific school. A school is an instance of an org. |
+| getAllStudents | /students | GET | Return collection of students. A student is an instance of a user. |
+| getStudent | /students/{id} | GET | Return specific student. A student is an instance of a user. |
+| getAllTeachers | /teachers | GET | Return collection of teachers. A teacher is an instance of a user. |
 | getTeacher | /teachers/{id} | GET | Return specific teacher. |
-| getAllTerms | /terms | GET | Return collection of terms. A Term is an instance of an AcademicSession. |
+| getAllTerms | /terms | GET | Return collection of terms. A term is an instance of an academic session. |
 | getTerm | /terms/{id} | GET | Return specific term. |
 | getAllUsers | /users | GET | Return collection of users |
 | getUser | /users/{id} | GET | Return specific user |
 | getCoursesForSchool | /schools/{id}/courses | GET | Return the collection of courses taught by this school. |
+| getEnrollmentsForSchool | /schools/{school_id}/enrollments | GET | Return the collection of all enrollments for this school. |
+| getStudentsForSchool | /schools/{school_id}/students | GET | Return the collection of students attending this school. |
+| getTeachersForSchool | /schools/{school_id}/teachers | GET | Return the collection of teachers teaching at this school. |
+| getTermsForSchool | /schools/{school_id}/terms | GET | Return the collection of terms that are used by this school. |
 | getClassesForTerm | /terms/{term_id}/classes | GET | Return the collection of classes that are taught in this term. |
 | getClassesForCourse | /courses/{course_id}/classes | GET | Return the collection of classes that are teaching this course. |
 | getClassesForStudent | /students/{student_id}/classes | GET | Return the collection of classes that this student is taking. |
@@ -196,31 +200,33 @@ $ curl -H "Authorization: Bearer [accesstoken]" -H "Content-Type:application/jso
 ### Not yet implemented
 | Service Call | Endpoint | HTTP Verb | Action |
 | --- | --- | --- | --- |
-| getAllGradingPeriods | /gradingPeriods | GET | Return collection of grading periods. A Grading Period is an instance of an AcademicSession. |
-| getGradingPeriod | /gradingPeriods/{id} | GET | Return specific Grading Period. A Grading Period is an instance of an AcademicSession. |
+| getAllGradingPeriods | /gradingPeriods | GET | Return collection of grading periods. A grading period is an instance of an academic session. |
+| getGradingPeriod | /gradingPeriods/{id} | GET | Return specific grading period. A grading period is an instance of an academic session. |
 | getAllDemographics | /demographics | GET | Return collection of demographics. |
 | getDemographics | /demographics/{id} | GET | Return specific demographics. |
 | getEnrollmentsForClassInSchool | /schools/{school_id}/classes/{class_id}/enrollments | GET | Return the collection of all enrollments into this class. |
 | getStudentsForClassInSchool | /schools/{school_id}/classes/{class_id}/students | GET | Return the collection of students taking this class in this school. |
 | getTeachersForClassInSchool | /schools/{school_id}/classes/{class_id}/teachers | GET | Return the collection of teachers taking this class in this school. |
-| getEnrollmentsForSchool | /schools/{school_id}/enrollments | GET | Return the collection of all enrollments for this school. |
-| getStudentsForSchool | /schools/{school_id}/students | GET | Return the collection of students attending this school. |
-| getTeachersForSchool | /schools/{school_id}/teachers | GET | Return the collection of teachers teaching at this school. |
-| getTermsForSchool | /schools/{school_id}/terms | GET | Return the collection of terms that are used by this school. |
 | getGradingPeriodsForTerm | /terms/{term_id}/gradingPeriods | GET | Return the collection of Grading Periods that are part of this term. |
 
 ## Endpoints: Original
 | Service Call | Endpoint | HTTP Verb | Action |
 | --- | --- | --- | --- |
-| postClass | /classes/ | POST | Create a new Class record. |
-| putClass | /classes/{id} | PUT | Replace a Class that already exists. |
-| deleteClass | /classes/{id} | DELETE | Delete a Class that already exists. |
-| postCourse | /courses/ | POST | Create a new Course record. |
-| putCourse | /courses/{id} | PUT | Replace a Course that already exists. |
-| deleteCourse | /courses/{id} | DELETE | Delete a Course that already exists. |
-| postEnrollment | /enrollments/ | POST | Create a new Enrollment record. |
-| putEnrollment | /enrollments/{id} | PUT | Replace a Enrollment that already exists. |
-| deleteEnrollment | /enrollments/{id} | DELETE | Delete a Enrollment that already exists. |
+| postAcademicSession | /academicSessions/ | POST | Create a new academic session. |
+| putAcademicSession | /academicSessions/{id} | PUT | Replace an academic session that already exists. |
+| deleteAcademicSession | /academicSessions/{id} | DELETE | Delete an academic session that already exists. |
+| postClass | /classes/ | POST | Create a new class. |
+| putClass | /classes/{id} | PUT | Replace a class that already exists. |
+| deleteClass | /classes/{id} | DELETE | Delete a class that already exists. |
+| postCourse | /courses/ | POST | Create a new course. |
+| putCourse | /courses/{id} | PUT | Replace a course that already exists. |
+| deleteCourse | /courses/{id} | DELETE | Delete a course that already exists. |
+| postEnrollment | /enrollments/ | POST | Create a new enrollment. |
+| putEnrollment | /enrollments/{id} | PUT | Replace a enrollment that already exists. |
+| deleteEnrollment | /enrollments/{id} | DELETE | Delete a enrollment that already exists. |
+| postOrg | /orgs/ | POST | Create a new org. |
+| putOrg | /orgs/{id} | PUT | Replace an org that already exists. |
+| deleteOrg | /orgs/{id} | DELETE | Delete an org that already exists. |
 
 ## Pagination
  + limit : the number of result to return : The default value for limit is 100.

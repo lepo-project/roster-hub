@@ -21,6 +21,7 @@
 class Enrollment < ApplicationRecord
   include Swagger::V1p1::EnrollmentSchema
   belongs_to :rclass, primary_key: :sourcedId, foreign_key: :classSourcedId
+  belongs_to :school, primary_key: :sourcedId, foreign_key: :schoolSourcedId, class_name: 'Org'
   belongs_to :user, primary_key: :sourcedId, foreign_key: :userSourcedId
   # Validations for OneRoster bulk data
   before_create :generate_sourcedId

@@ -2,6 +2,12 @@ module V1p1
   class EnrollmentsController < V1p1::ApplicationController
     include Swagger::V1p1::EnrollmentsApi
 
+    def school
+      relations = Enrollment.where(schoolSourcedId: params[:schoolSourcedId])
+      relations = indexbase_with_condition(relations)
+      render_json('Enrollment', relations)
+    end
+
     private
 
     def strong_params

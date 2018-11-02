@@ -19,6 +19,7 @@ class Org < ApplicationRecord
   include Swagger::V1p1::OrgSchema
   self.inheritance_column = :_type_disabled
   has_many :courses, primary_key: :sourcedId, foreign_key: :orgSourcedId
+  has_many :enrollments, primary_key: :sourcedId, foreign_key: :schoolSourcedId
   has_many :rclasses, primary_key: :sourcedId, foreign_key: :schoolSourcedId
   # Validations for OneRoster bulk data
   before_create :generate_sourcedId

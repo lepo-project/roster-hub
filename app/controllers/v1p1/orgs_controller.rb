@@ -7,5 +7,11 @@ module V1p1
       relations = indexbase_with_condition(relations)
       render_json('Org', relations)
     end
+
+    private
+
+    def strong_params
+      params.require(:org).permit(:status, :dateLastModified, :name, :type, :identifier, :parentSourcedId)
+    end
   end
 end

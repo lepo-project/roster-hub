@@ -25,6 +25,7 @@ module V1p1
     end
 
     def term
+      # Assumption: Class does not belong to multiple terms
       render_class_json Rclass.where(termSourcedIds: params[:termSourcedId])
     end
 
