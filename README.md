@@ -47,6 +47,7 @@
 + User
    * status: not supported.
    * metadata: not supported.
+   * orgs: only one org.
    * userIds: not supported.
    * middleName: not supported.
    * identifier: not supported.
@@ -213,20 +214,20 @@ $ curl -H "Authorization: Bearer [accesstoken]" -H "Content-Type:application/jso
 | Service Call | Endpoint | HTTP Verb | Action |
 | --- | --- | --- | --- |
 | postAcademicSession | /academicSessions/ | POST | Create a new academic session. |
-| putAcademicSession | /academicSessions/{id} | PUT | Replace an academic session that already exists. |
-| deleteAcademicSession | /academicSessions/{id} | DELETE | Delete an academic session that already exists. |
+| putAcademicSession | /academicSessions/{id} | PUT | Replace specific academic session. |
+| deleteAcademicSession | /academicSessions/{id} | DELETE | Delete specific academic session. |
 | postClass | /classes/ | POST | Create a new class. |
-| putClass | /classes/{id} | PUT | Replace a class that already exists. |
-| deleteClass | /classes/{id} | DELETE | Delete a class that already exists. |
+| putClass | /classes/{id} | PUT | Replace specific class. |
+| deleteClass | /classes/{id} | DELETE | Delete specific class. |
 | postCourse | /courses/ | POST | Create a new course. |
-| putCourse | /courses/{id} | PUT | Replace a course that already exists. |
-| deleteCourse | /courses/{id} | DELETE | Delete a course that already exists. |
+| putCourse | /courses/{id} | PUT | Replace specific course. |
+| deleteCourse | /courses/{id} | DELETE | Delete specific course. |
 | postEnrollment | /enrollments/ | POST | Create a new enrollment. |
-| putEnrollment | /enrollments/{id} | PUT | Replace a enrollment that already exists. |
-| deleteEnrollment | /enrollments/{id} | DELETE | Delete a enrollment that already exists. |
+| putEnrollment | /enrollments/{id} | PUT | Replace specific enrollment. |
+| deleteEnrollment | /enrollments/{id} | DELETE | Delete specific enrollment. |
 | postOrg | /orgs/ | POST | Create a new org. |
-| putOrg | /orgs/{id} | PUT | Replace an org that already exists. |
-| deleteOrg | /orgs/{id} | DELETE | Delete an org that already exists. |
+| putOrg | /orgs/{id} | PUT | Replace specific org. |
+| deleteOrg | /orgs/{id} | DELETE | Delete specific org. |
 
 ## Pagination
  + limit : the number of result to return : The default value for limit is 100.

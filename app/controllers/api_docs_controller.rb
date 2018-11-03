@@ -5,8 +5,8 @@ class ApiDocsController < ApplicationController
         key :swagger, '2.0'
         info do
           key :version, '1.0.0'
-          key :title, 'Swagger OnerosterAPI'
-          key :description, 'An API that uses a one roster'
+          key :title, 'OnerosterCSVtoAPI'
+          key :description, 'CSV to API converter for IMS OneRoster v1.1 specification.'
           key :termsOfService, 'https://github.com/j-nakashima/OneRosterCSVtoAPI/blob/master/LICENSE'
           contact do
             key :name, 'Oita University, Information Technology Center.'
@@ -16,15 +16,15 @@ class ApiDocsController < ApplicationController
           end
         end
         tag do
-          key :name, 'oneroster'
-          key :description, 'Oneroster api'
+          key :name, 'OnerosterCSVtoAPI'
+          key :description, 'IMS Oneroster API + original API'
           externalDocs do
             key :description, 'Find more info here'
             key :url, 'https://github.com/j-nakashima/OneRosterCSVtoAPI'
           end
         end
-        key :host, 'localhost:3000/ims/oneroster/'
-        key :basePath, 'v1p1'
+        key :host, 'localhost:3000'
+        key :basePath, '/ims/oneroster/v1p1'
         key :consumes, ['application/json']
         key :produces, ['application/json']
         extend Swagger::V1p1::Parameters

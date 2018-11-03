@@ -39,9 +39,38 @@ module Swagger::V1p1::CourseSchema
       property :subjectCodes do
         key :description, 'not used'
       end
-      property :application_id do
-        key :description, 'OAuth application id for the record'
-        key :type, :integer
+    end
+
+    swagger_schema :CourseInput do
+      property :status do
+        key :description, 'not used'
+      end
+      property :dateLastModified do
+        key :description, 'not used'
+      end
+      property :schoolYearSourcedId do
+        key :description, 'not used'
+      end
+      property :title do
+        key :description, 'Course Title'
+        key :type, :string
+      end
+      property :courseCode do
+        key :description, 'Course Code'
+        key :type, :string
+      end
+      property :grades do
+        key :description, 'not used'
+      end
+      property :orgSourcedId do
+        key :description, 'Link to org. Org sourcedId'
+        key :type, :string
+      end
+      property :subjects do
+        key :description, 'not used'
+      end
+      property :subjectCodes do
+        key :description, 'not used'
       end
     end
   end

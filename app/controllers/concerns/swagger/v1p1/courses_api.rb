@@ -5,29 +5,53 @@ module Swagger::V1p1::CoursesApi
   included do
     swagger_path '/courses' do
       operation :get do
+        key :summary, 'Return all courses.'
         key :description, 'Return collection of courses.'
-        key :operation, :indexbase_with_condition
-
+        key :tags, [
+          'course'
+        ]
         parameter :limit
         parameter :offset
         parameter :sorting
         parameter :orderBy
         parameter :filter
-
         response 200 do
-          key :description, 'Return collection of courses'
-          schema type: :array do
-            key :'$ref', :Course
+          key :description, 'successful operation'
+          schema do
+            key :type, :object
+            property :courses do
+              key :type, :array
+              items do
+                key :'$ref', :Course
+              end
+            end
           end
         end
       end
       operation :post do
-        key :description, 'Create a new Course record.'
-
-        response 200 do
-          key :description, 'Create a new Course record'
+        key :summary, 'Create a new course.'
+        key :description, 'Create a new course.'
+        key :tags, [
+          'course'
+        ]
+        parameter do
+          key :name, :course
+          key :in, :body
+          key :required, true
           schema do
-            key :'$ref', :Course
+            key :type, :object
+            property :course do
+              key :'$ref', :CourseInput
+            end
+          end
+        end
+        response 200 do
+          key :description, 'successful operation'
+          schema do
+            key :type, :object
+            property :course do
+              key :'$ref', :Course
+            end
           end
         end
       end
@@ -35,57 +59,86 @@ module Swagger::V1p1::CoursesApi
 
     swagger_path '/courses/{sourcedId}' do
       operation :get do
-        key :description, 'Return Specific Course by sourcedId.'
-        key :operation, :indexbase_with_condition
-
+        key :summary, 'Return specific course.'
+        key :description, 'Return specific course.'
+        key :tags, [
+          'course'
+        ]
         parameter :sourcedId
-
         response 200 do
-          key :description, 'Return Specific Course'
+          key :description, 'successful operation'
           schema do
-            key :'$ref', :Course
+            key :type, :object
+            property :course do
+              key :'$ref', :Course
+            end
           end
         end
       end
       operation :put do
-        key :description, 'Replace a Course that already exists.'
-
+        key :summary, 'Replace specific course.'
+        key :description, 'Replace specific course.'
+        key :tags, [
+          'course'
+        ]
         parameter :sourcedId
-
-        response 200 do
-          key :description, 'Replace a Course that already exists.'
+        parameter do
+          key :name, :course
+          key :in, :body
+          key :required, true
           schema do
-            key :'$ref', :Course
+            key :type, :object
+            property :course do
+              key :'$ref', :CourseInput
+            end
+          end
+        end
+        response 200 do
+          key :description, 'successful operation'
+          schema do
+            key :type, :object
+            property :course do
+              key :'$ref', :Course
+            end
           end
         end
       end
       operation :delete do
-        key :description, 'Delete a Course that already exists.'
-
+        key :summary, 'Delete specific course.'
+        key :description, 'Delete specific course.'
+        key :tags, [
+          'course'
+        ]
         parameter :sourcedId
-
-        response 200 do
-          key :description, 'Delete a Course that already exists.'
+        response 204 do
+          key :description, 'successful operation'
         end
       end
     end
 
     swagger_path '/schools/{schoolSourcedId}/courses' do
       operation :get do
+        key :summary, 'Return all courses taught by this school.'
         key :description, 'Return the collection of courses taught by this school.'
-        key :operation, :indexbase_with_condition
-
+        key :tags, [
+          'course'
+        ]
         parameter :schoolSourcedId
         parameter :limit
         parameter :offset
         parameter :sorting
         parameter :orderBy
         parameter :filter
-
         response 200 do
-          key :description, 'Return the collection of courses taught by this school.'
+          key :description, 'successful operation'
           schema do
-            key :'$ref', :Course
+            key :type, :object
+            property :courses do
+              key :type, :array
+              items do
+                key :'$ref', :Course
+              end
+            end
           end
         end
       end

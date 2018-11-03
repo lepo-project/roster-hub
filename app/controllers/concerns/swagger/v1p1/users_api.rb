@@ -5,19 +5,26 @@ module Swagger::V1p1::UsersApi
   included do
     swagger_path '/users' do
       operation :get do
+        key :summary, 'Return all users.'
         key :description, 'Return collection of users.'
-        key :operation, :indexbase_with_condition
-
+        key :tags, [
+          'user'
+        ]
         parameter :limit
         parameter :offset
         parameter :sorting
         parameter :orderBy
         parameter :filter
-
         response 200 do
-          key :description, 'Return collection of users'
-          schema type: :array do
-            key :'$ref', :User
+          key :description, 'successful operation'
+          schema do
+            key :type, :object
+            property :users do
+              key :type, :array
+              items do
+                key :'$ref', :User
+              end
+            end
           end
         end
       end
@@ -25,15 +32,19 @@ module Swagger::V1p1::UsersApi
 
     swagger_path '/users/{sourcedId}' do
       operation :get do
-        key :description, 'Return Specific User by sourcedId.'
-        key :operation, :indexbase_with_condition
-
+        key :summary, 'Return specific user.'
+        key :description, 'Return specific user.'
+        key :tags, [
+          'user'
+        ]
         parameter :sourcedId
-
         response 200 do
-          key :description, 'Return Specific User'
+          key :description, 'successful operation'
           schema do
-            key :'$ref', :User
+            key :type, :object
+            property :user do
+              key :'$ref', :User
+            end
           end
         end
       end
@@ -41,20 +52,26 @@ module Swagger::V1p1::UsersApi
 
     swagger_path '/students' do
       operation :get do
-        key :description, 'Return collection of students. A Student is an instance of a User.'
-        key :operation, :indexbase_with_condition
-
-        parameter :accesstoken
+        key :summary, 'Return all students.'
+        key :description, 'Return collection of students. A student is an instance of a user.'
+        key :tags, [
+          'user'
+        ]
         parameter :limit
         parameter :offset
         parameter :sorting
         parameter :orderBy
         parameter :filter
-
         response 200 do
-          key :description, 'Return collection of students'
-          schema type: :array do
-            key :'$ref', :User
+          key :description, 'successful operation'
+          schema do
+            key :type, :object
+            property :users do
+              key :type, :array
+              items do
+                key :'$ref', :User
+              end
+            end
           end
         end
       end
@@ -62,16 +79,19 @@ module Swagger::V1p1::UsersApi
 
     swagger_path '/students/{sourcedId}' do
       operation :get do
-        key :description, 'Return Specific student by sourcedId. A Student is an instance of an User.'
-        key :operation, :indexbase_with_condition
-
-        parameter :accesstoken
+        key :summary, 'Return specific student.'
+        key :description, 'Return specific student. A student is an instance of an user.'
+        key :tags, [
+          'user'
+        ]
         parameter :sourcedId
-
         response 200 do
-          key :description, 'Return Specific student'
+          key :description, 'successful operation'
           schema do
-            key :'$ref', :User
+            key :type, :object
+            property :user do
+              key :'$ref', :User
+            end
           end
         end
       end
@@ -79,20 +99,26 @@ module Swagger::V1p1::UsersApi
 
     swagger_path '/teachers' do
       operation :get do
+        key :summary, 'Return all teachers.'
         key :description, 'Return collection of teachers. A Teacher is an instance of a User.'
-        key :operation, :indexbase_with_condition
-
-        parameter :accesstoken
+        key :tags, [
+          'user'
+        ]
         parameter :limit
         parameter :offset
         parameter :sorting
         parameter :orderBy
         parameter :filter
-
         response 200 do
-          key :description, 'Return collection of teachers'
-          schema type: :array do
-            key :'$ref', :User
+          key :description, 'successful operation'
+          schema do
+            key :type, :object
+            property :users do
+              key :type, :array
+              items do
+                key :'$ref', :User
+              end
+            end
           end
         end
       end
@@ -100,16 +126,19 @@ module Swagger::V1p1::UsersApi
 
     swagger_path '/teachers/{sourcedId}' do
       operation :get do
-        key :description, 'Return Specific teacher by sourcedId. A Teacher is an instance of an User.'
-        key :operation, :indexbase_with_condition
-
-        parameter :accesstoken
+        key :summary, 'Return specific teacher.'
+        key :description, 'Return specific teacher. A teacher is an instance of an user.'
+        key :tags, [
+          'user'
+        ]
         parameter :sourcedId
-
         response 200 do
-          key :description, 'Return Specific teacher'
+          key :description, 'successful operation'
           schema do
-            key :'$ref', :User
+            key :type, :object
+            property :user do
+              key :'$ref', :User
+            end
           end
         end
       end
@@ -117,21 +146,27 @@ module Swagger::V1p1::UsersApi
 
     swagger_path '/classes/{classSourcedId}/students' do
       operation :get do
+        key :summary, 'Return all students that are taking this class.'
         key :description, 'Return the collection of students that are taking this class.'
-        key :operation, :indexbase_with_condition
-
+        key :tags, [
+          'user'
+        ]
         parameter :classSourcedId
-        parameter :accesstoken
         parameter :limit
         parameter :offset
         parameter :sorting
         parameter :orderBy
         parameter :filter
-
         response 200 do
-          key :description, 'Return the collection of students that are taking this class.'
-          schema type: :array do
-            key :'$ref', :User
+          key :description, 'successful operation'
+          schema do
+            key :type, :object
+            property :users do
+              key :type, :array
+              items do
+                key :'$ref', :User
+              end
+            end
           end
         end
       end
@@ -139,25 +174,86 @@ module Swagger::V1p1::UsersApi
 
     swagger_path '/classes/{classSourcedId}/teachers' do
       operation :get do
+        key :summary, 'Return all teachers that are teaching this class.'
         key :description, 'Return the collection of teachers that are teaching this class.'
-        key :operation, :indexbase_with_condition
-
+        key :tags, [
+          'user'
+        ]
         parameter :classSourcedId
-        parameter :accesstoken
         parameter :limit
         parameter :offset
         parameter :sorting
         parameter :orderBy
         parameter :filter
-
         response 200 do
-          key :description, 'Return the collection of teachers that are teaching this class.'
-          schema type: :array do
-            key :'$ref', :User
+          key :description, 'successful operation'
+          schema do
+            key :type, :object
+            property :users do
+              key :type, :array
+              items do
+                key :'$ref', :User
+              end
+            end
           end
         end
       end
     end
 
+    swagger_path '/schools/{schoolSourcedId}/students' do
+      operation :get do
+        key :summary, 'Return all students attending this school.'
+        key :description, 'Return the collection of students attending this school.'
+        key :tags, [
+          'user'
+        ]
+        parameter :schoolSourcedId
+        parameter :limit
+        parameter :offset
+        parameter :sorting
+        parameter :orderBy
+        parameter :filter
+        response 200 do
+          key :description, 'successful operation'
+          schema do
+            key :type, :object
+            property :users do
+              key :type, :array
+              items do
+                key :'$ref', :User
+              end
+            end
+          end
+        end
+      end
+    end
+
+    swagger_path '/schools/{schoolSourcedId}/teachers' do
+      operation :get do
+        key :summary, 'Return all teachers teaching at this school.'
+        key :description, 'Return the collection of teachers teaching at this school.'
+        key :tags, [
+          'user'
+        ]
+        parameter :schoolSourcedId
+        parameter :limit
+        parameter :offset
+        parameter :sorting
+        parameter :orderBy
+        parameter :filter
+        response 200 do
+          key :description, 'successful operation'
+          schema do
+            key :type, :object
+            property :users do
+              key :type, :array
+              items do
+                key :'$ref', :User
+              end
+            end
+          end
+        end
+      end
+    end
   end
 end

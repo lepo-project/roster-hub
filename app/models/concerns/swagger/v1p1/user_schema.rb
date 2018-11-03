@@ -68,10 +68,6 @@ module Swagger::V1p1::UserSchema
       property :password do
         key :description, 'not used'
       end
-      property :application_id do
-        key :description, 'OAuth application id for the record'
-        key :type, :integer
-      end
     end
   end
 end

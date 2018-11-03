@@ -5,29 +5,53 @@ module Swagger::V1p1::EnrollmentsApi
   included do
     swagger_path '/enrollments' do
       operation :get do
+        key :summary, 'Return all enrollments.'
         key :description, 'Return collection of all enrollments.'
-        key :operation, :indexbase_with_condition
-
+        key :tags, [
+          'enrollment'
+        ]
         parameter :limit
         parameter :offset
         parameter :sorting
         parameter :orderBy
         parameter :filter
-
         response 200 do
-          key :description, 'Return collection of enrollments'
-          schema type: :array do
-            key :'$ref', :Enrollment
+          key :description, 'successful operation'
+          schema do
+            key :type, :object
+            property :enrollments do
+              key :type, :array
+              items do
+                key :'$ref', :Enrollment
+              end
+            end
           end
         end
       end
       operation :post do
-        key :description, 'Create a new Enrollment record.'
-
-        response 200 do
-          key :description, 'Create a new Enrollment record.'
+        key :summary, 'Create a new enrollment.'
+        key :description, 'Create a new enrollment.'
+        key :tags, [
+          'enrollment'
+        ]
+        parameter do
+          key :name, :enrollment
+          key :in, :body
+          key :required, true
           schema do
-            key :'$ref', :Enrollment
+            key :type, :object
+            property :enrollment do
+              key :'$ref', :EnrollmentInput
+            end
+          end
+        end
+        response 200 do
+          key :description, 'successful operation'
+          schema do
+            key :type, :object
+            property :enrollment do
+              key :'$ref', :Enrollment
+            end
           end
         end
       end
@@ -35,37 +59,82 @@ module Swagger::V1p1::EnrollmentsApi
 
     swagger_path '/enrollments/{sourcedId}' do
       operation :get do
-        key :description, 'Return Specific Enrollment by sourcedId.'
-        key :operation, :indexbase_with_condition
-
+        key :summary, 'Return specific enrollment.'
+        key :description, 'Return specific enrollment.'
+        key :tags, [
+          'enrollment'
+        ]
         parameter :sourcedId
-
         response 200 do
-          key :description, 'Return Specific Enrollment'
+          key :description, 'successful operation'
           schema do
-            key :'$ref', :Enrollment
+            key :type, :object
+            property :enrollment do
+              key :'$ref', :Enrollment
+            end
           end
         end
       end
       operation :put do
-        key :description, 'Replace a Enrollment that already exists.'
-
+        key :summary, 'Replace specific enrollment.'
+        key :description, 'Replace specific enrollment.'
+        key :tags, [
+          'enrollment'
+        ]
         parameter :sourcedId
-
-        response 200 do
-          key :description, 'Replace a Enrollment that already exists.'
+        parameter do
+          key :name, :enrollment
+          key :in, :body
+          key :required, true
           schema do
-            key :'$ref', :Enrollment
+            key :type, :object
+            property :enrollment do
+              key :'$ref', :EnrollmentInput
+            end
+          end
+        end
+        response 200 do
+          key :description, 'successful operation'
+          schema do
+            key :type, :object
+            property :enrollment do
+              key :'$ref', :Enrollment
+            end
           end
         end
       end
       operation :delete do
-        key :description, 'Delete a Enrollment that already exists.'
-
+        key :summary, 'Delete specific enrollment.'
+        key :description, 'Delete specific enrollment.'
+        key :tags, [
+          'enrollment'
+        ]
         parameter :sourcedId
+        response 204 do
+          key :description, 'successful operation'
+        end
+      end
+    end
 
+    swagger_path '/schools/{schoolSourcedId}/enrollments' do
+      operation :get do
+        key :summary, 'Return all enrollments for this school.'
+        key :description, 'Return the collection of all enrollments for this school.'
+        key :tags, [
+          'enrollment'
+        ]
+        parameter :schoolSourcedId
         response 200 do
-          key :description, 'Delete a Enrollment that already exists.'
+          key :description, 'successful operation'
+          schema do
+            key :type, :object
+            property :enrollments do
+              key :type, :array
+              items do
+                key :'$ref', :Enrollment
+              end
+            end
+          end
         end
       end
     end
