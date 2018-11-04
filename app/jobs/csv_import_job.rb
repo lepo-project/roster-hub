@@ -15,6 +15,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     @logger.info('STOP:Invalid manifest') if csv_files.nil? || csv_files.empty?
     return if csv_files.nil? || csv_files.empty?
     @logger.info('-A5-')
+    @db_adapter = ActiveRecord::Base.connection.adapter_name.downcase
     csv_sourcedIds = {}
     ActiveRecord::Base.transaction do
       csv_files.each do |cf|
@@ -42,18 +43,10 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
 
   def class_from_name(str)
     case str
-    when 'academicSessions'
-      AcademicSession
+    when 'academicSessions', 'courses', 'enrollments', 'users', 'orgs'
+      str.singularize.camelize.constantize
     when 'classes'
       Rclass
-    when 'courses'
-      Course
-    when 'enrollments'
-      Enrollment
-    when 'users'
-      User
-    when 'orgs'
-      Org
     end
   end
 
@@ -110,7 +103,14 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
       instances.push cl.new(hash)
     end
     update_columns = cl.column_names.reject{|c| %w[id sourcedId created_at].include? c}
-    cl.import instances, on_duplicate_key_update: update_columns
+    case @db_adapter
+    when 'mysql', 'mysql2'
+      # bulk update for MySQL and MariaDB
+      cl.import instances, on_duplicate_key_update: update_columns
+    when 'postgresql', 'sqlite'
+      # bulk update for PostgreSQL (9.5+) and SQLite (3.24.0+)
+      cl.import instances, on_duplicate_key_update: {conflict_target: [:sourcedId], columns: update_columns}
+    end
     @logger.info "Imported to #{cl.table_name} => #{instances.size}"
     ids
   end

@@ -251,6 +251,5 @@ http[s]://[servername][:port]/api-docs
 ```
 
 ## Database dependency
- + One of MySQL, PostgreSQL (9.5+), and SQLite (3.24.0+) is needed to bulk update data.
- + Default DB is MySQL (No code changes are needed)
- + To use PostgreSQL or SQLite, some modifications are needed for "on_duplicate_key_update"
+ + One of MySQL/MariaDB, PostgreSQL (9.5+), and SQLite (3.24.0+) is needed to bulk update data.
+ + MySQL is Default DB and code for it is well maintained than others.
