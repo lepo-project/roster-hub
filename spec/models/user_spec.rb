@@ -21,6 +21,7 @@
 #  agentSourcedIds  :string
 #  grades           :string
 #  password         :string
+#  application_id   :integer          default(0), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #

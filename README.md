@@ -4,7 +4,7 @@
 # Out of the application range
 + Demographic Data
 + Line Items
-+ Line Item Categoris
++ Line Item Categories
 + Resources
 + Results
 
@@ -14,7 +14,7 @@
 + Academic Session
   * metadata: not supported.
   * parent: not supported.
-  * cildren: not supported.
+  * children: not supported.
 + Class
    * We use this object as 'Rclass'.
    * metadata: not supported.
@@ -22,7 +22,7 @@
    * grades: not supported.
    * subjects: not supported.
    * terms: only one term.
-   * subjectCodes: not supoorted.
+   * subjectCodes: not supported.
    * periods: not supported.
    *resources: not supported.
 + Course
@@ -47,6 +47,7 @@
 + User
    * status: not supported.
    * metadata: not supported.
+   * orgs: only one org.
    * userIds: not supported.
    * middleName: not supported.
    * identifier: not supported.
@@ -114,7 +115,7 @@ $ rails console
 (using cron jobs)  
 
 1. write schedule in [config/schedule.rb].  
-(example) "everday at 4:33 am"
+(example) "everyday at 4:33 am"
 ```
 every 1.day, at: ['4:33 am'] do
   runner 'CsvImportJob.perform_now'
@@ -152,51 +153,81 @@ $  curl -i http[s]://[servername][:port]/oauth/token -F grant_type="client_crede
 $ curl -H "Authorization: Bearer [accesstoken]" -i http[s]://[servername][:port]/ims/oneroster/v1p1/[endpoint]?[parameters]
 ```
 
+For some resources, original endpoints with POST/PUT/DELETE methods are experimentally implemented.
+```
+$ curl -H "Authorization: Bearer [accesstoken]" -H "Content-Type:application/json" -i http[s]://[servername][:port]/ims/oneroster/v1p1/[endpoint] -X POST -d '{"[resourcename]": {...}}'
+```
 
-## Endpoint
-| Service Call | Endpoint | HTTP Verb | Action | Impl. |
-| --- | --- | --- | --- | --- |
-| getAllAcademicSessions | /academicSessions | GET | Return collection of all academic sessions. | OK |
- | getAcademicSession | /academicSessions/{id} | GET | Return specific Academic Session. | OK |
- | getAllClasses | /classes | GET | Return collection of classes. | OK |
- | getClass | /classes/{id} | GET | Return specific class. | OK |
- | getAllCourses | /courses | GET | Return collection of courses. | OK |
- | getCourse | /courses/{id} | GET | Return specific course. | OK |
- | getAllGradingPeriods | /gradingPeriods | GET | Return collection of grading periods. A Grading Period is an instance of an AcademicSession. |  |
- | getGradingPeriod | /gradingPeriods/{id} | GET | Return specific Grading Period. A Grading Period is an instance of an AcademicSession. |  |
- | getAllDemographics | /demographics | GET | Return collection of demographics. |  |
- | getDemographics | /demographics/{id} | GET | Return specific demographics. |  |
- | getAllEnrollments | /enrollments | GET | Return collection of all enrollments. | OK |
- | getEnrollment | /enrollments/{id} | GET | Return specific enrollment. | OK |
- | getAllOrgs | /orgs | GET | Return collection of Orgs. | OK |
- | getOrg | /orgs/{id} | GET | Return Specific Org. | OK |
- | getAllSchools | /schools | GET | Return collection of schools. A School is an instance of an Org. | OK |
- | getSchool | /schools/{id} | GET | Return specific school. A School is an instance of an Org. | OK |
- | getAllStudents | /students | GET | Return collection of students. A Student is an instance of a User. | OK |
- | getStudent | /students/{id} | GET | Return specific student. A Student is an instance of a User. | OK |
- | getAllTeachers | /teachers | GET | Return collection of teachers. A Teacher is an instance of a User. | OK. |
- | getTeacher | /teachers/{id} | GET | Return specific teacher. | OK |
- | getAllTerms | /terms | GET | Return collection of terms. A Term is an instance of an AcademicSession. | OK |
- | getTerm | /terms/{id} | GET | Return specific term. | OK |
- | getAllUsers | /users | GET | Return collection of users | OK |
- | getUser | /users/{id} | GET | Return specific user | OK |
- | getCoursesForSchool | /schools/{id}/courses | GET | Return the collection of courses taught by this school. | OK |
- | getEnrollmentsForClassInSchool | /schools/{school_id}/classes/{class_id}/enrollments | GET | Return the collection of all enrollments into this class. |  |
- | getStudentsForClassInSchool | /schools/{school_id}/classes/{class_id}/students | GET | Return the collection of students taking this class in this school. |  |
- | getTeachersForClassInSchool | /schools/{school_id}/classes/{class_id}/teachers | GET | Return the collection of teachers taking this class in this school. |  |
- | getEnrollmentsForSchool | /schools/{school_id}/enrollments | GET | Return the collection of all enrollments for this school. |  |
- | getStudentsForSchool | /schools/{school_id}/students | GET | Return the collection of students attending this school. |  |
- | getTeachersForSchool | /schools/{school_id}/teachers | GET | Return the collection of teachers teaching at this school. |  |
- | getTermsForSchool | /schools/{school_id}/terms | GET | Return the collection of terms that are used by this school. |  |
- | getClassesForTerm | /terms/{term_id}/classes | GET | Return the collection of classes that are taught in this term. |  |
- | getGradingPeriodsForTerm | /terms/{term_id}/gradingPeriods | GET | Return the collection of Grading Periods that are part of this term. |  |
- | getClassesForCourse | /courses/{course_id}/classes | GET | Return the collection of classes that are teaching this course. |  |
- | getClassesForStudent | /students/{student_id}/classes | GET | Return the collection of classes that this student is taking. |  |
- | getClassesForTeacher | /teachers/{teacher_id}/classes | GET | Return the collection of classes that this teacher is teaching. |  |
- | getClassesForSchool | /schools/{school_id}/classes | GET | Return the collection of classes taught by this school. |  |
- | getClassesForUser | /users/{user_id}/classes | GET | Return the collection of classes attended by this user. |  |
- | getStudentsForClass | /classes/{class_id}/students | GET | Return the collection of students that are taking this class. |  |
- | getTeachersForClass | /classes/{class_id}/teachers | GET | Return the collection of teachers that are teaching this class. |  |
+
+
+## Endpoints: OneRoster for rostering
+### Implemented
+| Service Call | Endpoint | HTTP Verb | Action |
+| --- | --- | --- | --- |
+| getAllAcademicSessions | /academicSessions | GET | Return collection of all academic sessions. |
+| getAcademicSession | /academicSessions/{id} | GET | Return specific academic session. |
+| getAllClasses | /classes | GET | Return collection of classes. |
+| getClass | /classes/{id} | GET | Return specific class. |
+| getAllCourses | /courses | GET | Return collection of courses. |
+| getCourse | /courses/{id} | GET | Return specific course. |
+| getAllEnrollments | /enrollments | GET | Return collection of all enrollments. |
+| getEnrollment | /enrollments/{id} | GET | Return specific enrollment. |
+| getAllOrgs | /orgs | GET | Return collection of orgs. |
+| getOrg | /orgs/{id} | GET | Return specific org. |
+| getAllSchools | /schools | GET | Return collection of schools. A school is an instance of an org. |
+| getSchool | /schools/{id} | GET | Return specific school. A school is an instance of an org. |
+| getAllStudents | /students | GET | Return collection of students. A student is an instance of a user. |
+| getStudent | /students/{id} | GET | Return specific student. A student is an instance of a user. |
+| getAllTeachers | /teachers | GET | Return collection of teachers. A teacher is an instance of a user. |
+| getTeacher | /teachers/{id} | GET | Return specific teacher. |
+| getAllTerms | /terms | GET | Return collection of terms. A term is an instance of an academic session. |
+| getTerm | /terms/{id} | GET | Return specific term. |
+| getAllUsers | /users | GET | Return collection of users |
+| getUser | /users/{id} | GET | Return specific user |
+| getCoursesForSchool | /schools/{id}/courses | GET | Return the collection of courses taught by this school. |
+| getEnrollmentsForSchool | /schools/{school_id}/enrollments | GET | Return the collection of all enrollments for this school. |
+| getStudentsForSchool | /schools/{school_id}/students | GET | Return the collection of students attending this school. |
+| getTeachersForSchool | /schools/{school_id}/teachers | GET | Return the collection of teachers teaching at this school. |
+| getTermsForSchool | /schools/{school_id}/terms | GET | Return the collection of terms that are used by this school. |
+| getClassesForTerm | /terms/{term_id}/classes | GET | Return the collection of classes that are taught in this term. |
+| getClassesForCourse | /courses/{course_id}/classes | GET | Return the collection of classes that are teaching this course. |
+| getClassesForStudent | /students/{student_id}/classes | GET | Return the collection of classes that this student is taking. |
+| getClassesForTeacher | /teachers/{teacher_id}/classes | GET | Return the collection of classes that this teacher is teaching. |
+| getClassesForSchool | /schools/{school_id}/classes | GET | Return the collection of classes taught by this school. |
+| getClassesForUser | /users/{user_id}/classes | GET | Return the collection of classes attended by this user. |
+| getStudentsForClass | /classes/{class_id}/students | GET | Return the collection of students that are taking this class. |
+| getTeachersForClass | /classes/{class_id}/teachers | GET | Return the collection of teachers that are teaching this class. |
+
+### Not yet implemented
+| Service Call | Endpoint | HTTP Verb | Action |
+| --- | --- | --- | --- |
+| getAllGradingPeriods | /gradingPeriods | GET | Return collection of grading periods. A grading period is an instance of an academic session. |
+| getGradingPeriod | /gradingPeriods/{id} | GET | Return specific grading period. A grading period is an instance of an academic session. |
+| getAllDemographics | /demographics | GET | Return collection of demographics. |
+| getDemographics | /demographics/{id} | GET | Return specific demographics. |
+| getEnrollmentsForClassInSchool | /schools/{school_id}/classes/{class_id}/enrollments | GET | Return the collection of all enrollments into this class. |
+| getStudentsForClassInSchool | /schools/{school_id}/classes/{class_id}/students | GET | Return the collection of students taking this class in this school. |
+| getTeachersForClassInSchool | /schools/{school_id}/classes/{class_id}/teachers | GET | Return the collection of teachers taking this class in this school. |
+| getGradingPeriodsForTerm | /terms/{term_id}/gradingPeriods | GET | Return the collection of Grading Periods that are part of this term. |
+
+## Endpoints: Original
+| Service Call | Endpoint | HTTP Verb | Action |
+| --- | --- | --- | --- |
+| postAcademicSession | /academicSessions/ | POST | Create a new academic session. |
+| putAcademicSession | /academicSessions/{id} | PUT | Replace specific academic session. |
+| deleteAcademicSession | /academicSessions/{id} | DELETE | Delete specific academic session. |
+| postClass | /classes/ | POST | Create a new class. |
+| putClass | /classes/{id} | PUT | Replace specific class. |
+| deleteClass | /classes/{id} | DELETE | Delete specific class. |
+| postCourse | /courses/ | POST | Create a new course. |
+| putCourse | /courses/{id} | PUT | Replace specific course. |
+| deleteCourse | /courses/{id} | DELETE | Delete specific course. |
+| postEnrollment | /enrollments/ | POST | Create a new enrollment. |
+| putEnrollment | /enrollments/{id} | PUT | Replace specific enrollment. |
+| deleteEnrollment | /enrollments/{id} | DELETE | Delete specific enrollment. |
+| postOrg | /orgs/ | POST | Create a new org. |
+| putOrg | /orgs/{id} | PUT | Replace specific org. |
+| deleteOrg | /orgs/{id} | DELETE | Delete specific org. |
 
 ## Pagination
  + limit : the number of result to return : The default value for limit is 100.
@@ -218,3 +249,7 @@ $ curl -H "Authorization: Bearer [accesstoken]" -i http[s]://[servername][:port]
 ```
 http[s]://[servername][:port]/api-docs
 ```
+
+## Database dependency
+ + One of MySQL/MariaDB, PostgreSQL (9.5+), and SQLite (3.24.0+) is needed to bulk update data.
+ + MySQL is Default DB and code for it is well maintained than others.

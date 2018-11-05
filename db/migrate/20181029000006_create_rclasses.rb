@@ -15,8 +15,13 @@ class CreateRclasses < ActiveRecord::Migration[5.1]
       t.string :subjects
       t.string :subjectCodes
       t.string :periods
+      t.integer :application_id, default: 0, null: false
 
       t.timestamps
     end
+    add_index :rclasses, :sourcedId, unique: true
+    add_index :rclasses, :courseSourcedId
+    add_index :rclasses, :termSourcedIds
+    add_index :rclasses, :application_id
   end
 end

@@ -19,8 +19,11 @@ class CreateUsers < ActiveRecord::Migration[5.1]
       t.string :agentSourcedIds
       t.string :grades
       t.string :password
+      t.integer :application_id, default: 0, null: false
 
       t.timestamps
     end
+    add_index :users, :sourcedId, unique: true
+    add_index :users, :application_id
   end
 end

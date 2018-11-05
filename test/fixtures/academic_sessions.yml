@@ -12,6 +12,7 @@
 #  endDate          :date
 #  parentSourcedId  :string
 #  schoolYear       :integer
+#  application_id   :integer          default(0), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #

@@ -27,7 +27,7 @@ gem 'rack-cors'
 
 gem 'activerecord-import'
 gem 'annotate'
-gem 'doorkeeper'
+gem 'doorkeeper', '~> 5.0.1'
 gem 'doorkeeper-i18n'
 gem 'rubyzip'
 gem 'whenever', require: false
