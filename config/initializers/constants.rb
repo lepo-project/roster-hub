@@ -7,7 +7,8 @@ LIMIT = 100
 VERSION_OF_MANIFEST='1.0'
 VERSION_OF_ONEROSTER='1.1'
 OFFSET = 0
-ROSTER_FILES = ['academicSessions','categories','classes','classResources','courses','courseResources','demographics','enrollments','lineItems','orgs','resources','results','users']
+# The order of the files in this array is important: Validations including associations are executed in this order.
+ROSTER_FILES = ['academicSessions','categories','demographics','orgs','resources','courses','users','classes','courseResources','classResources','enrollments','lineItems','results']
 ZIP_MODE = false
 INCLUDE_CLASSES = %w[]
 EXCLUDE_CLASSES = %w[]

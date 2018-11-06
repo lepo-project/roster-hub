@@ -20,9 +20,9 @@
 
 class Course < ApplicationRecord
   include Swagger::V1p1::CourseSchema
-  belongs_to :org, primary_key: :sourcedId, foreign_key: :orgSourcedId
-  has_many :rclasses, primary_key: :sourcedId, foreign_key: :courseSourcedId
-  # Validations for OneRoster bulk data
   before_create :generate_sourcedId
-  validates :title, :orgSourcedId, presence: true
+  belongs_to :org, primary_key: :sourcedId, foreign_key: :orgSourcedId, inverse_of: :courses
+  has_many :rclasses, primary_key: :sourcedId, foreign_key: :courseSourcedId, inverse_of: :course
+  # Validations for OneRoster bulk data
+  validates :sourcedId, :title, :org, presence: true
 end

@@ -20,8 +20,9 @@
 class AcademicSession < ApplicationRecord
   include Swagger::V1p1::AcademicSessionSchema
   self.inheritance_column = :_type_disabled
-  # Validations for OneRoster bulk data
   before_create :generate_sourcedId
-  validates :title, :startDate, :endDate, :schoolYear, presence: true
+  has_many :rclasses, primary_key: :sourcedId, foreign_key: :termSourcedIds, inverse_of: :term
+  # Validations for OneRoster bulk data
+  validates :sourcedId, :title, :startDate, :endDate, :schoolYear, presence: true
   validates :type, inclusion: { in: %w[gradingPeriod semester schoolYear term]}
 end
