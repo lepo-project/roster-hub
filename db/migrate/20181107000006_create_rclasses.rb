@@ -1,7 +1,7 @@
 class CreateRclasses < ActiveRecord::Migration[5.1]
   def change
-    create_table :rclasses do |t|
-      t.string :sourcedId
+    create_table :rclasses, id: false do |t|
+      t.string :sourcedId, primary_key: true, null: false
       t.string :status
       t.datetime :dateLastModified
       t.string :title
@@ -19,8 +19,9 @@ class CreateRclasses < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
-    add_index :rclasses, :sourcedId, unique: true
+    # add_index :rclasses, :sourcedId, unique: true
     add_index :rclasses, :courseSourcedId
+    add_index :rclasses, :schoolSourcedId
     add_index :rclasses, :termSourcedIds
     add_index :rclasses, :application_id
   end

@@ -113,7 +113,7 @@ module V1p1
     end
 
     def render_titled_json(title, relation)
-      render json: {title => relation}, except: %i[id application_id created_at updated_at]
+      render json: {title => relation}, except: %i[application_id created_at updated_at]
     end
 
     private

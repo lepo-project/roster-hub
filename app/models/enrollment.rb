@@ -2,8 +2,7 @@
 #
 # Table name: enrollments
 #
-#  id               :integer          not null, primary key
-#  sourcedId        :string
+#  sourcedId        :string           not null, primary key
 #  status           :string
 #  dateLastModified :datetime
 #  classSourcedId   :string
@@ -20,11 +19,12 @@
 
 class Enrollment < ApplicationRecord
   include Swagger::V1p1::EnrollmentSchema
-  belongs_to :rclass, primary_key: :sourcedId, foreign_key: :classSourcedId
-  belongs_to :school, primary_key: :sourcedId, foreign_key: :schoolSourcedId, class_name: 'Org'
-  belongs_to :user, primary_key: :sourcedId, foreign_key: :userSourcedId
-  # Validations for OneRoster bulk data
   before_create :generate_sourcedId
-  validates :classSourcedId, :schoolSourcedId, :userSourcedId, presence: true
+  belongs_to :rclass, foreign_key: :classSourcedId, inverse_of: :enrollments
+  belongs_to :school, foreign_key: :schoolSourcedId, class_name: 'Org', inverse_of: :enrollments
+  belongs_to :user, foreign_key: :userSourcedId, inverse_of: :enrollments
+  # Validations for OneRoster bulk data
+  # ATTENTION: If validates for presence begins with association, NO validations are executed for mariaDB!(NEED CHECK)
+  validates :application_id, :rclass, :school, :user, presence: true
   validates :role, inclusion: { in: %w[administrator aide guardian parent proctor relative student teacher]}
 end

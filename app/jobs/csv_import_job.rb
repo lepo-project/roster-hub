@@ -27,7 +27,6 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     end
     csv_to_backup
     @logger.info('-----CSV import end:' + Time.zone.now.to_s + '-----')
-    check_consistency
   end
 
   private
@@ -93,26 +92,33 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
 
   def csv_to_db(fn, cl)
     fullname_flag = (cl == User) && FULLNAME_IN_FAMILYNAME
-    ids = []
+    sourcedIds = []
     instances = []
     CSV.foreach(get_filepath(fn), headers: true, encoding: 'UTF-8') do |row|
       hash = row.to_hash
       split_fullname(hash) if fullname_flag
       hash.select! { |k, _| cl.column_names.include? k }
-      ids.push hash['sourcedId']
+      sourcedIds.push hash['sourcedId']
       instances.push cl.new(hash)
     end
-    update_columns = cl.column_names.reject{|c| %w[id sourcedId created_at].include? c}
+    update_columns = cl.column_names.reject{|c| %w[sourcedId created_at].include? c}
+
     case @db_adapter
     when 'mysql', 'mysql2'
       # bulk update for MySQL and MariaDB
-      cl.import instances, on_duplicate_key_update: update_columns
+      result = cl.import instances, on_duplicate_key_update: update_columns
     when 'postgresql', 'sqlite'
       # bulk update for PostgreSQL (9.5+) and SQLite (3.24.0+)
-      cl.import instances, on_duplicate_key_update: {conflict_target: [:sourcedId], columns: update_columns}
+      result = cl.import instances, on_duplicate_key_update: {conflict_target: [:sourcedId], columns: update_columns}
     end
-    @logger.info "Imported to #{cl.table_name} => #{instances.size}"
-    ids
+
+    result.failed_instances.each do |fi|
+      fi.errors.messages.each_key do |erk|
+        @logger.warn " ERROR: #{cl.name} sourcedId=#{fi.sourcedId} has invalid #{erk.to_s}"
+      end
+    end
+    @logger.info "Imported to #{cl.table_name} => #{instances.size - result.failed_instances.size}"
+    sourcedIds
   end
 
   def split_fullname(hash)
@@ -143,56 +149,5 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
       read_files.push(fcl) if 'bulk'.eql?(manifest_hash['file.' + fcl])
     end
     read_files
-  end
-
-  # consistency check
-  def check_consistency
-    @logger.info('-----Check start:' + Time.zone.now.to_s + '-----')
-    # check_course
-    consistency_of_course
-    # check enrollment
-    consistency_of_enrollment
-    # check class
-    consistency_of_class
-    @logger.info('-----Check end:' + Time.zone.now.to_s + '-----')
-  end
-
-  def consistency_of_course
-    Course.find_each do |course|
-      org = Org.find_by(sourcedId: course.orgSourcedId)
-      logger_err('Course', course.sourcedId, ['orgSourcedId']) if org.nil?
-    end
-  end
-
-  def consistency_of_enrollment
-    Enrollment.find_each do |enrollment|
-      err = []
-      org = Org.find_by(sourcedId: enrollment.schoolSourcedId)
-      err.push('orgSourcedId') if org.nil?
-      rclass = Rclass.find_by(sourcedId: enrollment.classSourcedId)
-      err.push('classSourcedId') if rclass.nil?
-      user = User.find_by(sourcedId: enrollment.userSourcedId)
-      err.push('userSourcedId') if user.nil?
-      logger_err('Enrollment', enrollment.sourcedId, err) if err.present?
-    end
-  end
-
-  def consistency_of_class
-    Rclass.find_each do |rclass|
-      err = []
-      course = Course.find_by(sourcedId: rclass.courseSourcedId)
-      err.push('courseSourceId') if course.nil?
-      as = AcademicSession.find_by(sourcedId: rclass.termSourcedIds)
-      err.push('termSourcedId') if as.nil?
-      org = Org.find_by(sourcedId: rclass.schoolSourcedId)
-      err.push('orgSourcedId') if org.nil?
-      logger_err('Class', rclass.sourcedId, err) if err.present?
-    end
-  end
-
-  def logger_err(objname, id, errstr_array)
-    return if errstr_array.empty?
-    errstr = errstr_array.join(', ')
-    @logger.info 'ERROR:' + objname + ' sourcedId=' + id + ' has invalid ' + errstr
   end
 end

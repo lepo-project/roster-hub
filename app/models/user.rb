@@ -2,8 +2,7 @@
 #
 # Table name: users
 #
-#  id               :integer          not null, primary key
-#  sourcedId        :string
+#  sourcedId        :string           not null, primary key
 #  status           :string
 #  dateLastModified :datetime
 #  enabledUser      :boolean
@@ -28,10 +27,13 @@
 
 class User < ApplicationRecord
   include Swagger::V1p1::UserSchema
-  has_many :enrollments, primary_key: :sourcedId, foreign_key: :userSourcedId
+  before_create :generate_sourcedId
+  # Assumption: User does not belong to multiple orgs
+  belongs_to :org, foreign_key: :orgSourcedIds, inverse_of: :users
+  has_many :enrollments, foreign_key: :userSourcedId, inverse_of: :user
   has_many :rclasses, through: :enrollments
   # Validations for OneRoster bulk data
-  before_create :generate_sourcedId
-  validates :enabledUser, :orgSourcedIds, :username, :givenName, :familyName, presence: true
+  validates :username, :givenName, :familyName, :application_id, :org, presence: true
+  validates :enabledUser, inclusion: { in: [true, false] }
   validates :role, inclusion: { in: %w[administrator aide guardian parent proctor relative student teacher]}
 end

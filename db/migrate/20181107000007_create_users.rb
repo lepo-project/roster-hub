@@ -1,7 +1,7 @@
 class CreateUsers < ActiveRecord::Migration[5.1]
   def change
-    create_table :users do |t|
-      t.string :sourcedId
+    create_table :users, id: false do |t|
+      t.string :sourcedId, primary_key: true, null: false
       t.string :status
       t.datetime :dateLastModified
       t.boolean :enabledUser
@@ -23,7 +23,8 @@ class CreateUsers < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
-    add_index :users, :sourcedId, unique: true
+    # add_index :users, :sourcedId, unique: true
+    add_index :users, :orgSourcedIds
     add_index :users, :application_id
   end
 end

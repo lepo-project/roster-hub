@@ -2,8 +2,7 @@
 #
 # Table name: academic_sessions
 #
-#  id               :integer          not null, primary key
-#  sourcedId        :string
+#  sourcedId        :string           not null, primary key
 #  status           :string
 #  dateLastModified :datetime
 #  title            :string
@@ -20,8 +19,9 @@
 class AcademicSession < ApplicationRecord
   include Swagger::V1p1::AcademicSessionSchema
   self.inheritance_column = :_type_disabled
-  # Validations for OneRoster bulk data
   before_create :generate_sourcedId
-  validates :title, :startDate, :endDate, :schoolYear, presence: true
+  has_many :rclasses, foreign_key: :termSourcedIds, inverse_of: :term
+  # Validations for OneRoster bulk data
+  validates :title, :startDate, :endDate, :schoolYear, :application_id, presence: true
   validates :type, inclusion: { in: %w[gradingPeriod semester schoolYear term]}
 end

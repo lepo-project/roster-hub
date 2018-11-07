@@ -60,19 +60,18 @@
 # Setting
 ```
 [config/initializers/constants.rb]  
+    BACKUP_DIR = 'backup'
     CSV_FILE_PATH=':rails_root/public/csv'
     CSV_FILE_PATH = 'public/csv'
+    CSV_IMPORT_LOG = 'public/csv/CsvImport.log'
     CSV_ZIP_FILE = 'csv.zip'
-    BACKUP_DIR = 'backup'
-    ROSTER_FILES = ['academicSessions','categories','classes','classResources','courses','courseResources','demographics','enrollments','lineItems','orgs','resources','results','users']
-    ZIP_MODE = true
     LIMIT = 100
     OFFSET = 0
-    CSV_IMPORT_LOG = 'public/csv/CsvImport.log'
-    PERMIT_ADDRESSES = []
+    ROSTER_FILES = ['academicSessions','categories','demographics','orgs','resources','courses','users','classes','courseResources','classResources','enrollments','lineItems','results']
+    ZIP_MODE = true
+    INCLUDE_CLASSES = %w[]
+    EXCLUDE_CLASSES = %w[]
 ```
-- PERMIT_ADDRESSES: Forward matching.
-*e.g.* ['127.0.0.1', '192.168.']
 
 - To disable Basic authorization for access tokens,
 you will need to configure doorkeeper's access_token_methods.
@@ -141,6 +140,7 @@ To allow only specific ip address, add permit_ips.
 > app = Doorkeeper::Application.new name: 'applicationname',redirect_uri: 'http://xxxxx/', uid: '[uid]',secret: '[secret]', permit_ips: 'ip1,ip2,...'
 ```
 - permit_ips : Forward matching.
+*e.g.* ['127.0.0.1', '192.168.']
 
 2. Request access token with uid and secret.  
 ```

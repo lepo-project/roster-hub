@@ -2,8 +2,7 @@
 #
 # Table name: rclasses
 #
-#  id               :integer          not null, primary key
-#  sourcedId        :string
+#  sourcedId        :string           not null, primary key
 #  status           :string
 #  dateLastModified :datetime
 #  title            :string
@@ -24,13 +23,15 @@
 
 class Rclass < ApplicationRecord
   include Swagger::V1p1::ClassSchema
-  belongs_to :course, primary_key: :sourcedId, foreign_key: :courseSourcedId
-  belongs_to :school, primary_key: :sourcedId, foreign_key: :schoolSourcedId, class_name: 'Org'
-  has_many :enrollments, primary_key: :sourcedId, foreign_key: :classSourcedId
+  before_create :generate_sourcedId
+  belongs_to :course, foreign_key: :courseSourcedId, inverse_of: :rclasses
+  belongs_to :school, foreign_key: :schoolSourcedId, class_name: 'Org', inverse_of: :rclasses
+  # Assumption: Class does not belong to multiple terms
+  belongs_to :term, foreign_key: :termSourcedIds, class_name: 'AcademicSession', inverse_of: :rclasses
+  has_many :enrollments, foreign_key: :classSourcedId, inverse_of: :rclass
   has_many :students, -> { where('enrollments.role = ?', 'student') }, through: :enrollments, source: :user
   has_many :teachers, -> { where('enrollments.role = ?', 'teacher') }, through: :enrollments, source: :user
   # Validations for OneRoster bulk data
-  before_create :generate_sourcedId
-  validates :title, :courseSourcedId, :schoolSourcedId, :termSourcedIds, presence: true
+  validates :title, :application_id, :course, :school, :term, presence: true
   validates :classType, inclusion: { in: %w[homeroom scheduled]}
 end
