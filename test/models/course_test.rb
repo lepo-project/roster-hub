@@ -2,8 +2,7 @@
 #
 # Table name: courses
 #
-#  id                  :integer          not null, primary key
-#  sourcedId           :string
+#  sourcedId           :string           not null, primary key
 #  status              :string
 #  dateLastModified    :datetime
 #  schoolYearSourcedId :string

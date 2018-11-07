@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181029000007) do
+ActiveRecord::Schema.define(version: 20181107000007) do
 
-  create_table "academic_sessions", force: :cascade do |t|
-    t.string "sourcedId"
+  create_table "academic_sessions", primary_key: "sourcedId", id: :string, force: :cascade do |t|
     t.string "status"
     t.datetime "dateLastModified"
     t.string "title"
@@ -26,11 +25,10 @@ ActiveRecord::Schema.define(version: 20181029000007) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["application_id"], name: "index_academic_sessions_on_application_id"
-    t.index ["sourcedId"], name: "index_academic_sessions_on_sourcedId", unique: true
+    t.index ["sourcedId"], name: "sqlite_autoindex_academic_sessions_1", unique: true
   end
 
-  create_table "courses", force: :cascade do |t|
-    t.string "sourcedId"
+  create_table "courses", primary_key: "sourcedId", id: :string, force: :cascade do |t|
     t.string "status"
     t.datetime "dateLastModified"
     t.string "schoolYearSourcedId"
@@ -44,11 +42,11 @@ ActiveRecord::Schema.define(version: 20181029000007) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["application_id"], name: "index_courses_on_application_id"
-    t.index ["sourcedId"], name: "index_courses_on_sourcedId", unique: true
+    t.index ["orgSourcedId"], name: "index_courses_on_orgSourcedId"
+    t.index ["sourcedId"], name: "sqlite_autoindex_courses_1", unique: true
   end
 
-  create_table "enrollments", force: :cascade do |t|
-    t.string "sourcedId"
+  create_table "enrollments", primary_key: "sourcedId", id: :string, force: :cascade do |t|
     t.string "status"
     t.datetime "dateLastModified"
     t.string "classSourcedId"
@@ -63,7 +61,8 @@ ActiveRecord::Schema.define(version: 20181029000007) do
     t.datetime "updated_at", null: false
     t.index ["application_id"], name: "index_enrollments_on_application_id"
     t.index ["classSourcedId"], name: "index_enrollments_on_classSourcedId"
-    t.index ["sourcedId"], name: "index_enrollments_on_sourcedId", unique: true
+    t.index ["schoolSourcedId"], name: "index_enrollments_on_schoolSourcedId"
+    t.index ["sourcedId"], name: "sqlite_autoindex_enrollments_1", unique: true
     t.index ["userSourcedId"], name: "index_enrollments_on_userSourcedId"
   end
 
@@ -109,8 +108,7 @@ ActiveRecord::Schema.define(version: 20181029000007) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
-  create_table "orgs", force: :cascade do |t|
-    t.string "sourcedId"
+  create_table "orgs", primary_key: "sourcedId", id: :string, force: :cascade do |t|
     t.string "status"
     t.datetime "dateLastModified"
     t.string "name"
@@ -121,11 +119,10 @@ ActiveRecord::Schema.define(version: 20181029000007) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["application_id"], name: "index_orgs_on_application_id"
-    t.index ["sourcedId"], name: "index_orgs_on_sourcedId", unique: true
+    t.index ["sourcedId"], name: "sqlite_autoindex_orgs_1", unique: true
   end
 
-  create_table "rclasses", force: :cascade do |t|
-    t.string "sourcedId"
+  create_table "rclasses", primary_key: "sourcedId", id: :string, force: :cascade do |t|
     t.string "status"
     t.datetime "dateLastModified"
     t.string "title"
@@ -144,12 +141,12 @@ ActiveRecord::Schema.define(version: 20181029000007) do
     t.datetime "updated_at", null: false
     t.index ["application_id"], name: "index_rclasses_on_application_id"
     t.index ["courseSourcedId"], name: "index_rclasses_on_courseSourcedId"
-    t.index ["sourcedId"], name: "index_rclasses_on_sourcedId", unique: true
+    t.index ["schoolSourcedId"], name: "index_rclasses_on_schoolSourcedId"
+    t.index ["sourcedId"], name: "sqlite_autoindex_rclasses_1", unique: true
     t.index ["termSourcedIds"], name: "index_rclasses_on_termSourcedIds"
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "sourcedId"
+  create_table "users", primary_key: "sourcedId", id: :string, force: :cascade do |t|
     t.string "status"
     t.datetime "dateLastModified"
     t.boolean "enabledUser"
@@ -171,7 +168,8 @@ ActiveRecord::Schema.define(version: 20181029000007) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["application_id"], name: "index_users_on_application_id"
-    t.index ["sourcedId"], name: "index_users_on_sourcedId", unique: true
+    t.index ["orgSourcedIds"], name: "index_users_on_orgSourcedIds"
+    t.index ["sourcedId"], name: "sqlite_autoindex_users_1", unique: true
   end
 
 end

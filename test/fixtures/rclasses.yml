@@ -2,8 +2,7 @@
 #
 # Table name: rclasses
 #
-#  id               :integer          not null, primary key
-#  sourcedId        :string
+#  sourcedId        :string           not null, primary key
 #  status           :string
 #  dateLastModified :datetime
 #  title            :string

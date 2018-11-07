@@ -2,8 +2,7 @@
 #
 # Table name: orgs
 #
-#  id               :integer          not null, primary key
-#  sourcedId        :string
+#  sourcedId        :string           not null, primary key
 #  status           :string
 #  dateLastModified :datetime
 #  name             :string

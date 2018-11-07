@@ -2,8 +2,7 @@
 #
 # Table name: courses
 #
-#  id                  :integer          not null, primary key
-#  sourcedId           :string
+#  sourcedId           :string           not null, primary key
 #  status              :string
 #  dateLastModified    :datetime
 #  schoolYearSourcedId :string
@@ -21,8 +20,8 @@
 class Course < ApplicationRecord
   include Swagger::V1p1::CourseSchema
   before_create :generate_sourcedId
-  belongs_to :org, primary_key: :sourcedId, foreign_key: :orgSourcedId, inverse_of: :courses
-  has_many :rclasses, primary_key: :sourcedId, foreign_key: :courseSourcedId, inverse_of: :course
+  belongs_to :org, foreign_key: :orgSourcedId, inverse_of: :courses
+  has_many :rclasses, foreign_key: :courseSourcedId, inverse_of: :course
   # Validations for OneRoster bulk data
-  validates :sourcedId, :title, :org, presence: true
+  validates :title, :application_id, :org, presence: true
 end

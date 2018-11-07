@@ -2,8 +2,7 @@
 #
 # Table name: orgs
 #
-#  id               :integer          not null, primary key
-#  sourcedId        :string
+#  sourcedId        :string           not null, primary key
 #  status           :string
 #  dateLastModified :datetime
 #  name             :string
@@ -19,11 +18,11 @@ class Org < ApplicationRecord
   include Swagger::V1p1::OrgSchema
   self.inheritance_column = :_type_disabled
   before_create :generate_sourcedId
-  has_many :courses, primary_key: :sourcedId, foreign_key: :orgSourcedId, inverse_of: :org
-  has_many :enrollments, primary_key: :sourcedId, foreign_key: :schoolSourcedId, inverse_of: :school
-  has_many :rclasses, primary_key: :sourcedId, foreign_key: :schoolSourcedId, inverse_of: :school
-  has_many :users, primary_key: :sourcedId, foreign_key: :orgSourcedIds, inverse_of: :org
+  has_many :courses, foreign_key: :orgSourcedId, inverse_of: :org
+  has_many :enrollments, foreign_key: :schoolSourcedId, inverse_of: :school
+  has_many :rclasses, foreign_key: :schoolSourcedId, inverse_of: :school
+  has_many :users, foreign_key: :orgSourcedIds, inverse_of: :org
   # Validations for OneRoster bulk data
-  validates :sourcedId, :name, presence: true
+  validates :name, :application_id, presence: true
   validates :type, inclusion: { in: %w[department school district local state national]}
 end

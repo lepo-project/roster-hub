@@ -2,8 +2,7 @@
 #
 # Table name: enrollments
 #
-#  id               :integer          not null, primary key
-#  sourcedId        :string
+#  sourcedId        :string           not null, primary key
 #  status           :string
 #  dateLastModified :datetime
 #  classSourcedId   :string

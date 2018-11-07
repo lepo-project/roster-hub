@@ -92,16 +92,16 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
 
   def csv_to_db(fn, cl)
     fullname_flag = (cl == User) && FULLNAME_IN_FAMILYNAME
-    ids = []
+    sourcedIds = []
     instances = []
     CSV.foreach(get_filepath(fn), headers: true, encoding: 'UTF-8') do |row|
       hash = row.to_hash
       split_fullname(hash) if fullname_flag
       hash.select! { |k, _| cl.column_names.include? k }
-      ids.push hash['sourcedId']
+      sourcedIds.push hash['sourcedId']
       instances.push cl.new(hash)
     end
-    update_columns = cl.column_names.reject{|c| %w[id sourcedId created_at].include? c}
+    update_columns = cl.column_names.reject{|c| %w[sourcedId created_at].include? c}
 
     case @db_adapter
     when 'mysql', 'mysql2'
@@ -118,7 +118,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
       end
     end
     @logger.info "Imported to #{cl.table_name} => #{instances.size - result.failed_instances.size}"
-    ids
+    sourcedIds
   end
 
   def split_fullname(hash)

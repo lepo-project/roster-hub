@@ -1,7 +1,7 @@
 class CreateEnrollments < ActiveRecord::Migration[5.1]
   def change
-    create_table :enrollments do |t|
-      t.string :sourcedId
+    create_table :enrollments, id: false do |t|
+      t.string :sourcedId, primary_key: true, null: false
       t.string :status
       t.datetime :dateLastModified
       t.string :classSourcedId
@@ -15,8 +15,9 @@ class CreateEnrollments < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
-    add_index :enrollments, :sourcedId, unique: true
+    # add_index :enrollments, :sourcedId, unique: true
     add_index :enrollments, :classSourcedId
+    add_index :enrollments, :schoolSourcedId
     add_index :enrollments, :userSourcedId
     add_index :enrollments, :application_id
   end

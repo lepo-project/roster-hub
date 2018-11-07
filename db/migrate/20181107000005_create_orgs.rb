@@ -1,7 +1,7 @@
 class CreateOrgs < ActiveRecord::Migration[5.1]
   def change
-    create_table :orgs do |t|
-      t.string :sourcedId
+    create_table :orgs, id: false do |t|
+      t.string :sourcedId, primary_key: true, null: false
       t.string :status
       t.datetime :dateLastModified
       t.string :name
@@ -12,7 +12,7 @@ class CreateOrgs < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
-    add_index :orgs, :sourcedId, unique: true
+    # add_index :orgs, :sourcedId, unique: true
     add_index :orgs, :application_id
   end
 end
