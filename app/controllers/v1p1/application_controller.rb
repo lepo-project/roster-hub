@@ -99,7 +99,7 @@ module V1p1
     end
 
     def render_json(model_name, relations)
-      title = model_name[0].downcase + model_name[1, model_name.length - 1]
+      title = decapitalize model_name
       if params[:sourcedId].present?
         if relations.empty?
           # Status code 404: Not Found - there is no resource behind the URI.
@@ -118,8 +118,13 @@ module V1p1
 
     private
 
+    def decapitalize stirng
+      stirng[0].downcase + stirng[1, stirng.length - 1]
+    end
+
     def json_title
-      (controller_name == 'rclasses') ? 'class' : controller_name.singularize
+      title = decapitalize controller_name.singularize.camelize
+      (controller_name == 'rclasses') ? 'class' : title
     end
 
     def model_class
