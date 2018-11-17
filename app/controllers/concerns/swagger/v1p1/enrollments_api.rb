@@ -45,7 +45,7 @@ module Swagger::V1p1::EnrollmentsApi
             end
           end
         end
-        response 200 do
+        response 201 do
           key :description, 'successful operation'
           schema do
             key :type, :object

@@ -17,7 +17,7 @@ module V1p1
     def create
       record = model_class.new(strong_params.merge({application_id: doorkeeper_token.application_id}))
       if record.save
-        render_titled_json json_title, record
+        render_titled_json json_title, record, 201
       else
         # Status code 400: Bad Request - the Request was invalid and cannot be served.
         render nothing: true, status: 400
@@ -112,8 +112,8 @@ module V1p1
       end
     end
 
-    def render_titled_json(title, relation)
-      render json: {title => relation}, except: %i[application_id created_at updated_at]
+    def render_titled_json(title, relation, status = 200)
+      render json: {title => relation}, except: %i[application_id created_at updated_at], status: status
     end
 
     private
