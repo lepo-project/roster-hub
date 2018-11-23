@@ -109,7 +109,8 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
       result = cl.import instances, on_duplicate_key_update: update_columns
     when 'postgresql', 'sqlite'
       # bulk update for PostgreSQL (9.5+) and SQLite (3.24.0+)
-      result = cl.import instances, on_duplicate_key_update: {conflict_target: [:sourcedId], columns: update_columns}
+      update_columns = update_columns.reject{|c| %w[updated_at].include? c}
+      result = cl.import instances, on_duplicate_key_update: {conflict_target: ['"sourcedId"'], columns: update_columns}
     end
 
     result.failed_instances.each do |fi|
