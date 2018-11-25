@@ -16,6 +16,16 @@ module V1p1
 
     def create
       record = model_class.new(strong_params.merge({application_id: doorkeeper_token.application_id}))
+      case controller_name
+      when 'rclasses'
+        if record.courseSourcedId.nil?
+          # Automatically create related Course if API client does not handle course
+          app_course = Course.find_by(application_id: doorkeeper_token.application_id)
+          app_course = Course.create(title: '...', orgSourcedId: record.schoolSourcedId, application_id: doorkeeper_token.application_id) if app_course.nil?
+          record.courseSourcedId = app_course.sourcedId
+        end
+      end
+
       if record.save
         render_titled_json json_title, record, 201
       else
