@@ -25,7 +25,8 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
       destroy_unused Rclass, {termSourcedIds: csv_sourcedIds['academicSessions']}, csv_sourcedIds['classes']
       destroy_unused Enrollment, {classSourcedId: csv_sourcedIds['classes']}, csv_sourcedIds['enrollments']
     end
-    csv_to_backup
+    # backup zip file or csv files depending on the value of ZIP_MODE
+    ZIP_MODE ? remove_csv : backup_csv
     @logger.info('-----CSV import end:' + Time.zone.now.to_s + '-----')
   end
 
@@ -52,21 +53,8 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   def abstract_zip
     return true unless ZIP_MODE # continue importing process if ZIP_MODE=false
     return false if extract_to_csv.nil? # stop processing if zip file not exists
-    backup_zipfile
+    backup_zip
     true
-  end
-
-  def csv_to_backup
-    FileUtils.cd(Rails.root.join(CSV_FILE_PATH))
-    check_file = 'manifest.csv'
-    return unless File.exist?(check_file)
-    timestamp = File.stat(check_file).mtime.strftime('%Y%m%d%H%M%S')
-    backuppath = File.join('backup', timestamp)
-    #backuppath = BACKUP_DIR
-    FileUtils.mkdir_p(backuppath) unless FileTest.exist?(backuppath)
-    Dir.glob('*.csv') do |f|
-      FileUtils.mv(f, File.join(backuppath, f))
-    end
   end
 
   def extract_to_csv
@@ -79,7 +67,19 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def backup_zipfile
+  def backup_csv
+    FileUtils.cd(Rails.root.join(CSV_FILE_PATH))
+    check_file = 'manifest.csv'
+    return unless File.exist?(check_file)
+    timestamp = File.stat(check_file).mtime.strftime('%Y%m%d%H%M%S')
+    backuppath = File.join(BACKUP_DIR, timestamp)
+    FileUtils.mkdir_p(backuppath) unless FileTest.exist?(backuppath)
+    Dir.glob('*.csv') do |f|
+      FileUtils.mv(f, File.join(backuppath, f))
+    end
+  end
+
+  def backup_zip
     FileUtils.cd(Rails.root.join(CSV_FILE_PATH))
     return nil unless File.exist?(CSV_ZIP_FILE)
     timestamp = File.stat(CSV_ZIP_FILE).mtime.strftime('%Y%m%d%H%M%S')
@@ -87,6 +87,13 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     FileUtils.mkdir_p(BACKUP_DIR) unless FileTest.exist?(BACKUP_DIR)
     Dir.glob(CSV_ZIP_FILE) do |f|
       FileUtils.mv(f, File.join(BACKUP_DIR, backup_file_name))
+    end
+  end
+
+  def remove_csv
+    FileUtils.cd(Rails.root.join(CSV_FILE_PATH))
+    Dir.glob('*.csv') do |f|
+      FileUtils.rm(f)
     end
   end
 
