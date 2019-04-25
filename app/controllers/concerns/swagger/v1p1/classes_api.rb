@@ -45,7 +45,7 @@ module Swagger::V1p1::ClassesApi
             end
           end
         end
-        response 200 do
+        response 201 do
           key :description, 'Create a new class'
           schema do
             key :type, :object

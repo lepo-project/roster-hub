@@ -16,8 +16,18 @@ module V1p1
 
     def create
       record = model_class.new(strong_params.merge({application_id: doorkeeper_token.application_id}))
+      case controller_name
+      when 'rclasses'
+        if record.courseSourcedId.nil?
+          # Automatically create related Course if API client does not handle course
+          app_course = Course.find_by(application_id: doorkeeper_token.application_id)
+          app_course = Course.create(title: '...', orgSourcedId: record.schoolSourcedId, application_id: doorkeeper_token.application_id) if app_course.nil?
+          record.courseSourcedId = app_course.sourcedId
+        end
+      end
+
       if record.save
-        render_titled_json json_title, record
+        render_titled_json json_title, record, 201
       else
         # Status code 400: Bad Request - the Request was invalid and cannot be served.
         render nothing: true, status: 400
@@ -99,7 +109,7 @@ module V1p1
     end
 
     def render_json(model_name, relations)
-      title = model_name[0].downcase + model_name[1, model_name.length - 1]
+      title = decapitalize model_name
       if params[:sourcedId].present?
         if relations.empty?
           # Status code 404: Not Found - there is no resource behind the URI.
@@ -112,14 +122,19 @@ module V1p1
       end
     end
 
-    def render_titled_json(title, relation)
-      render json: {title => relation}, except: %i[application_id created_at updated_at]
+    def render_titled_json(title, relation, status = 200)
+      render json: {title => relation}, except: %i[application_id created_at updated_at], status: status
     end
 
     private
 
+    def decapitalize stirng
+      stirng[0].downcase + stirng[1, stirng.length - 1]
+    end
+
     def json_title
-      (controller_name == 'rclasses') ? 'class' : controller_name.singularize
+      title = decapitalize controller_name.singularize.camelize
+      (controller_name == 'rclasses') ? 'class' : title
     end
 
     def model_class
