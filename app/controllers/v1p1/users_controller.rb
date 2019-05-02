@@ -21,6 +21,12 @@ module V1p1
       render_json('User', relations)
     end
 
+    def students_for_class_in_school
+      relations = Rclass.find_by(sourcedId: params[:classSourcedId], schoolSourcedId: params[:schoolSourcedId]).students
+      relations = indexbase_with_condition(relations)
+      render_json('User', relations)
+    end
+
     def teachers
       relations = User.where(role: 'teacher')
       relations = indexbase_with_condition(relations)
@@ -36,6 +42,12 @@ module V1p1
     def teachers_for_school
       # Assumption: User does not belong to multiple orgs
       relations = User.where(orgSourcedIds: params[:schoolSourcedId], role: 'teacher')
+      relations = indexbase_with_condition(relations)
+      render_json('User', relations)
+    end
+
+    def teachers_for_class_in_school
+      relations = Rclass.find_by(sourcedId: params[:classSourcedId], schoolSourcedId: params[:schoolSourcedId]).teachers
       relations = indexbase_with_condition(relations)
       render_json('User', relations)
     end

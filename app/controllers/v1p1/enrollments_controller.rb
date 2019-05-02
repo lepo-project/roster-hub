@@ -8,6 +8,12 @@ module V1p1
       render_json('Enrollment', relations)
     end
 
+    def class_in_school
+      relations = Enrollment.where(schoolSourcedId: params[:schoolSourcedId], classSourcedId: params[:classSourcedId])
+      relations = indexbase_with_condition(relations)
+      render_json('Enrollment', relations)
+    end
+
     private
 
     def strong_params

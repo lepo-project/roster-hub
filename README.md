@@ -185,6 +185,9 @@ $ curl -H "Authorization: Bearer [accesstoken]" -H "Content-Type:application/jso
 | getAllUsers | /users | GET | Return collection of users |
 | getUser | /users/{id} | GET | Return specific user |
 | getCoursesForSchool | /schools/{id}/courses | GET | Return the collection of courses taught by this school. |
+| getEnrollmentsForClassInSchool | /schools/{school_id}/classes/{class_id}/enrollments | GET | Return the collection of all enrollments into this class. |
+| getStudentsForClassInSchool | /schools/{school_id}/classes/{class_id}/students | GET | Return the collection of students taking this class in this school. |
+| getTeachersForClassInSchool | /schools/{school_id}/classes/{class_id}/teachers | GET | Return the collection of teachers taking this class in this school. |
 | getEnrollmentsForSchool | /schools/{school_id}/enrollments | GET | Return the collection of all enrollments for this school. |
 | getStudentsForSchool | /schools/{school_id}/students | GET | Return the collection of students attending this school. |
 | getTeachersForSchool | /schools/{school_id}/teachers | GET | Return the collection of teachers teaching at this school. |
@@ -205,9 +208,6 @@ $ curl -H "Authorization: Bearer [accesstoken]" -H "Content-Type:application/jso
 | getGradingPeriod | /gradingPeriods/{id} | GET | Return specific grading period. A grading period is an instance of an academic session. |
 | getAllDemographics | /demographics | GET | Return collection of demographics. |
 | getDemographics | /demographics/{id} | GET | Return specific demographics. |
-| getEnrollmentsForClassInSchool | /schools/{school_id}/classes/{class_id}/enrollments | GET | Return the collection of all enrollments into this class. |
-| getStudentsForClassInSchool | /schools/{school_id}/classes/{class_id}/students | GET | Return the collection of students taking this class in this school. |
-| getTeachersForClassInSchool | /schools/{school_id}/classes/{class_id}/teachers | GET | Return the collection of teachers taking this class in this school. |
 | getGradingPeriodsForTerm | /terms/{term_id}/gradingPeriods | GET | Return the collection of Grading Periods that are part of this term. |
 
 ## Endpoints: Original

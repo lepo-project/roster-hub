@@ -255,5 +255,63 @@ module Swagger::V1p1::UsersApi
         end
       end
     end
+
+    swagger_path '/schools/{schoolSourcedId}/classes/{classSourcedId}/students' do
+      operation :get do
+        key :summary, 'Return all students that are taking this class in this school.'
+        key :description, 'Return the collection of students taking this class in this school.'
+        key :tags, [
+          'user'
+        ]
+        parameter :schoolSourcedId
+        parameter :classSourcedId
+        parameter :limit
+        parameter :offset
+        parameter :sorting
+        parameter :orderBy
+        parameter :filter
+        response 200 do
+          key :description, 'successful operation'
+          schema do
+            key :type, :object
+            property :users do
+              key :type, :array
+              items do
+                key :'$ref', :User
+              end
+            end
+          end
+        end
+      end
+    end
+
+    swagger_path '/schools/{schoolSourcedId}/classes/{classSourcedId}/teachers' do
+      operation :get do
+        key :summary, 'Return all teachers that are teaching this class in this school.'
+        key :description, 'Return the collection of teachers taking this class in this school.'
+        key :tags, [
+          'user'
+        ]
+        parameter :schoolSourcedId
+        parameter :classSourcedId
+        parameter :limit
+        parameter :offset
+        parameter :sorting
+        parameter :orderBy
+        parameter :filter
+        response 200 do
+          key :description, 'successful operation'
+          schema do
+            key :type, :object
+            property :users do
+              key :type, :array
+              items do
+                key :'$ref', :User
+              end
+            end
+          end
+        end
+      end
+    end
   end
 end
