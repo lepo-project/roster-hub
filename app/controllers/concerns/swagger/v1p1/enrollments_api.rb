@@ -138,5 +138,29 @@ module Swagger::V1p1::EnrollmentsApi
         end
       end
     end
+
+    swagger_path '/schools/{schoolSourcedId}/classes/{classSourcedId}/enrollments' do
+      operation :get do
+        key :summary, 'Return all enrollments into this class.'
+        key :description, 'Return the collection of all enrollments into this class.'
+        key :tags, [
+          'enrollment'
+        ]
+        parameter :schoolSourcedId
+        parameter :classSourcedId
+        response 200 do
+          key :description, 'successful operation'
+          schema do
+            key :type, :object
+            property :enrollments do
+              key :type, :array
+              items do
+                key :'$ref', :Enrollment
+              end
+            end
+          end
+        end
+      end
+    end
   end
 end
