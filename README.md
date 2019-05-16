@@ -1,14 +1,15 @@
-# OneRoster1.1 CSV import and API  
+# RosterHub
+Roster Management System based on IMS OneRoster specification
 *Under development*
 
-# Out of the application range
+## Out of the application range
 + Demographic Data
 + Line Items
 + Line Item Categories
 + Resources
 + Results
 
-# Some limitations
+## Some limitations
 + This program supports only bulk data.
 
 + Academic Session
@@ -57,7 +58,7 @@
    * grades: not supported.
    * password: not supported.
 
-# Setting
+## Setting
 ```
 [config/initializers/constants.rb]  
     BACKUP_DIR = 'backup'
@@ -84,23 +85,23 @@ Doorkeeper.configure do
 end
 ```
 
-# Install
+## Install
 ```
 $ bundle install  
 $ rails db:migrate  
 ```
 
-# Test
+## Test
 ```
 $ rails spec
 ```
 
-# Start the server.
+## Start the server.
 ```
 $ rails s
 ```
 
-# CSV Import
+## CSV Import
 
 1. copy the zip file or csv files in the CSV_FILE_PATH  
   A sample csv.zip file exists.
@@ -127,7 +128,7 @@ $ crontab -l
 ```  
 (*) bin/rails requires execute permissions.
 
-# Get data with API
+## Get data with API
 
 1. Register your app with uid and secret.  
 'uid' and 'secret' are important.  

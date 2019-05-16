@@ -5,22 +5,22 @@ class ApiDocsController < ApplicationController
         key :swagger, '2.0'
         info do
           key :version, '1.0.0'
-          key :title, 'OnerosterCSVtoAPI'
-          key :description, 'CSV to API converter for IMS OneRoster v1.1 specification.'
-          key :termsOfService, 'https://github.com/j-nakashima/OneRosterCSVtoAPI/blob/master/LICENSE'
+          key :title, 'RosterHub'
+          key :description, 'Roster Management System based on IMS OneRoster specification'
+          key :termsOfService, 'https://github.com/lepo-project/roster-hub/blob/master/LICENSE'
           contact do
             key :name, 'Oita University, Information Technology Center.'
           end
           license do
-            key :name, 'GNU GENERAL PUBLIC LICENSE'
+            key :name, 'GNU Affero General Public License v3.0'
           end
         end
         tag do
-          key :name, 'OnerosterCSVtoAPI'
+          key :name, 'RosterHub'
           key :description, 'IMS Oneroster API + original API'
           externalDocs do
             key :description, 'Find more info here'
-            key :url, 'https://github.com/j-nakashima/OneRosterCSVtoAPI'
+            key :url, 'https://github.com/lepo-project/roster-hub'
           end
         end
         key :host, 'localhost:3000'
