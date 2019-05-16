@@ -1,15 +1,18 @@
 # RosterHub
 Roster Management System based on IMS OneRoster specification
+
+## Features
+### Current status
 *Under development*
 
-## Out of the application range
+### Out of the application range
 + Demographic Data
 + Line Items
 + Line Item Categories
 + Resources
 + Results
 
-## Some limitations
+### Some limitations
 + This program supports only bulk data.
 
 + Academic Session
