@@ -25,7 +25,6 @@ gem 'puma', '~> 3.7'
 gem 'rack-cors'
 
 gem 'activerecord-import'
-gem 'annotate'
 gem 'doorkeeper', '~> 5.0.1'
 gem 'doorkeeper-i18n'
 gem 'rubyzip'
@@ -42,6 +41,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'annotate'
   gem 'rubocop'
 end
 

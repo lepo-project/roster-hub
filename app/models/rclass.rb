@@ -33,5 +33,5 @@ class Rclass < ApplicationRecord
   has_many :teachers, -> { where('enrollments.role = ?', 'teacher') }, through: :enrollments, source: :user
   # Validations for OneRoster bulk data
   validates :title, :application_id, :course, :school, :term, presence: true
-  validates :classType, inclusion: { in: %w[homeroom scheduled]}
+  validates :classType, inclusion: { in: %w[homeroom scheduled] }
 end

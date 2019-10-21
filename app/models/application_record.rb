@@ -5,6 +5,7 @@ class ApplicationRecord < ActiveRecord::Base
 
   def generate_sourcedId
     return if self.sourcedId.present?
+
     self.sourcedId = loop do
       uuid = SecureRandom.uuid
       break uuid unless self.class.exists?(sourcedId: uuid)

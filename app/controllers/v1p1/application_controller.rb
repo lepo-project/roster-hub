@@ -39,7 +39,7 @@ module V1p1
       if record.nil?
         # Status code 404: Not Found - there is no resource behind the URI.
         render nothing: true, status: 404
-      elsif (record.application_id != doorkeeper_token.application_id)
+      elsif record.application_id != doorkeeper_token.application_id
         # Status code 401: Unauthorized - the Request requires authorization.
         render nothing: true, status: 401
       elsif !record.update_attributes(strong_params)
@@ -55,7 +55,7 @@ module V1p1
       if record.nil?
         # Status code 404: Not Found - there is no resource behind the URI.
         render nothing: true, status: 404
-      elsif (record.application_id != doorkeeper_token.application_id)
+      elsif record.application_id != doorkeeper_token.application_id
         # Status code 401: Unauthorized - the Request requires authorization.
         render nothing: true, status: 401
       else
@@ -85,7 +85,7 @@ module V1p1
       filter_param = params[:filter]
       unless filter_param.nil?
         # filter_parm to url decode
-        filtervalue = URI.decode_www_form_component(filter_param, enc=Encoding::UTF_8)
+        filtervalue = URI.decode_www_form_component(filter_param, enc = Encoding::UTF_8)
         # divide with logical operation
         logical = nil
         filtervalues = filtervalue.split(' AND ')
@@ -123,18 +123,18 @@ module V1p1
     end
 
     def render_titled_json(title, relation, status = 200)
-      render json: {title => relation}, except: %i[application_id created_at updated_at], status: status
+      render json: { title => relation }, except: %i[application_id created_at updated_at], status: status
     end
 
     private
 
-    def decapitalize stirng
+    def decapitalize(stirng)
       stirng[0].downcase + stirng[1, stirng.length - 1]
     end
 
     def json_title
       title = decapitalize controller_name.singularize.camelize
-      (controller_name == 'rclasses') ? 'class' : title
+      controller_name == 'rclasses' ? 'class' : title
     end
 
     def model_class
@@ -166,12 +166,15 @@ module V1p1
 
     def permit_ip_address?(ip)
       return false unless doorkeeper_token
+
       permit_address = doorkeeper_token.application.permit_ips
       return true if permit_address.nil?
+
       permit_address = doorkeeper_token.application.permit_ips.split(',')
       return true unless defined? permit_address
       return true if permit_address.empty?
       return true if permit_address.include?(request.remote_ip)
+
       permit_address.each do |pa|
         pa = pa.delete(' ')
         return true if ip.start_with?(pa) # begins-with match

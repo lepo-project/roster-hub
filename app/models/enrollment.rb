@@ -26,5 +26,5 @@ class Enrollment < ApplicationRecord
   # Validations for OneRoster bulk data
   # ATTENTION: If validates for presence begins with association, NO validations are executed for mariaDB!(NEED CHECK)
   validates :application_id, :rclass, :school, :user, presence: true
-  validates :role, inclusion: { in: %w[administrator aide guardian parent proctor relative student teacher]}
+  validates :role, inclusion: { in: %w[administrator aide guardian parent proctor relative student teacher] }
 end
