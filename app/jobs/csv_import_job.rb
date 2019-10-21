@@ -6,15 +6,18 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
 
   def perform(*)
     @logger = ActiveSupport::Logger.new(Rails.root.join(CSV_IMPORT_LOG))
-    @logger.info('-----CSV import start:' + Time.zone.now.to_s + '-----')
+    @logger.info('----- Start CSV import job: ' + Time.zone.now.to_s + ' -----')
     return unless abstract_zip
     return unless File.exist?(get_filepath('manifest'))
+
     csv_data = CSV.read(get_filepath('manifest'), headers: false)
     manifest_hash = Hash[*csv_data.flatten]
     csv_files = validate_manifest(manifest_hash)
-    @logger.info('STOP:Invalid manifest') if csv_files.nil? || csv_files.empty?
-    return if csv_files.nil? || csv_files.empty?
-    @logger.info('-A5-')
+    if csv_files.nil? || csv_files.empty?
+      @logger.warn('Error: Invalid manifest')
+      return
+    end
+
     @db_adapter = ActiveRecord::Base.connection.adapter_name.downcase
     csv_sourcedIds = {}
     ActiveRecord::Base.transaction do
@@ -22,22 +25,22 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
         cl = class_from_name(cf)
         csv_sourcedIds[cf] = csv_to_db(cf, cl) unless cl.nil?
       end
-      destroy_unused Rclass, {termSourcedIds: csv_sourcedIds['academicSessions']}, csv_sourcedIds['classes']
-      destroy_unused Enrollment, {classSourcedId: csv_sourcedIds['classes']}, csv_sourcedIds['enrollments']
+      destroy_unused Rclass, { termSourcedIds: csv_sourcedIds['academicSessions'] }, csv_sourcedIds['classes']
+      destroy_unused Enrollment, { classSourcedId: csv_sourcedIds['classes'] }, csv_sourcedIds['enrollments']
     end
     # backup zip file or csv files depending on the value of ZIP_MODE
     ZIP_MODE ? remove_csv : backup_csv
-    @logger.info('-----CSV import end:' + Time.zone.now.to_s + '-----')
+    @logger.info('----- End CSV import job: ' + Time.zone.now.to_s + ' -----')
   end
 
   private
 
-  def destroy_unused(cl, condition, csv_sourcedIds)
-    db_sourcedIds = cl.where(condition.merge({application_id: 0})).pluck('sourcedId')
-    db_sourcedIds.reject!{|id| csv_sourcedIds.include? id}
+  def destroy_unused(cls, condition, csv_sourcedIds)
+    db_sourcedIds = cls.where(condition.merge({ application_id: 0 })).pluck('sourcedId')
+    db_sourcedIds.reject! { |id| csv_sourcedIds.include? id }
     unless db_sourcedIds.empty?
-      cl.where(sourcedId: db_sourcedIds).destroy_all
-      @logger.info("Deleted from #{cl.table_name} => #{db_sourcedIds.size}")
+      cls.where(sourcedId: db_sourcedIds).destroy_all
+      @logger.info("Deleted from #{cls.table_name} => #{db_sourcedIds.size}")
     end
   end
 
@@ -53,6 +56,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   def abstract_zip
     return true unless ZIP_MODE # continue importing process if ZIP_MODE=false
     return false if extract_to_csv.nil? # stop processing if zip file not exists
+
     backup_zip
     true
   end
@@ -60,6 +64,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   def extract_to_csv
     FileUtils.cd(Rails.root.join(CSV_FILE_PATH))
     return nil unless File.exist?(CSV_ZIP_FILE)
+
     Zip::File.open(CSV_ZIP_FILE) do |zip|
       zip.each do |entry|
         zip.extract(entry, entry.name) { true }
@@ -71,6 +76,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     FileUtils.cd(Rails.root.join(CSV_FILE_PATH))
     check_file = 'manifest.csv'
     return unless File.exist?(check_file)
+
     timestamp = File.stat(check_file).mtime.strftime('%Y%m%d%H%M%S')
     backuppath = File.join(BACKUP_DIR, timestamp)
     FileUtils.mkdir_p(backuppath) unless FileTest.exist?(backuppath)
@@ -82,6 +88,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   def backup_zip
     FileUtils.cd(Rails.root.join(CSV_FILE_PATH))
     return nil unless File.exist?(CSV_ZIP_FILE)
+
     timestamp = File.stat(CSV_ZIP_FILE).mtime.strftime('%Y%m%d%H%M%S')
     backup_file_name = timestamp + '.zip'
     FileUtils.mkdir_p(BACKUP_DIR) unless FileTest.exist?(BACKUP_DIR)
@@ -97,35 +104,35 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def csv_to_db(fn, cl)
-    fullname_flag = (cl == User) && FULLNAME_IN_FAMILYNAME
+  def csv_to_db(csv_file, cls)
+    fullname_flag = (cls == User) && FULLNAME_IN_FAMILYNAME
     sourcedIds = []
     instances = []
-    CSV.foreach(get_filepath(fn), headers: true, encoding: 'UTF-8') do |row|
+    CSV.foreach(get_filepath(csv_file), headers: true, encoding: 'UTF-8') do |row|
       hash = row.to_hash
       split_fullname(hash) if fullname_flag
-      hash.select! { |k, _| cl.column_names.include? k }
+      hash.select! { |k, _| cls.column_names.include? k }
       sourcedIds.push hash['sourcedId']
-      instances.push cl.new(hash)
+      instances.push cls.new(hash)
     end
-    update_columns = cl.column_names.reject{|c| %w[sourcedId created_at].include? c}
+    update_columns = cls.column_names.reject { |c| %w[sourcedId created_at].include? c }
 
     case @db_adapter
     when 'mysql', 'mysql2'
       # bulk update for MySQL and MariaDB
-      result = cl.import instances, on_duplicate_key_update: update_columns
+      result = cls.import instances, on_duplicate_key_update: update_columns
     when 'postgresql', 'sqlite'
       # bulk update for PostgreSQL (9.5+) and SQLite (3.24.0+)
-      update_columns = update_columns.reject{|c| %w[updated_at].include? c}
-      result = cl.import instances, on_duplicate_key_update: {conflict_target: ['"sourcedId"'], columns: update_columns}
+      update_columns = update_columns.reject { |c| %w[updated_at].include? c }
+      result = cls.import instances, on_duplicate_key_update: { conflict_target: ['"sourcedId"'], columns: update_columns }
     end
 
     result.failed_instances.each do |fi|
       fi.errors.messages.each_key do |erk|
-        @logger.warn " ERROR: #{cl.name} sourcedId=#{fi.sourcedId} has invalid #{erk.to_s}"
+        @logger.warn " ERROR: #{cls.name} sourcedId=#{fi.sourcedId} has invalid #{erk}"
       end
     end
-    @logger.info "Imported to #{cl.table_name} => #{instances.size - result.failed_instances.size}"
+    @logger.info "Imported to #{cls.table_name} => #{instances.size - result.failed_instances.size}"
     sourcedIds
   end
 
@@ -152,6 +159,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     oneroster_version = manifest_hash['oneroster.version']
     return nil unless VERSION_OF_MANIFEST.eql?(manifest_version)
     return nil unless VERSION_OF_ONEROSTER.eql?(oneroster_version)
+
     read_files = []
     ROSTER_FILES.each do |fcl|
       read_files.push(fcl) if 'bulk'.eql?(manifest_hash['file.' + fcl])
