@@ -78,7 +78,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     return unless File.exist?(check_file)
 
     timestamp = File.stat(check_file).mtime.strftime('%Y%m%d%H%M%S')
-    backuppath = File.join(BACKUP_DIR, timestamp)
+    backuppath = File.join(CSV_BACKUP_DIR, timestamp)
     FileUtils.mkdir_p(backuppath) unless FileTest.exist?(backuppath)
     Dir.glob('*.csv') do |f|
       FileUtils.mv(f, File.join(backuppath, f))
@@ -91,9 +91,9 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
 
     timestamp = File.stat(CSV_ZIP_FILE).mtime.strftime('%Y%m%d%H%M%S')
     backup_file_name = timestamp + '.zip'
-    FileUtils.mkdir_p(BACKUP_DIR) unless FileTest.exist?(BACKUP_DIR)
+    FileUtils.mkdir_p(CSV_BACKUP_DIR) unless FileTest.exist?(CSV_BACKUP_DIR)
     Dir.glob(CSV_ZIP_FILE) do |f|
-      FileUtils.mv(f, File.join(BACKUP_DIR, backup_file_name))
+      FileUtils.mv(f, File.join(CSV_BACKUP_DIR, backup_file_name))
     end
   end
 

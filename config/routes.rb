@@ -6,12 +6,12 @@ Rails.application.routes.draw do
     scope 'oneroster' do
       namespace 'v1p1' do
         root 'orgs#index'
-        resources 'academicSessions', param: :sourcedId, controller: 'academic_sessions', only: [:index, :show, :create, :update, :destroy]
-        resources 'classes', param: :sourcedId, controller: 'rclasses', only: [:index, :show, :create, :update, :destroy]
-        resources 'courses', param: :sourcedId, only: [:index, :show, :create, :update, :destroy]
-        resources 'enrollments', param: :sourcedId, only: [:index, :show, :create, :update, :destroy]
-        resources 'orgs', param: :sourcedId, only: [:index, :show, :create, :update, :destroy]
-        resources 'users', param: :sourcedId, only: [:index, :show]
+        resources 'academicSessions', param: :sourcedId, controller: 'academic_sessions', only: %i[index show create update destroy]
+        resources 'classes', param: :sourcedId, controller: 'rclasses', only: %i[index show create update destroy]
+        resources 'courses', param: :sourcedId, only: %i[index show create update destroy]
+        resources 'enrollments', param: :sourcedId, only: %i[index show create update destroy]
+        resources 'orgs', param: :sourcedId, only: %i[index show create update destroy]
+        resources 'users', param: :sourcedId, only: %i[index show]
         get 'classes/:classSourcedId/students', to: 'users#students_for_class'
         get 'classes/:classSourcedId/teachers', to: 'users#teachers_for_class'
         get 'courses/:courseSourcedId/classes', to: 'rclasses#course'

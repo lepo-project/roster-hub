@@ -64,17 +64,19 @@ Roster Management System based on IMS OneRoster specification
 ## Setting
 ```
 [config/initializers/constants.rb]  
-    BACKUP_DIR = 'backup'
-    CSV_FILE_PATH=':rails_root/public/csv'
-    CSV_FILE_PATH = 'public/csv'
-    CSV_IMPORT_LOG = 'public/csv/CsvImport.log'
-    CSV_ZIP_FILE = 'csv.zip'
+    APIDOC = 'doc/apidoc.json'.freeze
+    CSV_BACKUP_DIR = 'backup'.freeze
+    CSV_FILE_PATH = 'storage/csv'.freeze
+    CSV_IMPORT_LOG = 'log/csv_import.log'.freeze
+    CSV_ZIP_FILE = 'oneroster.zip'.freeze
     LIMIT = 100
     OFFSET = 0
-    ROSTER_FILES = ['academicSessions','categories','demographics','orgs','resources','courses','users','classes','courseResources','classResources','enrollments','lineItems','results']
+    VERSION_OF_MANIFEST = '1.0'.freeze
+    VERSION_OF_ONEROSTER = '1.1'.freeze
+    ROSTER_FILES = %w[academicSessions categories demographics orgs resources courses users classes courseResources classResources enrollments lineItems results].freeze
     ZIP_MODE = true
-    INCLUDE_CLASSES = %w[]
-    EXCLUDE_CLASSES = %w[]
+    INCLUDE_CLASSES = %w[].freeze
+    EXCLUDE_CLASSES = %w[].freeze
 ```
 
 - To disable Basic authorization for access tokens,
