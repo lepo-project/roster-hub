@@ -19,4 +19,5 @@
 !/tmp/.keep
 
 .byebug_history
-/storage
+/storage/*
+!/storage/sample_csv
