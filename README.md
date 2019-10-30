@@ -5,7 +5,7 @@ RosterHub is an open-source roster management system for mainly educational inst
 The goal of RosterHub is to support interoperating the educational systems effectively by utilizing the learning information of SIS (Student Information System).
 Main features are followings.
 
-* CSV to REST API converter for learning information based on [IMS OneRoster v1.1 standard](https://www.imsglobal.org/oneroster-v11-final-specification#_Toc480452046 "OneRoster v1.1 Final Specification")
+* CSV to REST API converter for learning information based on [IMS OneRoster v1.1 standard](https://www.imsglobal.org/oneroster-v11-final-specification "OneRoster v1.1 Final Specification")
 * Roster management functions with original REST API
 
 For more information, see the links in the [References](#References).
@@ -13,7 +13,8 @@ For more information, see the links in the [References](#References).
 NOTICE: RosterHub is currently under development status.
 
 
-## Settings
+## Setting
+- Configure some constants.
 ```
 [config/initializers/constants.rb]  
     APIDOC = 'doc/apidoc.json'.freeze
@@ -53,7 +54,7 @@ $ rails db:migrate
 $ rails spec
 ```
 
-## CSV Import
+## Import data from CSV files
 
 1. copy the zip file or csv files in the CSV_FILE_PATH  
   A sample csv.zip file exists.
@@ -116,9 +117,8 @@ For some resources, original endpoints with POST/PUT/DELETE methods are experime
 $ curl -H "Authorization: Bearer [accesstoken]" -H "Content-Type:application/json" -i http[s]://[servername][:port]/ims/oneroster/v1p1/[endpoint] -X POST -d '{"[resourcename]": {...}}'
 ```
 
-
-## Endpoints
-### OneRoster 1.1 for rostering endpoints: Implemented
+## OneRoster 1.1 endpoints
+### Already implemented to RosterHub
 | Endpoint | HTTP Verb | Action |
 | --- | --- | --- |
 | /academicSessions | GET | Return collection of all academic sessions. |
@@ -158,7 +158,7 @@ $ curl -H "Authorization: Bearer [accesstoken]" -H "Content-Type:application/jso
 | /classes/{class_id}/students | GET | Return the collection of students that are taking this class. |
 | /classes/{class_id}/teachers | GET | Return the collection of teachers that are teaching this class. |
 
-### OneRoster 1.1for rostering endpoints: Not yet implemented
+### Not yet implemented to RosterHub
 | Endpoint | HTTP Verb | Action |
 | --- | --- | --- |
 | /gradingPeriods | GET | Return collection of grading periods. A grading period is an instance of an academic session. |
@@ -167,7 +167,7 @@ $ curl -H "Authorization: Bearer [accesstoken]" -H "Content-Type:application/jso
 | /demographics/{id} | GET | Return specific demographics. |
 | /terms/{term_id}/gradingPeriods | GET | Return the collection of Grading Periods that are part of this term. |
 
-### RosterHub original endpoints
+## RosterHub original endpoints (Experimental)
 | Endpoint | HTTP Verb | Action |
 | --- | --- | --- |
 | /academicSessions/ | POST | Create a new academic session. |
@@ -186,59 +186,53 @@ $ curl -H "Authorization: Bearer [accesstoken]" -H "Content-Type:application/jso
 | /orgs/{id} | PUT | Replace specific org. |
 | /orgs/{id} | DELETE | Delete specific org. |
 
-### Parameters
-#### Pagination
+## Parameters
+### Pagination
  + limit : the number of result to return : The default value for limit is 100.
  + offset : the index of the first record to return.(zero indexed) : The default value for offset is 0.  
 
- (ex.)http[s]://[domain]/ims/oneroster/v1p1/students?limit=10&offset=10
-#### Sorting
+ (ex.) http[s]://[domain]/ims/oneroster/v1p1/students?limit=10&offset=10
+### Sorting
  + sort=[data_field]
  + orderBy=[asc|desc]  
 
- (ex.)http[s]://[domain]/ims/oneroster/v1p1/students?sort=familyName&orderBy=asc
-#### Filtering
+ (ex.) http[s]://[domain]/ims/oneroster/v1p1/students?sort=familyName&orderBy=asc
+### Filtering
  + filter=[data_field][predicate][value] or [data_field][predicate][value][logical][data_field][predicate][value]  
 
  Filter queries MUST be URL encoded.  
  (ex.) http[s]://[domain]/ims/oneroster/v1p1/filter=familyName%3D%27jones%27
 
-### OpenAPI
+## API document in OpenAPI v2
+ + To get API document in JSON format, start RosterHub server and access to the following URL.
 ```
 http[s]://[servername][:port]/api-docs
 ```
 
 ## Remarks
++ Only bulk data is supported (delta data is NOT supported)
 
-### Out of scope resources
-+ Demographic Data
-+ Line Items
-+ Line Item Categories
-+ Resources
-+ Results
-
-### Limitations
-+ This program supports only bulk data.
++ NOT supported resources: Demographic Data, Line Items, Line Item Categories, Resources, Results
 
 + Academic Session
-  * Not supported fields: parent, children
-+ Class ('Rclass' object is used as 'Class' in RosterHub code)
-  * Not supported fields: location, grades, subjects, subjectCodes, periods, resources
-  * Only one term is supported: terms
+  * NOT supported fields: parent, children
++ Class ('Rclass' is used as 'Class' in RosterHub code)
+  * NOT supported fields: location, grades, subjects, subjectCodes, periods, resources
+  * Only one value is supported: terms
 + Course
-  * Not supported fields: schoolYear, courseCode, grades, subjects, subjectCodes, resources
+  * NOT supported fields: schoolYear, courseCode, grades, subjects, subjectCodes, resources
 + Enrollment
-  * Not supported fields: status, beginDate, endDate
+  * NOT supported fields: status, beginDate, endDate
 + Org
-  * Not supported fields: status, identifier, parent, children
+  * NOT supported fields: status, identifier, parent, children
 + User
-  * Not supported fields: status, userIds, middleName, identifier, sms, phone, agents, grades, password
-  * Only one org is supported: orgs
+  * NOT supported fields: status, userIds, middleName, identifier, sms, phone, agents, grades, password
+  * Only one value is supported: orgs
 
 ### Database dependency
  + One of MySQL/MariaDB, PostgreSQL (9.5+), and SQLite (3.24.0+) is needed to bulk update data.
  + MySQL is Default DB and code for it is well maintained than others.
 
 ## References
- + IMS OneRoster: Specification, https://www.imsglobal.org/oneroster-v11-final-specification#_Toc480452046
- + IMS OneRoster: CSV Tables, https://www.imsglobal.org/oneroster-v11-final-csv-tables#_Toc480293254
+ + IMS OneRoster: Specification, https://www.imsglobal.org/oneroster-v11-final-specification
+ + IMS OneRoster: CSV Tables, https://www.imsglobal.org/oneroster-v11-final-csv-tables
