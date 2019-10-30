@@ -4,7 +4,7 @@ module Swagger::V1p1::OrgSchema
 
   included do
     swagger_schema :Org do
-      key :required, [:sourcedId, :name, :type]
+      key :required, %i[sourcedId name type]
       property :sourcedId do
         key :description, 'Source Identifier'
         key :type, :string
@@ -22,13 +22,24 @@ module Swagger::V1p1::OrgSchema
       property :type do
         key :description, 'Organization type'
         key :type, :string
-        key :enum, ['departmnet', 'school', 'distinct', 'local', 'state', 'national']
+        key :enum, %w[departmnet school distinct local state national]
       end
       property :identifier do
         key :description, 'not used'
       end
       property :parentSourcedId do
         key :description, 'not used'
+      end
+      if METADATA[:orgs]
+        property :metadata do
+          key :type, :object
+          METADATA[:orgs].each do |k, v|
+            property k do
+              key :description, v[:description] if v[:description]
+              key :type, v[:type] if v[:type]
+            end
+          end
+        end
       end
     end
 
@@ -46,13 +57,24 @@ module Swagger::V1p1::OrgSchema
       property :type do
         key :description, 'Organization type'
         key :type, :string
-        key :enum, ['departmnet', 'school', 'distinct', 'local', 'state', 'national']
+        key :enum, %w[departmnet school distinct local state national]
       end
       property :identifier do
         key :description, 'not used'
       end
       property :parentSourcedId do
         key :description, 'not used'
+      end
+      if METADATA[:orgs]
+        property :metadata do
+          key :type, :object
+          METADATA[:orgs].each do |k, v|
+            property k do
+              key :description, v[:description] if v[:description]
+              key :type, v[:type] if v[:type]
+            end
+          end
+        end
       end
     end
   end

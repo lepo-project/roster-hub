@@ -4,7 +4,7 @@ module Swagger::V1p1::UserSchema
 
   included do
     swagger_schema :User do
-      key :required, [:sourcedId, :enabledUser, :orgSourcedIds, :role, :username, :givenName, :familyName, :email]
+      key :required, %i[sourcedId enabledUser orgSourcedIds role username givenName familyName email]
       property :sourcedId do
         key :description, 'Source Identifier'
         key :type, :string
@@ -26,7 +26,7 @@ module Swagger::V1p1::UserSchema
       property :role do
         key :description, 'Role type'
         key :type, :string
-        key :enum, ['administrator', 'aide', 'guardian', 'parent', 'proctor', 'relative', 'student', 'teacher']
+        key :enum, %w[administrator aide guardian parent proctor relative student teacher]
       end
       property :username do
         key :description, 'User ID'
@@ -36,11 +36,11 @@ module Swagger::V1p1::UserSchema
         key :description, 'not used'
       end
       property :givenName do
-        key :description, 'Given Name. For example: Hanako'
+        key :description, 'Given name'
         key :type, :string
       end
       property :familyName do
-        key :description, 'Family Name. For example: Takahashi'
+        key :description, 'Family name'
         key :type, :string
       end
       property :middleName do
@@ -67,6 +67,17 @@ module Swagger::V1p1::UserSchema
       end
       property :password do
         key :description, 'not used'
+      end
+      if METADATA[:users]
+        property :metadata do
+          key :type, :object
+          METADATA[:users].each do |k, v|
+            property k do
+              key :description, v[:description] if v[:description]
+              key :type, v[:type] if v[:type]
+            end
+          end
+        end
       end
     end
   end

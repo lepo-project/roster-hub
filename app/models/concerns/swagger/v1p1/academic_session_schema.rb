@@ -4,7 +4,7 @@ module Swagger::V1p1::AcademicSessionSchema
 
   included do
     swagger_schema :AcademicSession do
-    key :required, [:sourcedId, :title, :type, :startDate, :endDate, :schoolYear]
+      key :required, %i[sourcedId title type startDate endDate schoolYear]
       property :sourcedId do
         key :description, 'Source Identifier'
         key :type, :string
@@ -41,6 +41,17 @@ module Swagger::V1p1::AcademicSessionSchema
         key :type, :string
         key :format, 'YYYY'
       end
+      if METADATA[:academicSessions]
+        property :metadata do
+          key :type, :object
+          METADATA[:academicSessions].each do |k, v|
+            property k do
+              key :description, v[:description] if v[:description]
+              key :type, v[:type] if v[:type]
+            end
+          end
+        end
+      end
     end
 
     swagger_schema :AcademicSessionInput do
@@ -76,7 +87,17 @@ module Swagger::V1p1::AcademicSessionSchema
         key :type, :string
         key :format, 'YYYY'
       end
+      if METADATA[:academicSessions]
+        property :metadata do
+          key :type, :object
+          METADATA[:academicSessions].each do |k, v|
+            property k do
+              key :description, v[:description] if v[:description]
+              key :type, v[:type] if v[:type]
+            end
+          end
+        end
+      end
     end
-
   end
 end

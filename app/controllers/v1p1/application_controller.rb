@@ -123,7 +123,10 @@ module V1p1
     end
 
     def render_titled_json(title, relation, status = 200)
-      render json: { title => relation }, except: %i[application_id created_at updated_at], status: status
+      except_fields = %i[application_id created_at updated_at]
+      # metadata field is included only when it is set with METADATA constant.
+      except_fields.push 'metadata' if METADATA[decapitalize(controller_name.camelize).to_sym].nil?
+      render json: { title => relation }, except: except_fields, status: status
     end
 
     private

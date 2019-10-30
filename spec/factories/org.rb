@@ -1,7 +1,7 @@
 FactoryBot.define do
-    factory :org do
-        sourcedId   'or01-oita-u'
-        name 'OITA UNIVERSITY'
-        type 'school'
-    end
+  factory :org do
+    sourcedId 'or0001'
+    name 'Sample University'
+    type 'school'
+  end
 end

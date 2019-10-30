@@ -10,9 +10,8 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     return unless abstract_zip
     return unless File.exist?(get_filepath('manifest'))
 
-    csv_data = CSV.read(get_filepath('manifest'), headers: false)
-    manifest_hash = Hash[*csv_data.flatten]
-    csv_files = validate_manifest(manifest_hash)
+    manifest_table = CSV.read(get_filepath('manifest'), headers: true)
+    csv_files = validate_manifest manifest_table
     if csv_files.nil? || csv_files.empty?
       @logger.warn('Error: Invalid manifest')
       return
@@ -22,7 +21,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     csv_sourcedIds = {}
     ActiveRecord::Base.transaction do
       csv_files.each do |cf|
-        cl = class_from_name(cf)
+        cl = filename_to_class cf
         csv_sourcedIds[cf] = csv_to_db(cf, cl) unless cl.nil?
       end
       destroy_unused Rclass, { termSourcedIds: csv_sourcedIds['academicSessions'] }, csv_sourcedIds['classes']
@@ -44,7 +43,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def class_from_name(str)
+  def filename_to_class(str)
     case str
     when 'academicSessions', 'courses', 'enrollments', 'users', 'orgs'
       str.singularize.camelize.constantize
@@ -105,11 +104,13 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   end
 
   def csv_to_db(csv_file, cls)
+    metadata_flag = METADATA[csv_file.to_sym].present?
     fullname_flag = (cls == User) && FULLNAME_IN_FAMILYNAME
     sourcedIds = []
     instances = []
     CSV.foreach(get_filepath(csv_file), headers: true, encoding: 'UTF-8') do |row|
       hash = row.to_hash
+      metadata_to_json(hash, METADATA[csv_file.to_sym].keys) if metadata_flag
       split_fullname(hash) if fullname_flag
       hash.select! { |k, _| cls.column_names.include? k }
       sourcedIds.push hash['sourcedId']
@@ -136,6 +137,12 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     sourcedIds
   end
 
+  def metadata_to_json(hash, metadata)
+    hashed_metadata = metadata.map { |md| [md.to_s, hash['metadata.' + md.to_s]] }.to_h
+    hash['metadata'] = hashed_metadata.to_json
+    metadata.map { |md| hash.delete(md) }
+  end
+
   def split_fullname(hash)
     fullname = hash['familyName']
     space_index = fullname.index(/[[:space:]]/)
@@ -154,15 +161,14 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   end
 
   # bulk only
-  def validate_manifest(manifest_hash)
-    manifest_version = manifest_hash['manifest.version']
-    oneroster_version = manifest_hash['oneroster.version']
-    return nil unless VERSION_OF_MANIFEST.eql?(manifest_version)
-    return nil unless VERSION_OF_ONEROSTER.eql?(oneroster_version)
+  def validate_manifest(manifest_table)
+    manifest = manifest_table.to_a.to_h
+    return nil unless VERSION_OF_MANIFEST.eql?(manifest['manifest.version'])
+    return nil unless VERSION_OF_ONEROSTER.eql?(manifest['oneroster.version'])
 
     read_files = []
     ROSTER_FILES.each do |fcl|
-      read_files.push(fcl) if 'bulk'.eql?(manifest_hash['file.' + fcl])
+      read_files.push(fcl) if 'bulk'.eql?(manifest['file.' + fcl])
     end
     read_files
   end

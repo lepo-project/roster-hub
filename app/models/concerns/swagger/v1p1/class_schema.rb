@@ -4,7 +4,7 @@ module Swagger::V1p1::ClassSchema
 
   included do
     swagger_schema :Rclass do
-      key :required, [:sourcedId, :title, :courseSourcedId, :classCode, :classType, :schoolSourcedId, :termSourcedIds, :periods]
+      key :required, %i[sourcedId title courseSourcedId classCode classType schoolSourcedId termSourcedIds periods]
       property :sourcedId do
         key :description, 'Source Identifier'
         key :type, :string
@@ -31,9 +31,9 @@ module Swagger::V1p1::ClassSchema
         key :type, :string
       end
       property :classType do
-        key :description, "Class type."
+        key :description, 'Class type.'
         key :type, :string
-        key :enum, ['homeroom', 'scheduled']
+        key :enum, %w[homeroom scheduled]
       end
       property :location do
         key :description, 'not used'
@@ -55,6 +55,17 @@ module Swagger::V1p1::ClassSchema
       property :periods do
         key :description, 'The time slots in the day that the class will be given.'
         key :type, :string
+      end
+      if METADATA[:classes]
+        property :metadata do
+          key :type, :object
+          METADATA[:classes].each do |k, v|
+            property k do
+              key :description, v[:description] if v[:description]
+              key :type, v[:type] if v[:type]
+            end
+          end
+        end
       end
     end
 
@@ -81,9 +92,9 @@ module Swagger::V1p1::ClassSchema
         key :type, :string
       end
       property :classType do
-        key :description, "Class type."
+        key :description, 'Class type.'
         key :type, :string
-        key :enum, ['homeroom', 'scheduled']
+        key :enum, %w[homeroom scheduled]
       end
       property :location do
         key :description, 'not used'
@@ -105,6 +116,17 @@ module Swagger::V1p1::ClassSchema
       property :periods do
         key :description, 'The time slots in the day that the class will be given.'
         key :type, :string
+      end
+      if METADATA[:classes]
+        property :metadata do
+          key :type, :object
+          METADATA[:classes].each do |k, v|
+            property k do
+              key :description, v[:description] if v[:description]
+              key :type, v[:type] if v[:type]
+            end
+          end
+        end
       end
     end
   end
