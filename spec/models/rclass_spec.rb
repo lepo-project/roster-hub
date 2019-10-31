@@ -19,7 +19,7 @@
 #  application_id   :integer          default(0), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  metadata         :json
+#  metadata         :text
 #
 
 require 'rails_helper'

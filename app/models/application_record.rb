@@ -11,4 +11,8 @@ class ApplicationRecord < ActiveRecord::Base
       break uuid unless self.class.exists?(sourcedId: uuid)
     end
   end
+
+  def metadata
+    self[:metadata].class == String ? JSON.parse(self[:metadata]) : self[:metadata]
+  end
 end
