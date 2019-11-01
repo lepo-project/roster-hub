@@ -6,7 +6,7 @@ The goal of RosterHub is to support interoperating the educational systems effec
 Main features are followings.
 
 * CSV to REST API converter for learning information based on [IMS OneRoster v1.1 standard](https://www.imsglobal.org/oneroster-v11-final-specification "OneRoster v1.1 Final Specification")
-* Roster management functions with original REST API
+* Roster management function for educational apps by original REST API
 
 For more information, see the links in the [References](#References).
 
@@ -17,23 +17,23 @@ NOTICE: RosterHub is currently under development status.
 - Configure some constants.
 ```
 [config/initializers/constants.rb]  
-    APIDOC = 'doc/apidoc.json'.freeze
-    CSV_BACKUP_DIR = 'backup'.freeze
-    CSV_FILE_PATH = 'storage/csv'.freeze
-    CSV_IMPORT_LOG = 'log/csv_import.log'.freeze
-    CSV_ZIP_FILE = 'oneroster.zip'.freeze
-    LIMIT = 100
-    OFFSET = 0
-    VERSION_OF_MANIFEST = '1.0'.freeze
-    VERSION_OF_ONEROSTER = '1.1'.freeze
-    ROSTER_FILES = %w[academicSessions categories demographics orgs resources courses users classes courseResources classResources enrollments lineItems results].freeze
-    METADATA = {}.freeze
-    ZIP_MODE = true
-    INCLUDE_CLASSES = %w[].freeze
-    EXCLUDE_CLASSES = %w[].freeze
+APIDOC = 'doc/apidoc.json'.freeze
+CSV_BACKUP_DIR = 'backup'.freeze
+CSV_FILE_PATH = 'storage/csv'.freeze
+CSV_IMPORT_LOG = 'log/csv_import.log'.freeze
+CSV_ZIP_FILE = 'oneroster.zip'.freeze
+LIMIT = 100
+OFFSET = 0
+VERSION_OF_MANIFEST = '1.0'.freeze
+VERSION_OF_ONEROSTER = '1.1'.freeze
+ROSTER_FILES = %w[academicSessions categories demographics orgs resources courses users classes courseResources classResources enrollments lineItems results].freeze
+METADATA = {}.freeze
+ZIP_MODE = true
+INCLUDE_CLASSES = %w[].freeze
+EXCLUDE_CLASSES = %w[].freeze
 ```
 
-- To disable Basic authorization for access tokens,
+- To disable basic authorization for access tokens,
 it is needed to configure doorkeeper's access_token_methods.
 
 ```
@@ -54,18 +54,18 @@ $ rails db:migrate
 $ rails spec
 ```
 
-## Import data from CSV files
+## Import OneRoster data from CSV files
 
-1. copy the zip file or csv files in the CSV_FILE_PATH  
-  A sample csv.zip file exists.
+1. copy the zip file or csv files in the CSV_FILE_PATH. Sample oneroster.zip files exist in [storage/sample_csv/].
 
 2. execute importing csv files to the database.
-(execute now)  
+
+- execute now
 ```
 $ rails console  
 > CsvImportJob.perform_now
 ```
-(using cron jobs)  
+- using cron jobs
 
 1. write schedule in [config/schedule.rb].  
 (example) "everyday at 4:33 am"
@@ -203,7 +203,7 @@ $ curl -H "Authorization: Bearer [accesstoken]" -H "Content-Type:application/jso
  Filter queries MUST be URL encoded.  
  (ex.) http[s]://[domain]/ims/oneroster/v1p1/filter=familyName%3D%27jones%27
 
-## API document in OpenAPI v2
+## API document in OpenAPI v2 format
  + To get API document in JSON format, start RosterHub server and access to the following URL.
 ```
 http[s]://[servername][:port]/api-docs
@@ -231,7 +231,7 @@ http[s]://[servername][:port]/api-docs
 
 ### Database dependency
  + One of MySQL/MariaDB, PostgreSQL (9.5+), and SQLite (3.24.0+) is needed to bulk update data.
- + MySQL is Default DB and code for it is well maintained than others.
+ + MySQL/MariaDB is the default DB and code for it is well maintained than others.
 
 ## References
  + IMS OneRoster: Specification, https://www.imsglobal.org/oneroster-v11-final-specification

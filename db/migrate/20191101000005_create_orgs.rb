@@ -8,6 +8,7 @@ class CreateOrgs < ActiveRecord::Migration[5.1]
       t.string :type
       t.string :identifier
       t.string :parentSourcedId
+      t.text :metadata
       t.integer :application_id, default: 0, null: false
 
       t.timestamps

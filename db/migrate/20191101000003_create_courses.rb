@@ -11,6 +11,7 @@ class CreateCourses < ActiveRecord::Migration[5.1]
       t.string :orgSourcedId
       t.string :subjects
       t.string :subjectCodes
+      t.text :metadata
       t.integer :application_id, default: 0, null: false
 
       t.timestamps

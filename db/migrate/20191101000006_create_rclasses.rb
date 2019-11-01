@@ -15,6 +15,7 @@ class CreateRclasses < ActiveRecord::Migration[5.1]
       t.string :subjects
       t.string :subjectCodes
       t.string :periods
+      t.text :metadata
       t.integer :application_id, default: 0, null: false
 
       t.timestamps

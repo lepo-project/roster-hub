@@ -9,10 +9,10 @@
 #  type             :string
 #  identifier       :string
 #  parentSourcedId  :string
+#  metadata         :text
 #  application_id   :integer          default(0), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  metadata         :text
 #
 
 require 'rails_helper'

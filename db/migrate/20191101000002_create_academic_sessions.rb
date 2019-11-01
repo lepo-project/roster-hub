@@ -10,6 +10,7 @@ class CreateAcademicSessions < ActiveRecord::Migration[5.1]
       t.date :endDate
       t.string :parentSourcedId
       t.integer :schoolYear
+      t.text :metadata
       t.integer :application_id, default: 0, null: false
 
       t.timestamps

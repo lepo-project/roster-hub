@@ -131,8 +131,8 @@ module V1p1
 
     private
 
-    def decapitalize(stirng)
-      stirng[0].downcase + stirng[1, stirng.length - 1]
+    def decapitalize(str)
+      str[0].downcase + str[1, str.length - 1]
     end
 
     def json_title

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191022055249) do
+ActiveRecord::Schema.define(version: 20191101000007) do
 
   create_table "academic_sessions", primary_key: "sourcedId", id: :string, force: :cascade do |t|
     t.string "status"
@@ -21,10 +21,10 @@ ActiveRecord::Schema.define(version: 20191022055249) do
     t.date "endDate"
     t.string "parentSourcedId"
     t.integer "schoolYear"
+    t.text "metadata"
     t.integer "application_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "metadata"
     t.index ["application_id"], name: "index_academic_sessions_on_application_id"
     t.index ["sourcedId"], name: "sqlite_autoindex_academic_sessions_1", unique: true
   end
@@ -39,10 +39,10 @@ ActiveRecord::Schema.define(version: 20191022055249) do
     t.string "orgSourcedId"
     t.string "subjects"
     t.string "subjectCodes"
+    t.text "metadata"
     t.integer "application_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "metadata"
     t.index ["application_id"], name: "index_courses_on_application_id"
     t.index ["orgSourcedId"], name: "index_courses_on_orgSourcedId"
     t.index ["sourcedId"], name: "sqlite_autoindex_courses_1", unique: true
@@ -58,10 +58,10 @@ ActiveRecord::Schema.define(version: 20191022055249) do
     t.boolean "primary"
     t.date "beginDate"
     t.date "endDate"
+    t.text "metadata"
     t.integer "application_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "metadata"
     t.index ["application_id"], name: "index_enrollments_on_application_id"
     t.index ["classSourcedId"], name: "index_enrollments_on_classSourcedId"
     t.index ["schoolSourcedId"], name: "index_enrollments_on_schoolSourcedId"
@@ -118,10 +118,10 @@ ActiveRecord::Schema.define(version: 20191022055249) do
     t.string "type"
     t.string "identifier"
     t.string "parentSourcedId"
+    t.text "metadata"
     t.integer "application_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "metadata"
     t.index ["application_id"], name: "index_orgs_on_application_id"
     t.index ["sourcedId"], name: "sqlite_autoindex_orgs_1", unique: true
   end
@@ -140,10 +140,10 @@ ActiveRecord::Schema.define(version: 20191022055249) do
     t.string "subjects"
     t.string "subjectCodes"
     t.string "periods"
+    t.text "metadata"
     t.integer "application_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "metadata"
     t.index ["application_id"], name: "index_rclasses_on_application_id"
     t.index ["courseSourcedId"], name: "index_rclasses_on_courseSourcedId"
     t.index ["schoolSourcedId"], name: "index_rclasses_on_schoolSourcedId"
@@ -169,10 +169,10 @@ ActiveRecord::Schema.define(version: 20191022055249) do
     t.string "agentSourcedIds"
     t.string "grades"
     t.string "password"
+    t.text "metadata"
     t.integer "application_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "metadata"
     t.index ["application_id"], name: "index_users_on_application_id"
     t.index ["orgSourcedIds"], name: "index_users_on_orgSourcedIds"
     t.index ["sourcedId"], name: "sqlite_autoindex_users_1", unique: true
