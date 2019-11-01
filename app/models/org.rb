@@ -9,6 +9,7 @@
 #  type             :string
 #  identifier       :string
 #  parentSourcedId  :string
+#  metadata         :text
 #  application_id   :integer          default(0), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
@@ -24,5 +25,5 @@ class Org < ApplicationRecord
   has_many :users, foreign_key: :orgSourcedIds, inverse_of: :org
   # Validations for OneRoster bulk data
   validates :name, :application_id, presence: true
-  validates :type, inclusion: { in: %w[department school district local state national]}
+  validates :type, inclusion: { in: %w[department school district local state national] }
 end

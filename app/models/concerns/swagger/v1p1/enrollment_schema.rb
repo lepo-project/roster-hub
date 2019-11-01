@@ -4,7 +4,7 @@ module Swagger::V1p1::EnrollmentSchema
 
   included do
     swagger_schema :Enrollment do
-      key :required, [:sourcedId, :classSourcedId, :schoolSourcedId, :userSourcedId, :role, :primary]
+      key :required, %i[sourcedId classSourcedId schoolSourcedId userSourcedId role primary]
       property :sourcedId do
         key :description, 'Source Identifier'
         key :type, :string
@@ -30,7 +30,7 @@ module Swagger::V1p1::EnrollmentSchema
       property :role do
         key :description, 'Enrollment role'
         key :type, :string
-        key :enum, ['administrator', 'aide', 'guardian', 'parent', 'proctor', 'relative', 'student', 'teacher']
+        key :enum, %w[administrator aide guardian parent proctor relative student teacher]
       end
       property :primary do
         key :description, 'Applicable only to teachers. Only one teacher should be designated as the primary teacher for a class in the period defined by the begin/end dates.'
@@ -42,9 +42,21 @@ module Swagger::V1p1::EnrollmentSchema
       property :endDate do
         key :description, 'not used'
       end
+      if METADATA[:enrollments]
+        property :metadata do
+          key :type, :object
+          METADATA[:enrollments].each do |k, v|
+            property k do
+              key :description, v[:description] if v[:description]
+              key :type, v[:type] if v[:type]
+            end
+          end
+        end
+      end
     end
+
     swagger_schema :EnrollmentInput do
-      key :required, [:sourcedId, :classSourcedId, :schoolSourcedId, :userSourcedId, :role, :primary]
+      key :required, %i[sourcedId classSourcedId schoolSourcedId userSourcedId role primary]
       property :status do
         key :description, 'not used'
       end
@@ -66,7 +78,7 @@ module Swagger::V1p1::EnrollmentSchema
       property :role do
         key :description, 'Enrollment role'
         key :type, :string
-        key :enum, ['administrator', 'aide', 'guardian', 'parent', 'proctor', 'relative', 'student', 'teacher']
+        key :enum, %w[administrator aide guardian parent proctor relative student teacher]
       end
       property :primary do
         key :description, 'Applicable only to teachers. Only one teacher should be designated as the primary teacher for a class in the period defined by the begin/end dates.'
@@ -77,6 +89,17 @@ module Swagger::V1p1::EnrollmentSchema
       end
       property :endDate do
         key :description, 'not used'
+      end
+      if METADATA[:enrollments]
+        property :metadata do
+          key :type, :object
+          METADATA[:enrollments].each do |k, v|
+            property k do
+              key :description, v[:description] if v[:description]
+              key :type, v[:type] if v[:type]
+            end
+          end
+        end
       end
     end
   end

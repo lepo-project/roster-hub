@@ -17,7 +17,7 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-CsvImport.log
 
 .byebug_history
-/storage
+/storage/*
+!/storage/sample_csv

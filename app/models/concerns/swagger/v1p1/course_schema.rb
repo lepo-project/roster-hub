@@ -4,7 +4,7 @@ module Swagger::V1p1::CourseSchema
 
   included do
     swagger_schema :Course do
-      key :required, [:sourcedId, :title, :courseCode, :orgSourcedId]
+      key :required, %i[sourcedId title courseCode orgSourcedId]
       property :sourcedId do
         key :description, 'Source Identifier'
         key :type, :string
@@ -39,6 +39,17 @@ module Swagger::V1p1::CourseSchema
       property :subjectCodes do
         key :description, 'not used'
       end
+      if METADATA[:courses]
+        property :metadata do
+          key :type, :object
+          METADATA[:courses].each do |k, v|
+            property k do
+              key :description, v[:description] if v[:description]
+              key :type, v[:type] if v[:type]
+            end
+          end
+        end
+      end
     end
 
     swagger_schema :CourseInput do
@@ -71,6 +82,17 @@ module Swagger::V1p1::CourseSchema
       end
       property :subjectCodes do
         key :description, 'not used'
+      end
+      if METADATA[:courses]
+        property :metadata do
+          key :type, :object
+          METADATA[:courses].each do |k, v|
+            property k do
+              key :description, v[:description] if v[:description]
+              key :type, v[:type] if v[:type]
+            end
+          end
+        end
       end
     end
   end

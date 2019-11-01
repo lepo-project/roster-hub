@@ -19,6 +19,7 @@ class CreateUsers < ActiveRecord::Migration[5.1]
       t.string :agentSourcedIds
       t.string :grades
       t.string :password
+      t.text :metadata
       t.integer :application_id, default: 0, null: false
 
       t.timestamps

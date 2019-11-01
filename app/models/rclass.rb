@@ -16,6 +16,7 @@
 #  subjects         :string
 #  subjectCodes     :string
 #  periods          :string
+#  metadata         :text
 #  application_id   :integer          default(0), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
@@ -33,5 +34,5 @@ class Rclass < ApplicationRecord
   has_many :teachers, -> { where('enrollments.role = ?', 'teacher') }, through: :enrollments, source: :user
   # Validations for OneRoster bulk data
   validates :title, :application_id, :course, :school, :term, presence: true
-  validates :classType, inclusion: { in: %w[homeroom scheduled]}
+  validates :classType, inclusion: { in: %w[homeroom scheduled] }
 end

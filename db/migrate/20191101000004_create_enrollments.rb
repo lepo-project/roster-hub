@@ -11,6 +11,7 @@ class CreateEnrollments < ActiveRecord::Migration[5.1]
       t.boolean :primary
       t.date :beginDate
       t.date :endDate
+      t.text :metadata
       t.integer :application_id, default: 0, null: false
 
       t.timestamps

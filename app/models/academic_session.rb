@@ -11,6 +11,7 @@
 #  endDate          :date
 #  parentSourcedId  :string
 #  schoolYear       :integer
+#  metadata         :text
 #  application_id   :integer          default(0), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
@@ -23,5 +24,5 @@ class AcademicSession < ApplicationRecord
   has_many :rclasses, foreign_key: :termSourcedIds, inverse_of: :term
   # Validations for OneRoster bulk data
   validates :title, :startDate, :endDate, :schoolYear, :application_id, presence: true
-  validates :type, inclusion: { in: %w[gradingPeriod semester schoolYear term]}
+  validates :type, inclusion: { in: %w[gradingPeriod semester schoolYear term] }
 end

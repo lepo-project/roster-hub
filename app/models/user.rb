@@ -20,6 +20,7 @@
 #  agentSourcedIds  :string
 #  grades           :string
 #  password         :string
+#  metadata         :text
 #  application_id   :integer          default(0), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
@@ -35,5 +36,5 @@ class User < ApplicationRecord
   # Validations for OneRoster bulk data
   validates :username, :givenName, :familyName, :application_id, :org, presence: true
   validates :enabledUser, inclusion: { in: [true, false] }
-  validates :role, inclusion: { in: %w[administrator aide guardian parent proctor relative student teacher]}
+  validates :role, inclusion: { in: %w[administrator aide guardian parent proctor relative student teacher] }
 end

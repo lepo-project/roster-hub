@@ -12,6 +12,7 @@
 #  primary          :boolean
 #  beginDate        :date
 #  endDate          :date
+#  metadata         :text
 #  application_id   :integer          default(0), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
@@ -26,5 +27,5 @@ class Enrollment < ApplicationRecord
   # Validations for OneRoster bulk data
   # ATTENTION: If validates for presence begins with association, NO validations are executed for mariaDB!(NEED CHECK)
   validates :application_id, :rclass, :school, :user, presence: true
-  validates :role, inclusion: { in: %w[administrator aide guardian parent proctor relative student teacher]}
+  validates :role, inclusion: { in: %w[administrator aide guardian parent proctor relative student teacher] }
 end

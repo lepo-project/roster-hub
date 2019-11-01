@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181107000007) do
+ActiveRecord::Schema.define(version: 20191101000007) do
 
   create_table "academic_sessions", primary_key: "sourcedId", id: :string, force: :cascade do |t|
     t.string "status"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20181107000007) do
     t.date "endDate"
     t.string "parentSourcedId"
     t.integer "schoolYear"
+    t.text "metadata"
     t.integer "application_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -38,6 +39,7 @@ ActiveRecord::Schema.define(version: 20181107000007) do
     t.string "orgSourcedId"
     t.string "subjects"
     t.string "subjectCodes"
+    t.text "metadata"
     t.integer "application_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -56,6 +58,7 @@ ActiveRecord::Schema.define(version: 20181107000007) do
     t.boolean "primary"
     t.date "beginDate"
     t.date "endDate"
+    t.text "metadata"
     t.integer "application_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -115,6 +118,7 @@ ActiveRecord::Schema.define(version: 20181107000007) do
     t.string "type"
     t.string "identifier"
     t.string "parentSourcedId"
+    t.text "metadata"
     t.integer "application_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -136,6 +140,7 @@ ActiveRecord::Schema.define(version: 20181107000007) do
     t.string "subjects"
     t.string "subjectCodes"
     t.string "periods"
+    t.text "metadata"
     t.integer "application_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -164,6 +169,7 @@ ActiveRecord::Schema.define(version: 20181107000007) do
     t.string "agentSourcedIds"
     t.string "grades"
     t.string "password"
+    t.text "metadata"
     t.integer "application_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
