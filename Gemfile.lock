@@ -84,7 +84,7 @@ GEM
     parallel (1.18.0)
     parser (2.6.5.0)
       ast (~> 2.4.0)
-    puma (3.12.1)
+    puma (3.12.2)
     rack (2.0.7)
     rack-cors (1.0.3)
     rack-test (1.1.0)
@@ -174,7 +174,7 @@ DEPENDENCIES
   doorkeeper-i18n
   factory_bot_rails (~> 4.8)
   faker
-  puma (~> 3.7)
+  puma (~> 3.12)
   rack-cors
   rails (~> 5.1.4)
   rspec-rails
