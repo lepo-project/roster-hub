@@ -201,7 +201,7 @@ $ curl -H "Authorization: Bearer [accesstoken]" -H "Content-Type:application/jso
  + filter=[data_field][predicate][value] or [data_field][predicate][value][logical][data_field][predicate][value]  
 
  Filter queries MUST be URL encoded.  
- (ex.) http[s]://[domain]/ims/oneroster/v1p1/filter=familyName%3D%27jones%27
+ (ex.) http[s]://[domain]/ims/oneroster/v1p1/students?filter=familyName%3D%27jones%27
 
 ## API document in OpenAPI v2 format
  + To get API document in JSON format, start RosterHub server and access to the following URL.
