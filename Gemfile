@@ -13,7 +13,7 @@ gem 'puma', '~> 3.7'
 gem 'rack-cors'
 
 gem 'activerecord-import'
-gem 'doorkeeper', '~> 5.0.1'
+gem 'doorkeeper', '~> 5.0.3'
 gem 'doorkeeper-i18n'
 gem 'rubyzip'
 gem 'whenever', require: false
