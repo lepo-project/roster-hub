@@ -8,12 +8,12 @@ end
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3'
 # Use Puma as the app server
-gem 'puma', '~> 3.7'
+gem 'puma', '~> 4.3'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
 gem 'activerecord-import'
-gem 'doorkeeper', '~> 5.0.1'
+gem 'doorkeeper', '~> 5.4.0'
 gem 'doorkeeper-i18n'
 gem 'rubyzip'
 gem 'whenever', require: false
