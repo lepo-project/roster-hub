@@ -6,7 +6,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
 
   def perform(*)
     @logger = ActiveSupport::Logger.new(Rails.root.join(CSV_IMPORT_LOG))
-    @logger.info('----- Start CSV import job: ' + Time.zone.now.to_s + ' -----')
+    @logger.info("----- Start CSV import job: #{Time.zone.now} -----")
     return unless abstract_zip
     return unless File.exist?(get_filepath('manifest'))
 
@@ -29,7 +29,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     end
     # backup zip file or csv files depending on the value of ZIP_MODE
     ZIP_MODE ? remove_csv : backup_csv
-    @logger.info('----- End CSV import job: ' + Time.zone.now.to_s + ' -----')
+    @logger.info("----- End CSV import job: #{Time.zone.now} -----")
   end
 
   private
@@ -37,10 +37,10 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   def destroy_unused(cls, condition, csv_sourcedIds)
     db_sourcedIds = cls.where(condition.merge({ application_id: 0 })).pluck('sourcedId')
     db_sourcedIds.reject! { |id| csv_sourcedIds.include? id }
-    unless db_sourcedIds.empty?
-      cls.where(sourcedId: db_sourcedIds).destroy_all
-      @logger.info("Deleted from #{cls.table_name} => #{db_sourcedIds.size}")
-    end
+    return if db_sourcedIds.empty?
+
+    cls.where(sourcedId: db_sourcedIds).destroy_all
+    @logger.info("Deleted from #{cls.table_name} => #{db_sourcedIds.size}")
   end
 
   def filename_to_class(str)
@@ -89,7 +89,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     return nil unless File.exist?(CSV_ZIP_FILE)
 
     timestamp = File.stat(CSV_ZIP_FILE).mtime.strftime('%Y%m%d%H%M%S')
-    backup_file_name = timestamp + '.zip'
+    backup_file_name = "#{timestamp}.zip"
     FileUtils.mkdir_p(CSV_BACKUP_DIR) unless FileTest.exist?(CSV_BACKUP_DIR)
     Dir.glob(CSV_ZIP_FILE) do |f|
       FileUtils.mv(f, File.join(CSV_BACKUP_DIR, backup_file_name))
@@ -138,7 +138,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   end
 
   def metadata_to_json(hash, metadata)
-    hashed_metadata = metadata.map { |md| [md.to_s, hash['metadata.' + md.to_s]] }.to_h
+    hashed_metadata = metadata.map { |md| [md.to_s, hash["metadata.#{md}"]] }.to_h
     hash['metadata'] = hashed_metadata.to_json
     metadata.map { |md| hash.delete(md) }
   end
@@ -157,7 +157,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   end
 
   def get_filepath(type)
-    Rails.root.join(CSV_FILE_PATH, type + '.csv').to_s
+    Rails.root.join(CSV_FILE_PATH, "#{type}.csv").to_s
   end
 
   # bulk only
@@ -168,7 +168,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
 
     read_files = []
     ROSTER_FILES.each do |fcl|
-      read_files.push(fcl) if 'bulk'.eql?(manifest['file.' + fcl])
+      read_files.push(fcl) if 'bulk'.eql?(manifest["file.#{fcl}"])
     end
     read_files
   end

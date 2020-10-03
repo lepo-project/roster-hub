@@ -95,7 +95,7 @@ module V1p1
         where1 = predict_formula(filtervalues.first)
         where2 = predict_formula(filtervalues.last) unless logical.nil?
         relations = relations.where(where1[:criteria], where1[:value]) if logical.nil?
-        relations = relations.where(where1[:criteria] + ' ' + logical + ' ' + where2[:criteria], where1[:value], where2[:value]) unless logical.nil?
+        relations = relations.where("#{where1[:criteria]} #{logical} #{where2[:criteria]}", where1[:value], where2[:value]) unless logical.nil?
       end
       # limit & offset
       limit = params[:limit].nil? ? LIMIT : params[:limit]
@@ -105,7 +105,7 @@ module V1p1
       sort = model_class.columns_hash[sort].nil? ? 'sourcedId' : sort
       # orderby
       orderby = orderby_validvalue(params[:orderby])
-      relations.order(sort + ' ' + orderby).limit(limit).offset(offset)
+      relations.order("#{sort} #{orderby}").limit(limit).offset(offset)
     end
 
     def render_json(model_name, relations)
@@ -151,11 +151,11 @@ module V1p1
       value = match[:value] unless match.nil?
       case filter_hash[:ope]
       when '~' then
-        criteria = filter_hash[:key] + ' like ?'
-        return { criteria: criteria, value: '%' + value + '%' }
+        criteria = "#{filter_hash[:key]} like ?"
+        { criteria: criteria, value: "%#{value}%" }
       else
-        criteria = filter_hash[:key] + ' ' + filter_hash[:ope] + ' ? '
-        return { criteria: criteria, value: value }
+        criteria = "#{filter_hash[:key]} #{filter_hash[:ope]} ? "
+        { criteria: criteria, value: value }
       end
     end
 
