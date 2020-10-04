@@ -4,7 +4,7 @@ class ApplicationRecord < ActiveRecord::Base
   private
 
   def generate_sourcedId
-    return if self.sourcedId.present?
+    return if sourcedId.present?
 
     self.sourcedId = loop do
       uuid = SecureRandom.uuid

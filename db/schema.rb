@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `rails
+# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191101000007) do
+ActiveRecord::Schema.define(version: 2019_11_01_000007) do
 
   create_table "academic_sessions", primary_key: "sourcedId", id: :string, force: :cascade do |t|
     t.string "status"
@@ -26,7 +26,6 @@ ActiveRecord::Schema.define(version: 20191101000007) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["application_id"], name: "index_academic_sessions_on_application_id"
-    t.index ["sourcedId"], name: "sqlite_autoindex_academic_sessions_1", unique: true
   end
 
   create_table "courses", primary_key: "sourcedId", id: :string, force: :cascade do |t|
@@ -45,7 +44,6 @@ ActiveRecord::Schema.define(version: 20191101000007) do
     t.datetime "updated_at", null: false
     t.index ["application_id"], name: "index_courses_on_application_id"
     t.index ["orgSourcedId"], name: "index_courses_on_orgSourcedId"
-    t.index ["sourcedId"], name: "sqlite_autoindex_courses_1", unique: true
   end
 
   create_table "enrollments", primary_key: "sourcedId", id: :string, force: :cascade do |t|
@@ -65,7 +63,6 @@ ActiveRecord::Schema.define(version: 20191101000007) do
     t.index ["application_id"], name: "index_enrollments_on_application_id"
     t.index ["classSourcedId"], name: "index_enrollments_on_classSourcedId"
     t.index ["schoolSourcedId"], name: "index_enrollments_on_schoolSourcedId"
-    t.index ["sourcedId"], name: "sqlite_autoindex_enrollments_1", unique: true
     t.index ["userSourcedId"], name: "index_enrollments_on_userSourcedId"
   end
 
@@ -123,7 +120,6 @@ ActiveRecord::Schema.define(version: 20191101000007) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["application_id"], name: "index_orgs_on_application_id"
-    t.index ["sourcedId"], name: "sqlite_autoindex_orgs_1", unique: true
   end
 
   create_table "rclasses", primary_key: "sourcedId", id: :string, force: :cascade do |t|
@@ -147,7 +143,6 @@ ActiveRecord::Schema.define(version: 20191101000007) do
     t.index ["application_id"], name: "index_rclasses_on_application_id"
     t.index ["courseSourcedId"], name: "index_rclasses_on_courseSourcedId"
     t.index ["schoolSourcedId"], name: "index_rclasses_on_schoolSourcedId"
-    t.index ["sourcedId"], name: "sqlite_autoindex_rclasses_1", unique: true
     t.index ["termSourcedIds"], name: "index_rclasses_on_termSourcedIds"
   end
 
@@ -175,7 +170,8 @@ ActiveRecord::Schema.define(version: 20191101000007) do
     t.datetime "updated_at", null: false
     t.index ["application_id"], name: "index_users_on_application_id"
     t.index ["orgSourcedIds"], name: "index_users_on_orgSourcedIds"
-    t.index ["sourcedId"], name: "sqlite_autoindex_users_1", unique: true
   end
 
+  add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
+  add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
 end
