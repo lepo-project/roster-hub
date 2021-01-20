@@ -103,9 +103,10 @@ To allow only specific ip address, add permit_ips.
 
 2. Request access token with uid and secret.  
 ```
-$  curl -i http[s]://[servername][:port]/oauth/token -F grant_type="client_credentials" -F client_id="[uid]" -F client_secret="[secret]"  
+$  curl -i http[s]://[servername][:port]/oauth/token -F grant_type="client_credentials" -F scope="[scope]" -F client_id="[uid]" -F client_secret="[secret]"  
 {"access_token":"[accesstoken]","token_type":"bearer","expires_in":nil,"created_at":1510711311}
 ```
+- scope : See config/initializers/doorkeeper.rb. If the scope value is not specified, the value of "default_scopes" will be applied.
 
 3. Call API with access token.  
 ```
