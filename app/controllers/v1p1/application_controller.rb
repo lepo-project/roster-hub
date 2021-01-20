@@ -1,6 +1,7 @@
 module V1p1
   class ApplicationController < ActionController::API
-    before_action :doorkeeper_authorize!
+    before_action -> { doorkeeper_authorize! 'https://purl.imsglobal.org/spec/or/v1p1/scope/roster.readonly', 'roster.all' }, only: %i[index show]
+    before_action -> { doorkeeper_authorize! 'roster.all' }, only: %i[create update destroy]
     before_action :restrict_remote_ip
     ORDER_VALUES = %w[desc asc].freeze
 
