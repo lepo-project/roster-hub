@@ -7,7 +7,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
   def perform(*)
     @logger = ActiveSupport::Logger.new(Rails.root.join(CSV_IMPORT_LOG))
     @logger.info("----- Start CSV import job: #{Time.zone.now} -----")
-    return unless abstract_zip
+    return unless zip_to_csv
     return unless File.exist?(get_filepath('manifest'))
 
     manifest_table = CSV.read(get_filepath('manifest'), headers: true)
@@ -52,9 +52,9 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def abstract_zip
+  def zip_to_csv
     return true unless ZIP_MODE # continue importing process if ZIP_MODE=false
-    return false if extract_to_csv.nil? # stop processing if zip file not exists
+    return false if extract_to_csv.nil? # stop processing if zip file does not exist
 
     backup_zip
     true
