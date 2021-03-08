@@ -36,7 +36,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
 
   def destroy_unused(cls, condition, csv_sourcedIds)
     db_sourcedIds = cls.where(condition.merge({ application_id: 0 })).pluck('sourcedId')
-    db_sourcedIds.reject! { |id| csv_sourcedIds.include? id }
+    db_sourcedIds -= csv_sourcedIds
     return if db_sourcedIds.empty?
 
     cls.where(sourcedId: db_sourcedIds).destroy_all
