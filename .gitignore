@@ -21,3 +21,6 @@
 .byebug_history
 /storage/*
 !/storage/sample_csv
+
+/config/master.key
+/config/credentials.yml.enc
