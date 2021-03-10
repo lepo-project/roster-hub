@@ -1,5 +1,6 @@
 APIDOC = 'doc/apidoc.json'.freeze
 CSV_BACKUP_DIR = 'backup'.freeze
+CSV_BACKUP_DAYS = 7.days.freeze
 CSV_FILE_PATH = 'storage/csv'.freeze
 CSV_IMPORT_LOG = 'log/csv_import.log'.freeze
 CSV_ZIP_FILE = 'oneroster.zip'.freeze

@@ -29,6 +29,7 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     end
     # backup zip file or csv files depending on the value of ZIP_MODE
     ZIP_MODE ? remove_csv : backup_csv
+    remove_old_backups
     @logger.info("----- End CSV import job: #{Time.zone.now} -----")
   end
 
@@ -100,6 +101,18 @@ class CsvImportJob < ApplicationJob # rubocop:disable Metrics/ClassLength
     FileUtils.cd(Rails.root.join(CSV_FILE_PATH))
     Dir.glob('*.csv') do |f|
       FileUtils.rm(f)
+    end
+  end
+
+  def remove_old_backups
+    return unless CSV_BACKUP_DAYS.positive?
+    FileUtils.cd(Rails.root.join(CSV_FILE_PATH, CSV_BACKUP_DIR))
+    backups = ZIP_MODE ? '*.zip' : '*/'
+    Dir.glob(backups) do |f|
+      if File.mtime(f) < Time.zone.now - CSV_BACKUP_DAYS
+        ZIP_MODE ? FileUtils.rm(f) : FileUtils.remove_dir(f)
+        @logger.info("Removed old backups: #{f}")
+      end
     end
   end
 
