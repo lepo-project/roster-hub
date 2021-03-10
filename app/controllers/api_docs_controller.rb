@@ -4,7 +4,7 @@ class ApiDocsController < ApplicationController
   swagger_root do
     key :swagger, '2.0'
     info do
-      key :version, '1.0.1'
+      key :version, '1.2'
       key :title, 'RosterHub'
       key :description, 'Roster Management System based on IMS OneRoster specification'
       key :termsOfService, 'https://github.com/lepo-project/roster-hub/blob/master/LICENSE'
