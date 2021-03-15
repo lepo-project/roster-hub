@@ -29,7 +29,7 @@ class Rclass < ApplicationRecord
   belongs_to :school, foreign_key: :schoolSourcedId, class_name: 'Org', inverse_of: :rclasses
   # Assumption: Class does not belong to multiple terms
   belongs_to :term, foreign_key: :termSourcedIds, class_name: 'AcademicSession', inverse_of: :rclasses
-  has_many :enrollments, foreign_key: :classSourcedId, inverse_of: :rclass
+  has_many :enrollments, foreign_key: :classSourcedId, inverse_of: :rclass, dependent: :destroy
   has_many :students, -> { where('enrollments.role = ?', 'student') }, through: :enrollments, source: :user
   has_many :teachers, -> { where('enrollments.role = ?', 'teacher') }, through: :enrollments, source: :user
   # Validations for OneRoster bulk data
