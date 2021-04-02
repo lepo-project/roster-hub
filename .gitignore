@@ -18,8 +18,21 @@
 !/log/.keep
 !/tmp/.keep
 
+# Ignore sockets files, but keep the directory.
+!/tmp/sockets/
+/tmp/sockets/*
+!/tmp/sockets/.keep
+
+# Ignore pid files, but keep the directory.
+!/tmp/pids/
+/tmp/pids/*
+!/tmp/pids/.keep
+
 .byebug_history
 /storage/*
+!/storage/csv
+/storage/csv/*
+!/storage/csv/.keep
 !/storage/sample_csv
 
 /config/master.key
