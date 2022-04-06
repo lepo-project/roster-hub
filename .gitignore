@@ -8,8 +8,7 @@
 /.bundle
 
 # Ignore the default SQLite database.
-/db/*.sqlite3
-/db/*.sqlite3-journal
+/db/*.sqlite3*
 
 # Ignore all logfiles and tempfiles.
 /bin/*
@@ -18,8 +17,21 @@
 !/log/.keep
 !/tmp/.keep
 
+# Ignore sockets files, but keep the directory.
+!/tmp/sockets/
+/tmp/sockets/*
+!/tmp/sockets/.keep
+
+# Ignore pid files, but keep the directory.
+!/tmp/pids/
+/tmp/pids/*
+!/tmp/pids/.keep
+
 .byebug_history
 /storage/*
+!/storage/csv
+/storage/csv/*
+!/storage/csv/.keep
 !/storage/sample_csv
 
 /config/master.key
