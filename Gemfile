@@ -6,14 +6,14 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.3'
+gem 'rails', '~> 7.1.3'
 # Use Puma as the app server
-gem 'puma', '~> 5.0'
+gem 'puma', '~> 6.0'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
 gem 'activerecord-import'
-gem 'doorkeeper', '~> 5.4.0'
+gem 'doorkeeper', '~> 5.6'
 gem 'doorkeeper-i18n'
 gem 'rubyzip'
 gem 'swagger-blocks'
