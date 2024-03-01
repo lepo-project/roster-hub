@@ -46,6 +46,7 @@ end
 ## Install
 ```
 $ bundle install  
+$ EDITOR="vi" bin/rails credentials:edit
 $ rails db:migrate  
 ```
 
