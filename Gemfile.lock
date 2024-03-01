@@ -129,6 +129,7 @@ GEM
     minitest (5.22.2)
     msgpack (1.7.2)
     mutex_m (0.2.0)
+    mysql2 (0.5.6)
     net-imap (0.4.10)
       date
       net-protocol
@@ -155,7 +156,6 @@ GEM
     parser (3.3.0.5)
       ast (~> 2.4.1)
       racc
-    prism (0.24.0)
     psych (5.1.2)
       stringio
     puma (6.4.2)
@@ -236,9 +236,8 @@ GEM
       rubocop-ast (>= 1.30.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
-    rubocop-ast (1.31.0)
+    rubocop-ast (1.31.1)
       parser (>= 3.3.0.4)
-      prism (>= 0.24.0)
     ruby-progressbar (1.13.0)
     rubyzip (2.3.2)
     sqlite3 (1.7.2-aarch64-linux)
@@ -279,6 +278,7 @@ DEPENDENCIES
   doorkeeper-i18n
   factory_bot_rails (~> 4.8)
   faker
+  mysql2 (~> 0.5.0)
   puma (~> 6.0)
   rack-cors
   rails (~> 7.1.3)
