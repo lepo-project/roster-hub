@@ -1,10 +1,5 @@
 source 'https://rubygems.org'
 
-git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
-  "https://github.com/#{repo_name}.git"
-end
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 7.1.3'
 # Use Puma as the app server
@@ -13,6 +8,8 @@ gem 'puma', '~> 6.0'
 gem 'rack-cors'
 
 gem 'activerecord-import'
+# Reduces boot times through caching; required in config/boot.rb
+gem "bootsnap", require: false
 gem 'doorkeeper', '~> 5.6'
 gem 'doorkeeper-i18n'
 gem 'rubyzip'
